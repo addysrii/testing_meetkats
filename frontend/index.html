@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Allow search engines to index the site -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Meta description for search engines -->
+    <meta name="description" content="MeetKats is a modern social platform where you can connect with like-minded people, share stories, and discover new experiences." />
+
+    <!-- Favicon (browser tab icon) -->
+    <link rel="icon" type="image/png" href="/MeetKats.jpg" />
+
+    <!-- Responsive layout -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Page title -->
+    <title>MeetKats - Connect, Share, Explore</title>
+
+    <!-- ✅ Structured Data for logo rich result -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "MeetKats",
+      "url": "https://meetkats.com",
+      "logo": "https://res.cloudinary.com/dnnl72vrp/image/upload/v1740333339/MeetKats_trv9cv.jpg"
+    }
+    </script>
+     <style>
+      @import url("https://fonts.googleapis.com/css?family=Crimson+Text:700|Inter:400,500,700,600|Poppins:500,700,600|Space+Grotesk:var(--h-4-font-weight),500,var(--p-font-weight),400,700|Outfit:var(--heading-h1-semi-bold-font-weight),var(--heading-h3-small-semi-bold-font-weight)");
+    </style>
+    <link href="tailwind.css" rel="stylesheet" />
+  <script>
+      function loadCashfree() {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
+          script.async = true;
+          script.onload = resolve;
+          script.onerror = reject;
+          document.head.appendChild(script);
+        });
+      }
+    
+      // Usage
+      loadCashfree()
+        .then(() => console.log("Cashfree loaded!"))
+        .catch((err) => console.error("Failed to load Cashfree:", err));
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
