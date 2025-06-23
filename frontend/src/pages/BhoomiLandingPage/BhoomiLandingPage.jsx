@@ -10,13 +10,18 @@ import { Button } from "../../components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import { FaLinkedin } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
+import hero_image from "../../assets/hero image.png"
+import tile1 from "../../assets/Tile-1.png"
+import tile2 from "../../assets/Tile-2.png"
+import tile3 from "../../assets/Tile -3.png"
+import tile4 from "../../assets/Tile-4.png"
 //How it Works Section Essentials
 // Define the steps data for better maintainability
 const howItWorksSteps = [
-  { title: "Create Account", color: "#FFE990" },
-  { title: "Configure Profile", color: "#A4E387" },
-  { title: "Upload Content", color: "#FF877B" },
-  { title: "Share & Engage", color: "#66BEF0" }
+  { title: "Create Account", color: "#FFE990", image: tile1 },
+  { title: "Configure Profile", color: "#A4E387", image: tile2 },
+  { title: "Upload Content", color: "#FF877B", image: tile3 },
+  { title: "Share & Engage", color: "#66BEF0", image: tile4 }
 ];
 
 // DivWrapper component from provided code
@@ -482,7 +487,7 @@ export const BhoomiLandingPage = () => {
 
             {/* Auth Buttons */}
             <div className="mt-8 space-y-2 max-w-sm">
-            
+
               {buttons.map((button) => (
                 <button
                   key={button.id}
@@ -517,8 +522,10 @@ export const BhoomiLandingPage = () => {
               </p>
             </div>
           </div>
+          {/* <div className="flex-1 relative">
+            <img src={hero_image} alt="hero" />
+           </div> */}
 
-          {/* Hero Images */}
           <div className="flex-1 relative">
             <div className="w-[247px] h-[233px] absolute top-0 left-[209px]">
               <img
@@ -1044,7 +1051,7 @@ export const BhoomiLandingPage = () => {
               </h2>
 
               <div className="flex flex-col md:flex-row justify-center items-start gap-8 relative">
-                   <div className="flex-1">
+                <div className="flex-1">
                   <h3 className="text-[40px] font-medium text-[#353333] text-center tracking-[-0.80px] mb-12 font-['Poppins',Helvetica]">
                     MeetKats
                   </h3>
@@ -1093,68 +1100,59 @@ export const BhoomiLandingPage = () => {
                   </div>
                 </div>
 
-                
 
-                
-             
+
+
+
               </div>
             </div>
           </section>
         </section>
 
         {/* How it Works Section */}
-        <section className="mt-16 md:mt-24 lg:mt-32 px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+        <section className="mt-16 md:mt-24 lg:mt-32 px-4 sm:px-6 md:px-8 max-w-9xl mx-auto">
           {/* Section Title */}
           <h2 className="[font-family:'Inter',Helvetica] font-semibold text-black text-4xl md:text-5xl lg:text-6xl text-center tracking-[-1.20px] mb-8 md:mb-12 lg:mb-16">
             How it Works
           </h2>
 
           {/* For Desktop: Steps and Cards as separate sections */}
-          <div className="hidden md:block">
+          <div className="block">
             {/* Steps Indicator */}
             <div className="relative mt-8 md:mt-12 lg:mt-16">
               {/* Horizontal Separator */}
               <Separator className="absolute w-full max-w-4xl md:max-w-[800px] lg:max-w-[1099px] h-px top-[57px] left-1/2 transform -translate-x-1/2" />
 
-              {/* Step Circles */}
-              <div className="max-w-4xl md:max-w-[800px] lg:max-w-[1099px] mx-auto">
-                <DivWrapper />
-              </div>
+              {/* Step Layout */}
+              <div className="max-w-7xl mx-auto">
+                <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+                  {howItWorksSteps.map((step, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-col items-center text-center w-full max-w-[220px] space-y-3"
+                    >
+                      {/* Step Index Number */}
+                      <div className="text-2xl font-bold text-gray-800 rounded-full w-20 h-20 pt-6" style={{ backgroundColor: step.color }} >{index + 1}</div>
 
-              {/* Step Titles */}
-              <div className="flex justify-between mt-8 md:mt-16 lg:mt-24 max-w-4xl md:max-w-[800px] lg:max-w-[1099px] mx-auto">
-                {howItWorksSteps.map((step, index) => (
-                  <div key={index} className="w-[216px] text-center">
-                    <h3 className="[font-family:'Inter',Helvetica] font-normal text-black text-xl md:text-2xl tracking-[-0.48px]">
-                      {step.title}
-                    </h3>
-                  </div>
-                ))}
-              </div>
-            </div>
+                      {/* Step Title */}
+                      <h3 className="text-black font-semibold text-base md:text-lg tracking-tight">
+                        {step.title}
+                      </h3>
 
-            {/* Step Cards */}
-            <div className="flex flex-wrap md:flex-nowrap justify-between mt-8 md:mt-12 lg:mt-16 gap-4">
-              {howItWorksSteps.map((_, index) => (
-                <Card
-                  key={index}
-                  className="w-min md:w-[322px] h-[380px] bg-[#f9f8fe] rounded-[17.67px] overflow-hidden"
-                >
-                  <CardContent className="p-0">
-                    <div className="relative w-min h-full pt-[35px] ">
-                      <CardIllustration index={index} />
+                      {/* Step Circle with Image */}
+                      <div className="w-60 h-80 rounded-xl shadow-md overflow-hidden">
+                        <img
+                          src={step.image}
+                          alt={`Step ${index + 1}`}
+                          className="w-full h-full"
+                        />
+                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* For Mobile: Vertical stack with step and card together */}
-          <div className="md:hidden">
-            {howItWorksSteps.map((step, index) => (
-              <StepWithCard key={index} step={step} index={index} />
-            ))}
           </div>
         </section>
 

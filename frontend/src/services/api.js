@@ -13,7 +13,7 @@ import axios from 'axios';
 // };
 
 // const API_URL = getApiUrl();
-const API_URL =import.meta.env.VITE_API_BASE_URL;
+const API_URL = 'https://meetkats-backend.onrender.com';
 console.log(`API URL: ${API_URL}`);
 
 // Axios instance

@@ -417,25 +417,27 @@ const portfolioService = {
   },
   
   // Streaks related methods
-  getUserStreaks: async (userId, options = {}) => {
-    try {
-      if (!userId) {
-        throw new Error('User ID is required');
-      }
-      
-      let url = `/api/users/${userId}/streaks`;
-      
-      // Add query parameters if provided
-      if (options.limit) {
-        url += `?limit=${options.limit}`;
-      }
-      
-      const response = await api.get(url);
-      return normalizeData(response.data);
-    } catch (error) {
-      return handleError(error, `fetching streaks for user ${userId}`, false) || { items: [] };
+getUserStreaks: async (userId, options = {}) => {
+  try {
+    if (!userId) {
+      throw new Error('User ID is required');
     }
-  },
+
+    // Build query string
+    const queryParams = new URLSearchParams({ userId });
+    if (options.limit) {
+      queryParams.append('limit', options.limit);
+    }
+
+    const url = `/api/streaks?${queryParams.toString()}`;
+
+    const response = await api.get(url);
+    return normalizeData(response.data);
+  } catch (error) {
+    return handleError(error, `fetching streaks for user ${userId}`, false) || { items: [] };
+  }
+},
+
   
   createStreak: async (streakData) => {
     try {

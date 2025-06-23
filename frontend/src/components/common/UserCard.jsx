@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserPlus, User, UserCheck, Eye, Heart, MapPin } from 'lucide-react';
 
-const UserCard = ({ user, onConnect, onFollow, onViewProfile, theme = 'orange' }) => {
+const UserCard = ({ user, onConnect, onFollow, onViewProfile, theme = 'green' }) => {
   // Check if we should show 'Connect' or 'Pending'
   const isPending = user.isPending || user.connectionStatus === 'pending';
   

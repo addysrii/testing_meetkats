@@ -20,7 +20,7 @@ import Loader from "../components/common/Loader";
 import UserCard from "../components/common/UserCard";
 import networkService from "../services/networkService";
 import Sidebar from "../components/common/Navbar";
-const NetworkExplorePage = () => {
+const NetworkExplorePage = ({user,onLogout}) => {
   const [loading, setLoading] = useState({
     nearby: true,
     suggested: true,
@@ -201,22 +201,13 @@ const NetworkExplorePage = () => {
   //   setSidebarCollapsed(!isSidebarCollapsed);
   // };
 
-  const handleLogout = async () => {
-    try {
-      await api.logout();
-      navigate("/login");
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
-  };
-
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar user={{}} />
+      <Sidebar user={user} onLogout={onLogout} />
 
       {/* Main Content */}
       <div
-        className={`flex-1 overflow-auto transition-all duration-300 ${"ml-60"}`}
+        className="flex-1 overflow-auto transition-all duration-300 mt-16 lg:mt-0"
       >
         <main className="max-w-7xl mx-auto p-4 md:p-6 mt-20">
           {/* Dashboard Header */}

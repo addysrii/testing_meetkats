@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import eventService from "../services/eventService";
 import Sidebar from "../components/common/Navbar";
-import CustomFieldsSection from "../components/common/CustomFieldsSection"; // Import the new component
+// import CustomFieldsSection from "../components/common/CustomFieldsSection"; // Import the new component
 
 const EventCreationPage = ({ user, onLogout }) => {
   const navigate = useNavigate();
@@ -52,7 +52,7 @@ const EventCreationPage = ({ user, onLogout }) => {
     maxAttendees: "",
     isPrivate: false,
     requireApproval: false,
-    customFields: [], // Add customFields to the form state
+    // customFields: [], // Add customFields to the form state
   });
 
   // UI state
@@ -69,7 +69,8 @@ const EventCreationPage = ({ user, onLogout }) => {
     { id: 2, name: "Date & Time" },
     { id: 3, name: "Location" },
     { id: 4, name: "Image & Settings" },
-    { id: 5, name: "Custom Fields" }, // New step for custom fields
+    // { id: 5, name: "Custom Fields" },
+    { id: 5, name: "Tickets" }, // New step for tickets
   ];
 
   // Handle standard input changes
@@ -103,12 +104,12 @@ const EventCreationPage = ({ user, onLogout }) => {
   };
 
   // Handle custom fields changes
-  const handleCustomFieldsChange = (customFields) => {
-    setFormData((prev) => ({
-      ...prev,
-      customFields,
-    }));
-  };
+  // const handleCustomFieldsChange = (customFields) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     customFields,
+  //   }));
+  // };
 
   // Handle cover image upload
   const handleImageUpload = (e) => {
@@ -222,8 +223,15 @@ const EventCreationPage = ({ user, onLogout }) => {
           setError("Start date is required");
           return false;
         }
+         if (!formData.endDate) {
+          setError("End Date is required");
+          return false;
+        }
+          if (!formData.endTime) {
+          setError("End Time is required");
+          return false;
+        }
         break;
-
       case 3:
         if (!formData.isOnline && !formData.location) {
           setError("Location is required for in-person events");
@@ -253,6 +261,7 @@ const EventCreationPage = ({ user, onLogout }) => {
 
     try {
       setSubmitting(true);
+      setError(null);
 
       // Prepare data for API
       const eventData = {
@@ -279,24 +288,36 @@ const EventCreationPage = ({ user, onLogout }) => {
           : null,
         isPrivate: formData.isPrivate,
         requireApproval: formData.requireApproval,
-        customFields: formData.customFields, // Include custom fields in API request
+        // customFields: formData.customFields,
       };
+
+      console.log("Submitting event data:", eventData);
 
       // Call API to create event
       const response = await eventService.createEvent(eventData);
+      console.log("Event creation response:", response);
+
+      if (!response.success) {
+        throw new Error(response.error || "Failed to create event");
+      }
+
+      if (!response.data) {
+        throw new Error("No data received from server");
+      }
 
       // Store response data
       setCreatedEventResponse(response);
 
-      // Set success state
-      setSuccess(true);
+      // Get the event ID from the response
+      const eventId = response.data._id || response.data.id;
 
-      // Navigate to the new event page
-      setTimeout(() => {
-        navigate(
-          `/events/${response.data._id || response.data.id}/form/create`
-        );
-      }, 2000);
+      if (!eventId) {
+        console.error("Event ID not found in response:", response.data);
+        throw new Error("Event ID not found in server response");
+      }
+
+      // Navigate to the ticket creation page
+      navigate(`/events/${eventId}/tickets/create`);
     } catch (err) {
       console.error("Error creating event:", err);
       setError(
@@ -310,7 +331,7 @@ const EventCreationPage = ({ user, onLogout }) => {
     switch (activeStep) {
       case 1:
         return (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 ">
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Event Title <span className="text-green-500">*</span>
@@ -335,7 +356,7 @@ const EventCreationPage = ({ user, onLogout }) => {
                 value={formData.description}
                 onChange={handleInputChange}
                 rows={5}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 resize-none focus:ring-green-500 focus:border-green-500"
                 placeholder="Describe your event, what attendees can expect, etc."
               ></textarea>
               <p className="mt-1 text-sm text-green-500">
@@ -404,7 +425,7 @@ const EventCreationPage = ({ user, onLogout }) => {
 
       case 2:
         return (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 ">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               When is your event?
             </h3>
@@ -419,6 +440,7 @@ const EventCreationPage = ({ user, onLogout }) => {
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleInputChange}
+                  min={new Date().toISOString().split('T')[0]}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   required
                 />
@@ -426,13 +448,14 @@ const EventCreationPage = ({ user, onLogout }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Start Time
+                  Start Time <span className="text-green-500">*</span>
                 </label>
                 <input
                   type="time"
                   name="startTime"
                   value={formData.startTime}
                   onChange={handleInputChange}
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
@@ -441,7 +464,7 @@ const EventCreationPage = ({ user, onLogout }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  End Date
+                  End Date <span className="text-green-500">*</span>
                 </label>
                 <input
                   type="date"
@@ -449,13 +472,14 @@ const EventCreationPage = ({ user, onLogout }) => {
                   value={formData.endDate}
                   onChange={handleInputChange}
                   min={formData.startDate}
+                  required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  End Time
+                  End Time <span className="text-green-500">*</span>
                 </label>
                 <input
                   type="time"
@@ -463,6 +487,7 @@ const EventCreationPage = ({ user, onLogout }) => {
                   value={formData.endTime}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  required
                 />
               </div>
             </div>
@@ -471,7 +496,7 @@ const EventCreationPage = ({ user, onLogout }) => {
 
       case 3:
         return (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6  ">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Where is your event?
             </h3>
@@ -617,7 +642,7 @@ const EventCreationPage = ({ user, onLogout }) => {
 
       case 4:
         return (
-          <div className="bg-white rounded-lg border border-gray-200 p-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 ">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
               Event Image & Settings
             </h3>
@@ -720,53 +745,81 @@ const EventCreationPage = ({ user, onLogout }) => {
           </div>
         );
 
+      // case 5:
+      //   return (
+      //     <div className="bg-white rounded-lg border border-gray-200 p-6">
+      //       <h3 className="text-lg font-medium text-gray-900 mb-4">
+      //         Custom Registration Fields
+      //       </h3>
+      //       <p className="text-gray-600 mb-6">
+      //         Add custom fields to collect additional information from attendees
+      //         during registration.
+      //       </p>
+
+      //       {/* Use the CustomFieldsSection component */}
+      //       <CustomFieldsSection
+      //         customFields={formData.customFields}
+      //         onChange={handleCustomFieldsChange}
+      //       />
+
+      //       <div className="mt-6 border border-green-100 bg-green-50 rounded-lg p-4">
+      //         <h4 className="font-medium text-green-800 mb-3">
+      //           Example Custom Fields
+      //         </h4>
+
+      //         <div className="flex items-start mb-3">
+      //           <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+      //             <Info className="h-4 w-4 text-green-600" />
+      //           </div>
+      //           <div className="ml-3">
+      //             <h4 className="font-medium text-gray-800">
+      //               Dietary Restrictions
+      //             </h4>
+      //             <p className="text-sm text-gray-600">
+      //               For events with meals or refreshments
+      //             </p>
+      //           </div>
+      //         </div>
+
+      //         <div className="flex items-start">
+      //           <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
+      //             <Users className="h-4 w-4 text-green-600" />
+      //           </div>
+      //           <div className="ml-3">
+      //             <h4 className="font-medium text-gray-800">
+      //               Company or Organization
+      //             </h4>
+      //             <p className="text-sm text-gray-600">
+      //               For networking events or business gatherings
+      //             </p>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   );
+
       case 5:
         return (
           <div className="bg-white rounded-lg border border-gray-200 p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">
-              Custom Registration Fields
+              Event Tickets
             </h3>
-            <p className="text-gray-600 mb-6">
-              Add custom fields to collect additional information from attendees
-              during registration.
-            </p>
+            <p className="text-gray-600 mb-6">Add tickets for your event.</p>
 
-            {/* Use the CustomFieldsSection component */}
-            <CustomFieldsSection
-              customFields={formData.customFields}
-              onChange={handleCustomFieldsChange}
-            />
-
+            {/* Implementation of ticket creation form */}
+            {/* This is a placeholder and should be replaced with the actual ticket creation form */}
             <div className="mt-6 border border-green-100 bg-green-50 rounded-lg p-4">
               <h4 className="font-medium text-green-800 mb-3">
-                Example Custom Fields
+                Example Ticket
               </h4>
 
-              <div className="flex items-start mb-3">
+              <div className="flex items-start">
                 <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
                   <Info className="h-4 w-4 text-green-600" />
                 </div>
                 <div className="ml-3">
-                  <h4 className="font-medium text-gray-800">
-                    Dietary Restrictions
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    For events with meals or refreshments
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-1">
-                  <Users className="h-4 w-4 text-green-600" />
-                </div>
-                <div className="ml-3">
-                  <h4 className="font-medium text-gray-800">
-                    Company or Organization
-                  </h4>
-                  <p className="text-sm text-gray-600">
-                    For networking events or business gatherings
-                  </p>
+                  <h4 className="font-medium text-gray-800">Ticket Type</h4>
+                  <p className="text-sm text-gray-600">General Admission</p>
                 </div>
               </div>
             </div>
@@ -783,7 +836,7 @@ const EventCreationPage = ({ user, onLogout }) => {
     return (
       <div className="flex h-screen">
         {/* Integrate the existing Sidebar */}
-        <Sidebar user={user || {}} onLogout={onLogout} />
+        {/* <Sidebar user={user || {}} onLogout={onLogout} /> */}
 
         {/* Main content with no gap */}
         <div className="flex-1 overflow-y-auto">
@@ -803,10 +856,9 @@ const EventCreationPage = ({ user, onLogout }) => {
                   className="px-6 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700"
                   onClick={() =>
                     navigate(
-                      `/events/${
-                        createdEventResponse?.data?._id ||
-                        createdEventResponse?.data?.id ||
-                        "new"
+                      `/events/${createdEventResponse?.data?._id ||
+                      createdEventResponse?.data?.id ||
+                      "new"
                       }`
                     )
                   }
@@ -830,9 +882,9 @@ const EventCreationPage = ({ user, onLogout }) => {
   return (
     <div className="flex">
       {/* The sidebar component - moved higher in the z-index stack */}
-      <div className="z-20 relative">
+      {/* <div className="z-20 relative">
         <Sidebar user={user || {}} onLogout={onLogout} />
-      </div>
+      </div> */}
 
       {/* Main content */}
       <div className="flex-1 overflow-y-auto">
@@ -863,13 +915,12 @@ const EventCreationPage = ({ user, onLogout }) => {
 
           {/* Step Indicators */}
           <div className="px-4 pb-4">
-            <div className="flex justify-between">
+            <div className="flex flex-col sm:flex-row lg:justify-between gap-4">
               {formSteps.map((step, index) => (
                 <div
                   key={step.id}
-                  className={`flex items-center ${
-                    index < formSteps.length - 1 ? "flex-1" : ""
-                  }`}
+                  className={`flex items-center ${index < formSteps.length - 1 ? "flex-1" : ""
+                    }`}
                   onClick={() =>
                     step.id <= activeStep ? setActiveStep(step.id) : null
                   }
@@ -878,13 +929,12 @@ const EventCreationPage = ({ user, onLogout }) => {
                   }}
                 >
                   <div
-                    className={`flex items-center justify-center w-8 h-8 rounded-full ${
-                      activeStep === step.id
+                    className={`flex items-center justify-center w-8 h-8 rounded-full ${activeStep === step.id
                         ? "bg-green-500 text-white"
                         : activeStep > step.id
-                        ? "bg-green-100 text-green-500 border border-green-500"
-                        : "bg-gray-100 text-gray-400"
-                    }`}
+                          ? "bg-green-100 text-green-500 border border-green-500"
+                          : "bg-gray-100 text-gray-400"
+                      }`}
                   >
                     {activeStep > step.id ? (
                       <svg
@@ -905,22 +955,20 @@ const EventCreationPage = ({ user, onLogout }) => {
                   </div>
 
                   <span
-                    className={`ml-2 text-sm font-medium ${
-                      activeStep === step.id
+                    className={`ml-2 text-sm font-medium ${activeStep === step.id
                         ? "text-gray-900"
                         : activeStep > step.id
-                        ? "text-green-500"
-                        : "text-gray-400"
-                    }`}
+                          ? "text-green-500"
+                          : "text-gray-400"
+                      }`}
                   >
                     {step.name}
                   </span>
 
                   {index < formSteps.length - 1 && (
                     <div
-                      className={`h-0.5 flex-1 mx-3 ${
-                        activeStep > step.id ? "bg-green-500" : "bg-gray-200"
-                      }`}
+                      className={`hidden sm:block h-0.5 flex-1 mx-3 ${activeStep > step.id ? "bg-green-500" : "bg-gray-200"
+                        }`}
                     ></div>
                   )}
                 </div>
@@ -933,7 +981,7 @@ const EventCreationPage = ({ user, onLogout }) => {
         <div className="max-w-4xl mx-auto px-4 py-6">
           {/* Error message */}
           {error && (
-            <div className="mb-4 bg-red-50 border-l-4 border-green-500 p-4 rounded-md">
+            <div className="mb-4 bg-red-50 border-l-4 border-green-500 p-4 rounded-md ">
               <div className="flex">
                 <AlertCircle className="h-5 w-5 text-green-500" />
                 <div className="ml-3">
@@ -958,9 +1006,8 @@ const EventCreationPage = ({ user, onLogout }) => {
                 type="button"
                 onClick={prevStep}
                 disabled={activeStep === 1}
-                className={`px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${
-                  activeStep === 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${activeStep === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
               >
                 Previous
               </button>
@@ -977,9 +1024,8 @@ const EventCreationPage = ({ user, onLogout }) => {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${
-                    submitting ? "opacity-75 cursor-not-allowed" : ""
-                  }`}
+                  className={`px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 ${submitting ? "opacity-75 cursor-not-allowed" : ""
+                    }`}
                 >
                   {submitting ? "Creating..." : "Create Event"}
                 </button>

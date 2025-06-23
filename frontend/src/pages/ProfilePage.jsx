@@ -20,6 +20,7 @@ import Sidebar from "../components/common/Navbar";
 import { useAuth } from "../context/AuthContext";
 import userService from "../services/userService";
 import portfolioService from "../services/portfolioService";
+import networkService from "../services/networkService";
 
 const ProfilePage = () => {
   const { userId } = useParams(); // This might be undefined if visiting /profile
@@ -36,7 +37,55 @@ const ProfilePage = () => {
   const [viewsAnalytics, setViewsAnalytics] = useState(null);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
   const [currentUserInfo, setCurrentUserInfo] = useState(null);
+  const isPending = user.isPending || user.connectionStatus === 'pending';
+  const [connectionStatus, setConnectionStatus] = useState({
+    isConnected: false,
+    isPending: false,
+    status: 'none'
+  });
+  useEffect(() => {
+    const checkPendingStatus = async () => {
+      if (userId && !isCurrentUser) {
+        const status = await networkService.getPendingRequestStatus(userId);
+        console.log("Pending status for userId", userId, "is", status);
+        setUserRelationship(prev => ({
+          ...prev,
+          ...status
+        }));
+      }
+    };
 
+    checkPendingStatus();
+  }, [userId, isCurrentUser]);
+
+  //Handle Connect Functionality
+  const handleConnect = async (userId) => {
+    console.log("Sending connection request to:", userId);
+    try {
+      // First, show loading state if needed
+      setLoading(true);
+
+      // Make API call to send connection request
+      await networkService.requestConnection(userId);
+
+      // Update the UI to show pending status
+      setUserRelationship(prev => ({
+        ...prev,
+        connectionStatus: "pending",
+        isPending: true
+      }));
+
+      // Optional: Show success message
+      console.log("Connection request sent successfully!");
+
+    } catch (error) {
+      console.error("Error sending connection request:", error);
+      // Show error message to user
+      alert("Failed to send connection request. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   // Memoized fetch function to avoid recreation on each render
   const fetchUserData = useCallback(async () => {
     try {
@@ -90,6 +139,19 @@ const ProfilePage = () => {
         if (profileData) {
           setProfile(profileData);
           // Get portfolio data if available
+          // Get connection status
+          try {
+            const connectionStatus = await networkService.getConnectionStatus(userId);
+            setUserRelationship(connectionStatus);
+            setConnectionStatus({
+              isConnected: status.connectionStatus === 'connected',
+              isPending: status.connectionStatus === 'pending',
+              status: status.connectionStatus
+            });
+          } catch (error) {
+            console.error("Error fetching connection status:", error);
+            setUserRelationship({});
+          }
           try {
             const portfolioData = await portfolioService.getPortfolioSummary(
               userId
@@ -249,6 +311,20 @@ const ProfilePage = () => {
       alert("Failed to add experience. Please try again.");
     }
   };
+  useEffect(() => {
+    const fetchConnectionStatus = async () => {
+      if (!isCurrentUser && userId) {
+        try {
+          const status = await networkService.getConnectionStatus(userId);
+          setUserRelationship(status);
+        } catch (error) {
+          console.error("Error fetching connection status:", error);
+        }
+      }
+    };
+
+    fetchConnectionStatus();
+  }, [userId, isCurrentUser]);
   const handleDeleteExperience = async (indexToRemove) => {
     try {
       const updatedExperience = profile.experience.filter(
@@ -336,7 +412,7 @@ const ProfilePage = () => {
   // This is just a placeholder for the edit route
   if (location.pathname.endsWith("/edit")) {
     return (
-      <div className="flex h-screen bg-orange-50">
+      <div className="flex h-screen bg-green-50">
         <Sidebar user={user || {}} />
         <div className="flex-1 overflow-auto">
           <div className="md:pl-0 pl-0 md:pt-0 pt-16">
@@ -355,7 +431,7 @@ const ProfilePage = () => {
                         <input
                           type="text"
                           defaultValue={currentUserInfo.firstName}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div>
@@ -365,7 +441,7 @@ const ProfilePage = () => {
                         <input
                           type="text"
                           defaultValue={currentUserInfo.lastName}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div>
@@ -375,7 +451,7 @@ const ProfilePage = () => {
                         <input
                           type="email"
                           defaultValue={currentUserInfo.email}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                           readOnly
                         />
                       </div>
@@ -386,7 +462,7 @@ const ProfilePage = () => {
                         <input
                           type="tel"
                           defaultValue={currentUserInfo.phone}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -396,7 +472,7 @@ const ProfilePage = () => {
                         <input
                           type="text"
                           defaultValue={currentUserInfo.headline}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -405,7 +481,7 @@ const ProfilePage = () => {
                         </label>
                         <textarea
                           defaultValue={currentUserInfo.bio}
-                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
+                          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500"
                           rows="4"
                         ></textarea>
                       </div>
@@ -417,7 +493,7 @@ const ProfilePage = () => {
                       >
                         Cancel
                       </Link>
-                      <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                      <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                         Save Changes
                       </button>
                     </div>
@@ -436,7 +512,7 @@ const ProfilePage = () => {
   if (loading) {
     console.log("Rendering loading state");
     return (
-      <div className="flex h-screen bg-orange-50">
+      <div className="flex h-screen bg-green-50">
         <Sidebar user={user || {}} />
         <div className="flex-1 overflow-auto">
           <div className="md:pl-0 pl-0 md:pt-0 pt-16 flex justify-center items-center h-64">
@@ -450,7 +526,7 @@ const ProfilePage = () => {
   if (error) {
     console.log("Rendering error state:", error);
     return (
-      <div className="flex h-screen bg-orange-50">
+      <div className="flex h-screen bg-green-50">
         <Sidebar user={user || {}} />
         <div className="flex-1 overflow-auto">
           <div className="md:pl-0 pl-0 md:pt-0 pt-16 flex justify-center items-center h-64">
@@ -464,7 +540,7 @@ const ProfilePage = () => {
   if (!profile) {
     console.log("Rendering 'profile not found' state");
     return (
-      <div className="flex h-screen bg-orange-50">
+      <div className="flex h-screen bg-green-50">
         <Sidebar user={user || {}} />
         <div className="flex-1 overflow-auto">
           <div className="md:pl-0 pl-0 md:pt-0 pt-16 flex justify-center items-center h-64">
@@ -477,7 +553,7 @@ const ProfilePage = () => {
 
 
   return (
-    <div className="flex h-screen bg-orange-50">
+    <div className="flex h-screen bg-green-50">
       <Sidebar user={user || {}} />
       <div className="flex-1 overflow-auto">
         <div className="md:pl-0 pl-0 md:pt-0 pt-16">
@@ -485,7 +561,7 @@ const ProfilePage = () => {
             {/* Profile Header */}
             <div className="bg-white rounded-lg shadow overflow-hidden">
               {/* Cover Image */}
-              <div className="h-48 w-full bg-gradient-to-r from-orange-500 to-orange-600"></div>
+              <div className="h-48 w-full bg-gradient-to-r from-green-500 to-green-600"></div>
 
               <div className="relative px-4 py-5 sm:px-6">
                 {/* Profile Picture */}
@@ -493,32 +569,48 @@ const ProfilePage = () => {
                   <img
                     className="h-32 w-32 rounded-full ring-4 ring-white object-cover"
                     src={
-                      profile.profileImage || "https://via.placeholder.com/128"
+                      profile.profileImage || "/default-avatar.png"
                     }
                     alt={`${profile.firstName} ${profile.lastName}`}
                   />
                 </div>
 
                 {/* Profile Actions */}
+                {/* Profile Actions */}
                 <div className="flex justify-end mb-4">
                   {!isCurrentUser && (
                     <div className="space-x-2">
-                      <ConnectionButton
-                        userId={userId}
-                        initialStatus={userRelationship}
-                        onStatusChange={(newStatus) =>
-                          setUserRelationship(newStatus)
-                        }
-                      />
+                      {userRelationship.connectionStatus === "connected" ? (
+                        // Already connected
+                        <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
+                          Connected
+                        </button>
+                      ) : userRelationship.connectionStatus === "pending" ? (
+                        // Request pending
+                        <button className="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg" disabled>
+                          Request Pending
+                        </button>
+                      ) : (
+                        // Not connected - show connect button
+                        <button
+                          onClick={() => handleConnect(userId)}
+                          disabled={loading}
+                          className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                        >
+                          {loading ? "Sending..." : "Connect"}
+                        </button>
+                      )}
+
                       <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                         Message
                       </button>
                     </div>
                   )}
+
                   {isCurrentUser && (
                     <Link
                       to="/profile/edit"
-                      className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
                     >
                       Edit Profile
                     </Link>
@@ -531,7 +623,7 @@ const ProfilePage = () => {
                     {profile.firstName} {profile.lastName}
                     {profile.emailVerified && (
                       <span
-                        className="ml-2 text-orange-500"
+                        className="ml-2 text-green-500"
                         title="Verified Account"
                       >
                         ✓
@@ -563,7 +655,7 @@ const ProfilePage = () => {
                     {isCurrentUser && viewsAnalytics && (
                       <Link
                         to="/profile/views"
-                        className="text-orange-600 hover:underline"
+                        className="text-green-600 hover:underline"
                       >
                         {viewsAnalytics.totalViews} profile views in the last
                         month
@@ -576,7 +668,7 @@ const ProfilePage = () => {
                     {profile.email && (
                       <a
                         href={`mailto:${profile.email}`}
-                        className="text-gray-600 hover:text-orange-600"
+                        className="text-gray-600 hover:text-green-600"
                         title="Email"
                       >
                         <FaEnvelope size={20} />
@@ -585,7 +677,7 @@ const ProfilePage = () => {
                     {profile.phone && (
                       <a
                         href={`tel:${profile.phone}`}
-                        className="text-gray-600 hover:text-orange-600"
+                        className="text-gray-600 hover:text-green-600"
                         title="Phone"
                       >
                         <FaPhone size={20} />
@@ -617,7 +709,7 @@ const ProfilePage = () => {
                           <a
                             key={index}
                             href={link.url}
-                            className="text-gray-600 hover:text-orange-600"
+                            className="text-gray-600 hover:text-green-600"
                             target="_blank"
                             rel="noopener noreferrer"
                             title={title}
@@ -645,7 +737,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("about")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "about"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -654,7 +746,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("experience")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "experience"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -663,7 +755,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("education")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "education"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -672,7 +764,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("skills")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "skills"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -681,7 +773,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("portfolio")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "portfolio"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -690,7 +782,7 @@ const ProfilePage = () => {
                   <button
                     onClick={() => setActiveTab("recommendations")}
                     className={`px-6 py-4 text-sm font-medium whitespace-nowrap ${activeTab === "recommendations"
-                      ? "border-b-2 border-orange-500 text-orange-600"
+                      ? "border-b-2 border-green-500 text-green-600"
                       : "text-gray-500 hover:text-gray-700 hover:border-gray-300"
                       }`}
                   >
@@ -720,7 +812,7 @@ const ProfilePage = () => {
                           {profile.languages.map((language, index) => (
                             <div
                               key={index}
-                              className="bg-orange-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-orange-100"
+                              className="bg-green-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-green-100"
                             >
                               {language.language}{" "}
                               {language.proficiency &&
@@ -750,7 +842,7 @@ const ProfilePage = () => {
                                   (topic, index) => (
                                     <div
                                       key={index}
-                                      className="bg-orange-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-orange-100"
+                                      className="bg-green-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-green-100"
                                     >
                                       {topic}
                                     </div>
@@ -770,7 +862,7 @@ const ProfilePage = () => {
                                   (industry, index) => (
                                     <div
                                       key={index}
-                                      className="bg-orange-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-orange-100"
+                                      className="bg-green-50 rounded-lg px-3 py-1 text-sm text-gray-700 border border-green-100"
                                     >
                                       {industry}
                                     </div>
@@ -784,7 +876,7 @@ const ProfilePage = () => {
 
                     {/* Job Preferences (if viewing own profile) */}
                     {isCurrentUser && profile.jobPreferences && (
-                      <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
                         <h3 className="text-lg font-semibold text-gray-800 mb-2">
                           Job Preferences
                         </h3>
@@ -866,7 +958,7 @@ const ProfilePage = () => {
                       {isCurrentUser && (
                         <button
                           onClick={() => setShowExperienceForm((prev) => !prev)}
-                          className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition"
+                          className="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition"
                         >
                           Add Experience
                         </button>
@@ -1037,7 +1129,7 @@ const ProfilePage = () => {
                         Education
                       </h2>
                       {isCurrentUser && (
-                        <button className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition"
+                        <button className="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition"
                           onClick={() => setShowEducationForm((prev) => !prev)}>
                           Add Education
                         </button>
@@ -1197,14 +1289,14 @@ const ProfilePage = () => {
                         Skills
                       </h2>
                     </div>
-                  
+
 
                     {Array.isArray(profile.skills) && profile.skills.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {profile.skills.map((skill, index) => (
                           <div
                             key={index}
-                            className="bg-orange-50 rounded-full px-4 py-2 text-gray-700 border border-orange-100"
+                            className="bg-green-50 rounded-full px-4 py-2 text-gray-700 border border-green-100"
                           >
                             {skill.name?.charAt(0).toUpperCase() + skill.name?.slice(1)}{" "}
                             {skill.endorsements > 0 && `(${skill.endorsements})`}
@@ -1223,7 +1315,7 @@ const ProfilePage = () => {
                           Showcase your professional abilities by adding skills.
                         </p>
                         {isCurrentUser && (
-                          <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                          <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                             Add Your First Skill
                           </button>
                         )}
@@ -1231,14 +1323,14 @@ const ProfilePage = () => {
                     )}
 
                     {/* {isCurrentUser && (
-                      <div className="mt-6 p-4 bg-orange-50 rounded-lg border border-orange-100">
+                      <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
                         <h3 className="text-lg font-semibold flex items-center">
                           <span className="mr-2">👩‍💻</span> Developer Skills
                         </h3>
                         <p className="text-sm text-gray-500 mb-3">
                           Add technical skills to showcase your expertise
                         </p>
-                        <button className="px-4 py-2 bg-white text-orange-600 border border-orange-500 rounded hover:bg-orange-100 transition">
+                        <button className="px-4 py-2 bg-white text-green-600 border border-green-500 rounded hover:bg-green-100 transition">
                           Edit Skills
                         </button>
                       </div>
@@ -1256,7 +1348,7 @@ const ProfilePage = () => {
                       {isCurrentUser && (
                         <Link
                           to="/portfolio/projects/new"
-                          className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition"
+                          className="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition"
                         >
                           Add Project
                         </Link>
@@ -1290,7 +1382,7 @@ const ProfilePage = () => {
                               <Link
                                 to={`/portfolio/projects/${project.id || project._id
                                   }`}
-                                className="mt-3 inline-block text-orange-600 hover:underline"
+                                className="mt-3 inline-block text-green-600 hover:underline"
                               >
                                 View Project
                               </Link>
@@ -1300,7 +1392,7 @@ const ProfilePage = () => {
                       </div>
                     ) : (
                       <div className="text-center py-8 border rounded-lg bg-white">
-                        <div className="inline-flex h-16 w-16 rounded-full bg-orange-100 items-center justify-center mb-4">
+                        <div className="inline-flex h-16 w-16 rounded-full bg-green-100 items-center justify-center mb-4">
                           <span className="text-3xl">🚀</span>
                         </div>
                         <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -1313,7 +1405,7 @@ const ProfilePage = () => {
                         {isCurrentUser && (
                           <Link
                             to="/portfolio/projects/new"
-                            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                            className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                           >
                             Add Your First Project
                           </Link>
@@ -1351,7 +1443,7 @@ const ProfilePage = () => {
                                   className="h-16 w-16 object-contain"
                                 />
                               ) : (
-                                <div className="h-16 w-16 bg-orange-100 text-orange-800 flex items-center justify-center rounded-full">
+                                <div className="h-16 w-16 bg-green-100 text-green-800 flex items-center justify-center rounded-full">
                                   <span className="text-xl">🏆</span>
                                 </div>
                               )}
@@ -1406,7 +1498,7 @@ const ProfilePage = () => {
                         Recommendations
                       </h2>
                       {!isCurrentUser && (
-                        <button className="px-4 py-2 bg-orange-500 text-white text-sm rounded-lg hover:bg-orange-600 transition">
+                        <button className="px-4 py-2 bg-green-500 text-white text-sm rounded-lg hover:bg-green-600 transition">
                           Write a Recommendation
                         </button>
                       )}
@@ -1447,7 +1539,7 @@ const ProfilePage = () => {
                       </div>
                     ) : (
                       <div className="text-center py-8 border rounded-lg bg-white">
-                        <div className="inline-flex h-16 w-16 rounded-full bg-orange-100 items-center justify-center mb-4">
+                        <div className="inline-flex h-16 w-16 rounded-full bg-green-100 items-center justify-center mb-4">
                           <span className="text-3xl">💬</span>
                         </div>
                         <h3 className="text-xl font-semibold text-gray-800 mb-2">
@@ -1459,7 +1551,7 @@ const ProfilePage = () => {
                             : `Be the first to recommend ${profile.firstName}.`}
                         </p>
                         {!isCurrentUser && (
-                          <button className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600">
+                          <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
                             Write a Recommendation
                           </button>
                         )}
@@ -1498,7 +1590,7 @@ const ProfilePage = () => {
                   Recent Activity
                 </h2>
                 <div className="text-center py-6">
-                  <div className="inline-flex h-16 w-16 rounded-full bg-orange-100 items-center justify-center mb-4">
+                  <div className="inline-flex h-16 w-16 rounded-full bg-green-100 items-center justify-center mb-4">
                     <span className="text-3xl">📊</span>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-800 mb-2">

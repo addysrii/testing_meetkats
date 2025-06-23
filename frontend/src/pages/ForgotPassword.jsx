@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Mail, ArrowLeft, CheckCircle, Loader2 } from "lucide-react";
-
+import api from "../services/api"; // Adjust the import based on your project structure
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -24,10 +24,41 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
     
     // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await api.post(`/auth/forgot-password`, {
+        email: email
+      });
+      
+      console.log("Response from forgot password API:", response.data);
+      if (response.data.success) {
+        setIsLoading(false);
+        setIsSubmitted(true);
+      }
+    } catch (err) {
+      // setIsLoading(false);
       setIsLoading(false);
       setIsSubmitted(true);
-    }, 2000);
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+    }
+  };
+
+  const handleResendEmail = async () => {
+    setIsLoading(true);
+    
+    try {
+      const response = await api.post(`/auth/forgot-password`, {
+        email: email
+      });
+
+      if (response.data.success) {
+        setIsLoading(false);
+        // Show success message
+        alert("Reset link has been resent to your email!");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      setError(err.response?.data?.message || "Failed to resend email. Please try again.");
+    }
   };
 
   const handleBackToLogin = () => {
@@ -108,7 +139,7 @@ export default function ForgotPasswordPage() {
               <div className="text-center pt-4">
                 <button 
                   onClick={handleBackToLogin}
-                  className="inline-flex items-center text-green-600 hover:text-green-700 font-medium transition-colors duration-200 group"
+                  className="cursor-pointer inline-flex items-center text-green-600 hover:text-green-700 font-medium transition-colors duration-200 group"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform duration-200" />
                   Back to Login
@@ -137,7 +168,7 @@ export default function ForgotPasswordPage() {
 
               <div className="space-y-3 pt-4">
                 <button
-                  onClick={() => handleSubmit({ preventDefault: () => {} })}
+                  onClick={() => handleResendEmail()}
                   disabled={isLoading}
                   className="w-full bg-white border-2 border-green-500 text-green-600 py-3 px-6 rounded-xl font-semibold transition-all duration-300 hover:bg-green-50 hover:scale-105 disabled:opacity-70"
                 >

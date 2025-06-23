@@ -12,6 +12,7 @@ import {
   PlusCircle,
 } from "lucide-react";
 import eventService from "../services/eventService";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/common/Navbar";
 import { FooterBlock } from "./BhoomiLandingPage/sections/FooterBlock";
@@ -187,8 +188,9 @@ const CarouselCard = ({ event }) => {
   );
 };
 
-const EventListingPage = ({ user, onLogout }) => {
+const EventListingPage = () => {
   const [events, setEvents] = useState([]);
+  const { user, logout } = useAuth();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("upcoming");
@@ -350,74 +352,20 @@ const EventListingPage = ({ user, onLogout }) => {
   return (
     <div className="flex h-screen">
       <div className="z-20 relative">
-        <Sidebar user={user || {}} onLogout={onLogout} />
+        <Sidebar user={user || {}} onLogout={logout} />
       </div>
 
-      <div className="flex-1 overflow-y-auto bg-gray-50">
-        <header className="bg-white shadow-sm border-b sticky top-0 z-10 backdrop-blur-lg bg-white/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center h-16">
-              <div className="flex items-center space-x-8">
-                <div className="flex items-center space-x-2">
-                  <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                    Meetkats
-                  </span>
-                </div>
-                <nav className="hidden md:flex space-x-8">
-                  <a
-                    href="#"
-                    className="text-gray-900 font-medium hover:text-blue-600 transition-colors duration-200"
-                  >
-                    Home
-                  </a>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    Network
-                  </a>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    Discover
-                  </a>
-                  <a
-                    href="#"
-                    className="bg-gradient-to-r from-green-100 to-emerald-100 text-green-800 px-4 py-1.5 rounded-full text-sm font-medium shadow-sm hover:shadow-md transition-all duration-200"
-                  >
-                    Events
-                  </a>
-                  <a
-                    href="#"
-                    className="text-gray-600 hover:text-blue-600 transition-colors duration-200"
-                  >
-                    Profile
-                  </a>
-                </nav>
-              </div>
-              <div className="flex items-center space-x-4">
-                <form onSubmit={handleSearch} className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    placeholder="Search events..."
-                    className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 w-64 transition-all duration-200 hover:border-gray-300 shadow-sm"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </form>
-                <Link to="/events/new">
-                  <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-xl">
-                    <PlusCircle className="w-5 h-5" />
-                    <span className="font-medium">Host Event</span>
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </header>
+      <div className="flex-1 overflow-y-auto bg-gray-50 mt-20 ">
 
+
+        <div className="flex justify-end pr-4  mb-2"> 
+          <Link to="/events/new">
+            <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors duration-200 bg-gray-50 hover:bg-gray-100 px-4 py-2 rounded-xl">
+              <PlusCircle className="w-5 h-5" />
+              <span className="font-medium">Host Event</span>
+            </button>
+          </Link>
+        </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {featuredEvents.length > 0 && (
             <div className="relative mb-16">
@@ -455,11 +403,10 @@ const EventListingPage = ({ user, onLogout }) => {
                       <button
                         key={index}
                         onClick={() => setCurrentSlide(index)}
-                        className={`w-3 h-3 rounded-full transition-all cursor-pointer ${
-                          currentSlide === index
-                            ? "bg-white scale-125"
-                            : "bg-white/50 hover:bg-white/75"
-                        }`}
+                        className={`w-3 h-3 rounded-full transition-all cursor-pointer ${currentSlide === index
+                          ? "bg-white scale-125"
+                          : "bg-white/50 hover:bg-white/75"
+                          }`}
                       />
                     ))}
                   </div>
@@ -471,11 +418,10 @@ const EventListingPage = ({ user, onLogout }) => {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 space-y-4 md:space-y-0">
             <div className="flex space-x-4">
               <button
-                className={`px-5 py-2.5 rounded-xl ${
-                  filter === "upcoming"
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                } transition-all duration-200 font-medium cursor-pointer`}
+                className={`px-5 py-2.5 rounded-xl ${filter === "upcoming"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  } transition-all duration-200 font-medium cursor-pointer`}
                 onClick={() => {
                   setFilter("upcoming");
                   setShowAllEvents(false);
@@ -484,11 +430,10 @@ const EventListingPage = ({ user, onLogout }) => {
                 Upcoming
               </button>
               <button
-                className={`px-5 py-2.5 rounded-xl ${
-                  filter === "all"
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                } transition-all duration-200 font-medium cursor-pointer`}
+                className={`px-5 py-2.5 rounded-xl ${filter === "all"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  } transition-all duration-200 font-medium cursor-pointer`}
                 onClick={() => {
                   setFilter("all");
                   setShowAllEvents(false);
@@ -497,11 +442,10 @@ const EventListingPage = ({ user, onLogout }) => {
                 All Events
               </button>
               <button
-                className={`px-5 py-2.5 rounded-xl ${
-                  filter === "past"
-                    ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                } transition-all duration-200 font-medium cursor-pointer`}
+                className={`px-5 py-2.5 rounded-xl ${filter === "past"
+                  ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  } transition-all duration-200 font-medium cursor-pointer`}
                 onClick={() => {
                   setFilter("past");
                   setShowAllEvents(false);
@@ -642,13 +586,6 @@ const EventListingPage = ({ user, onLogout }) => {
               </footer>
             </>
           )}
-
-          {/* Create Event Button - Fixed at bottom right */}
-          <Link to="/events/new" className="fixed bottom-8 right-8">
-            <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full p-4 shadow-lg hover:shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 cursor-pointer">
-              <PlusCircle className="h-6 w-6" />
-            </button>
-          </Link>
         </div>
       </div>
     </div>

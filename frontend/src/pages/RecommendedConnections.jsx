@@ -320,7 +320,7 @@ const SuggestedUsersPage = () => {
                         onConnect={() => handleConnect(user._id)}
                         onFollow={() => handleFollow(user._id)}
                         onViewProfile={() => handleViewProfile(user._id)}
-                        theme="orange"
+                        theme="green"
                       />
                     ))}
                   </div>

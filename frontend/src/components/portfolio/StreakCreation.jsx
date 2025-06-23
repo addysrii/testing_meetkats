@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Save, X, Calendar, Clock, Target, Tag } from 'lucide-react';
 import api from '../../services/api';
+import portfolioService from '../../services/portfolioService';
 
 const StreakCreationPage = () => {
+  const { streakId } = useParams();
+  const isEditMode = !!streakId;
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,6 +24,11 @@ const StreakCreationPage = () => {
     daysPerWeek: 1,
     specificDays: []
   });
+const getTodayDate = () => {
+  const today = new Date();
+  today.setMinutes(today.getMinutes() - today.getTimezoneOffset()); // adjust to local
+  return today.toISOString().split('T')[0];
+};
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,40 +59,88 @@ const StreakCreationPage = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     try {
       const formData = { ...streakData };
-      
-      // Add custom frequency if target is custom
-      if (streakData.target === 'custom') {
+
+      if (formData.target === 'custom') {
         formData.customFrequency = customFrequency;
       }
-      
-      // Submit the form
-      const response = await api.createStreak(formData);
-      
-      setLoading(false);
-      navigate(`/portfolio/streaks/${response._id}`);
+
+      let response;
+      if (isEditMode) {
+        response = await portfolioService.updateStreak(streakId, formData);
+      } else {
+        response = await portfolioService.createStreak(formData);
+      }
+
+      navigate(`/portfolio`);
     } catch (err) {
-      console.error('Error creating streak:', err);
-      setError(err.response?.data?.error || 'Error creating streak. Please try again.');
+      console.error('Error submitting streak:', err);
+      setError(err.response?.data?.error || 'Error saving streak. Please try again.');
+    } finally {
       setLoading(false);
     }
   };
 
+
+
+
+  useEffect(() => {
+    const loadStreakForEdit = async () => {
+      if (!isEditMode) return;
+
+      try {
+        setLoading(true);
+        const data = await portfolioService.getStreak(streakId);
+
+        setStreakData({
+          title: data.title || '',
+          description: data.description || '',
+          category: data.category || '',
+          target: data.target || 'daily',
+          activity: data.activity || '',
+          startDate: data.startDate?.slice(0, 10) || new Date().toISOString().split('T')[0],
+          reminderTime: data.reminderTime || '',
+          visibility: data.visibility || 'public',
+        });
+
+        if (data.target === 'custom' && data.customFrequency) {
+          setCustomFrequency({
+            daysPerWeek: data.customFrequency.daysPerWeek || 1,
+            specificDays: data.customFrequency.specificDays || []
+          });
+        }
+      } catch (err) {
+        console.error('Failed to load streak:', err);
+        setError('Failed to load streak data for editing.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadStreakForEdit();
+  }, [isEditMode, streakId]);
+
+
   return (
-    <div className="flex-1 overflow-auto bg-gray-100">
+    <div className="flex-1 overflow-auto bg-gray-100 min-h-screen">
       <div className="md:pt-0 pt-16">
         <main className="max-w-4xl mx-auto p-4 md:p-6">
           {/* Header */}
           <div className="bg-white rounded-xl shadow-md mb-6 p-4 md:p-6 border-l-4 border-green-500">
             <div className="flex justify-between items-center">
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">Start New Streak</h1>
-                <p className="text-gray-500">Track your daily habits and build consistency</p>
+                <h1 className="text-2xl font-bold text-gray-800">
+                  {isEditMode ? 'Edit Streak' : 'Start New Streak'}
+                </h1>
+                <p className="text-gray-500">
+                  {isEditMode ? 'Update your habit streak' : 'Track your daily habits and build consistency'}
+                </p>
+
               </div>
               <div className="flex space-x-2">
-                <button 
+                <button
                   onClick={() => navigate('/portfolio')}
                   className="p-2 rounded-lg text-gray-500 hover:bg-gray-100"
                 >
@@ -115,7 +171,7 @@ const StreakCreationPage = () => {
                 {/* Basic Info Section */}
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 mb-4">Streak Information</h3>
-                  
+
                   <div className="space-y-4">
                     <div>
                       <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -132,7 +188,7 @@ const StreakCreationPage = () => {
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                         Description
@@ -147,7 +203,7 @@ const StreakCreationPage = () => {
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label htmlFor="category" className="block text-sm font-medium text-gray-700">
@@ -172,7 +228,7 @@ const StreakCreationPage = () => {
                           <option value="other">Other</option>
                         </select>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="target" className="block text-sm font-medium text-gray-700">
                           Frequency Target *
@@ -196,12 +252,12 @@ const StreakCreationPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     {/* Custom Frequency Options */}
                     {streakData.target === 'custom' && (
                       <div className="bg-gray-50 p-4 rounded-md">
                         <h4 className="text-sm font-medium text-gray-900 mb-3">Custom Frequency Settings</h4>
-                        
+
                         <div className="mb-4">
                           <label htmlFor="daysPerWeek" className="block text-sm font-medium text-gray-700">
                             Days per week
@@ -217,7 +273,7 @@ const StreakCreationPage = () => {
                             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                           />
                         </div>
-                        
+
                         <div>
                           <span className="block text-sm font-medium text-gray-700 mb-2">
                             Specific days of the week
@@ -228,11 +284,10 @@ const StreakCreationPage = () => {
                                 key={idx}
                                 type="button"
                                 onClick={() => handleDayToggle(idx)}
-                                className={`px-3 py-1 text-sm rounded-full ${
-                                  customFrequency.specificDays.includes(idx)
-                                    ? 'bg-green-500 text-white'
-                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                                }`}
+                                className={`px-3 py-1 text-sm rounded-full ${customFrequency.specificDays.includes(idx)
+                                  ? 'bg-green-500 text-white'
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                  }`}
                               >
                                 {day.substring(0, 3)}
                               </button>
@@ -241,7 +296,7 @@ const StreakCreationPage = () => {
                         </div>
                       </div>
                     )}
-                    
+
                     <div>
                       <label htmlFor="activity" className="block text-sm font-medium text-gray-700">
                         Activity *
@@ -257,11 +312,11 @@ const StreakCreationPage = () => {
                         className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        
-<label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+
+                        <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
                           Start Date
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm">
@@ -272,13 +327,14 @@ const StreakCreationPage = () => {
                             id="startDate"
                             name="startDate"
                             type="date"
+                            min={getTodayDate()}
                             value={streakData.startDate}
                             onChange={handleChange}
                             className="pl-10 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
                           />
                         </div>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="reminderTime" className="block text-sm font-medium text-gray-700">
                           Daily Reminder Time
@@ -298,7 +354,7 @@ const StreakCreationPage = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div>
                       <label htmlFor="visibility" className="block text-sm font-medium text-gray-700">
                         Visibility
@@ -319,7 +375,7 @@ const StreakCreationPage = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Form Actions */}
             <div className="px-6 py-4 bg-gray-50 flex justify-end space-x-4">
               <button
@@ -336,18 +392,16 @@ const StreakCreationPage = () => {
               >
                 {loading ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Creating...
+                    <svg className="animate-spin ..."></svg>
+                    {isEditMode ? 'Saving...' : 'Creating...'}
                   </>
                 ) : (
                   <>
                     <Save className="h-4 w-4 mr-2" />
-                    Start Streak
+                    {isEditMode ? 'Update Streak' : 'Start Streak'}
                   </>
                 )}
+
               </button>
             </div>
           </form>
