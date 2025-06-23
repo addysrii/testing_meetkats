@@ -9,7 +9,7 @@ import axios from 'axios';
 //     return import.meta.env.VITE_DEV_API_URL || 'http://localhost:3000';
 //   }
 
-//   return import.meta.env.VITE_API_URL || 'https://new-backend-w86d.onrender.com';
+//   return import.meta.env.VITE_API_URL || 'https://meetkats-backend.onrender.com';
 // };
 
 // const API_URL = getApiUrl();

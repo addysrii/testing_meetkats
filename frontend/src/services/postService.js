@@ -89,7 +89,7 @@ const postService = {
       
       // Make the request with proper authentication
       const response = await fetch(
-        `https://new-backend-w86d.onrender.com/api/posts?${queryParams.toString()}`, 
+        `https://meetkats-backend.onrender.com/api/posts?${queryParams.toString()}`, 
         {
           method: 'GET',
           headers: {
@@ -140,7 +140,7 @@ const postService = {
       }
       
       const response = await fetch(
-        `https://new-backend-w86d.onrender.com/api/posts/${postId}`, 
+        `https://meetkats-backend.onrender.com/api/posts/${postId}`, 
         {
           method: 'GET',
           headers: {

@@ -1,7 +1,7 @@
 // src/services/socketService.js
 import io from 'socket.io-client';
 
-const API_URL = 'https://new-backend-w86d.onrender.com';
+const API_URL = 'https://meetkats-backend.onrender.com';
 
 class SocketService {
   constructor() {

@@ -20,7 +20,7 @@ const PostsFetcher = () => {
         }
         
         // Make request to your backend
-        const response = await fetch('https://new-backend-w86d.onrender.com/api/posts', {
+        const response = await fetch('https://meetkats-backend.onrender.com/api/posts', {
           method: 'GET',
           headers: {
             'Accept': 'application/json',
