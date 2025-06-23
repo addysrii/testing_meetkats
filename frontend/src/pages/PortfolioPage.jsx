@@ -8,7 +8,7 @@ import Sidebar from '../components/common/Navbar';
 import { useAuth } from './../context/AuthContext';
 import api from "../services/api";
 const PortfolioPage = () => {
-  const { user,onLogout } = useAuth();
+  const { user, onLogout } = useAuth();
   const [projects, setProjects] = useState([]);
   const [achievements, setAchievements] = useState([]);
   const [streaks, setStreaks] = useState([]);
@@ -154,10 +154,10 @@ const PortfolioPage = () => {
         });
       } catch (err) {
         console.error('Error deleting streak:', err);
-          toast.error({
-        title: 'Deletion Failed',
-        description: err?.response?.data?.error || err.message || 'Something went wrong.',
-      });
+        toast.error({
+          title: 'Deletion Failed',
+          description: err?.response?.data?.error || err.message || 'Something went wrong.',
+        });
       } finally {
         setActionLoading(false);
       }
@@ -497,14 +497,24 @@ const PortfolioPage = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {streaks.map((streak) => {
-                    const todayStr = new Date().toLocaleDateString('en-CA');
+                    const today = new Date();
+                    const todayStr = `${today.getUTCFullYear()}-${(today.getUTCMonth() + 1)
+                      .toString()
+                      .padStart(2, '0')}-${today.getUTCDate().toString().padStart(2, '0')}`;
+
                     const streakStartStr = new Date(streak.startDate).toLocaleDateString('en-CA');
 
                     const isCheckInAllowed = todayStr >= streakStartStr;
 
                     const hasCheckedInToday = streak.recentCheckIns?.some((checkIn) => {
-                      const checkInDateStr = new Date(checkIn.date).toLocaleDateString('en-CA');
-                      return checkInDateStr === todayStr;
+                      const checkInDate = new Date(checkIn.date);
+                      const now = new Date();
+
+                      return (
+                        checkInDate.getUTCFullYear() === now.getUTCFullYear() &&
+                        checkInDate.getUTCMonth() === now.getUTCMonth() &&
+                        checkInDate.getUTCDate() === now.getUTCDate()
+                      );
                     });
 
 
