@@ -1193,13 +1193,6 @@ export const BhoomiLandingPage = () => {
                       <TestimonialCard key={testimonial.id} testimonial={testimonial} />
                     ))}
                   </div>
-
-                  {/* Pagination Dots */}
-                  <div className="flex items-center justify-center gap-3 mt-8 md:mt-10">
-                    <div className="w-3 h-1 bg-[#dfdfdf] rounded-lg"></div>
-                    <div className="w-3 h-1 bg-[#dfdfdf] rounded-lg"></div>
-                    <div className="w-8 md:w-10 h-1 bg-[#fe9171] rounded-lg"></div>
-                  </div>
                 </div>
               </div>
             </section>
