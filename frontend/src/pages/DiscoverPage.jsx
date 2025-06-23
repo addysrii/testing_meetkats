@@ -226,7 +226,7 @@ const Discover = () => {
         <div className="md:pl-0 pl-0 md:pt-0 pt-16">
           {" "}
           {/* Adjusted for sidebar */}
-          <main className="max-w-7xl mx-auto p-4 md:p-6">
+          <main className="max-w-7xl mx-auto p-4 md:p-6 mt-16">
             {/* Discover Header */}
             <div className="bg-white rounded-xl shadow-md mb-6 p-4 md:p-6 border-l-4 border-orange-500">
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
