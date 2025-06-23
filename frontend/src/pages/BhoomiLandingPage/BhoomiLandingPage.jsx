@@ -281,15 +281,6 @@ export const BhoomiLandingPage = () => {
       onClick: handleGoogleLogin,
     },
     {
-      id: "apple",
-      text: "Continue with LinkedIn",
-      icon: FaLinkedin,
-      bgColor: "bg-black",
-      textColor: "text-white",
-      hoverBg: "hover:bg-gray-900",
-      onClick: handleLinkedInLogin,
-    },
-    {
       id: "email",
       text: "Sign in with Email",
       icon: MdEmail,
@@ -446,6 +437,13 @@ export const BhoomiLandingPage = () => {
               className={`fixed inset-0 bg-white z-40 lg:hidden transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
                 }`}
             >
+              <button
+                className="absolute top-4 right-4 p-2 text-gray-700 hover:text-gray-900 focus:outline-none"
+                onClick={toggleMenu}
+                aria-label="Close menu"
+              >
+                <X size={24} />
+              </button>
               <div className="flex flex-col p-8 space-y-8 pt-20">
                 {navItems.map((item) => (
                   <a
