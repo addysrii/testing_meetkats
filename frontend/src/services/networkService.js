@@ -146,7 +146,27 @@ const networkService = {
       return getCombinedPendingRequests();
     }
   },
-
+ getConnectionStatus: async (userId) =>{
+  try{
+    // Get ALL pending requests (both API and session)
+      const pendingRequests = getCombinedPendingRequests();
+      console.log("Current combined pending requests:", pendingRequests);
+      const myuser= await api.get(`/api/users/${userId}/profile`)
+      if(userId && pendingRequests.includes(userId)){
+        return {
+          status:'pending',
+          isPending:true
+        }
+      }
+      return {
+          status:'none',
+          isPending:false
+        }
+  }catch (error) {
+      console.error("Error fetching connection suggestions:", error);
+      return [];
+    }
+ },
   // Enhanced suggestions with combined pending requests
   getConnectionSuggestions: async (options = {}) => {
     try {

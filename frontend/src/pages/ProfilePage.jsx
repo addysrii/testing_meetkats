@@ -40,26 +40,15 @@ const ProfilePage = () => {
   const isPending = user.isPending || user.connectionStatus === 'pending';
   const [connectionStatus, setConnectionStatus] = useState({
     isConnected: false,
-    isPending: false,
+    isPending: isPending,
     status: 'none'
   });
-  useEffect(() => {
-    const checkPendingStatus = async () => {
-      if (userId && !isCurrentUser) {
-        const status = await networkService.getPendingRequestStatus(userId);
-        console.log("Pending status for userId", userId, "is", status);
-        setUserRelationship(prev => ({
-          ...prev,
-          ...status
-        }));
-      }
-    };
-
-    checkPendingStatus();
-  }, [userId, isCurrentUser]);
+  
 
   //Handle Connect Functionality
   const handleConnect = async (userId) => {
+    //Function to manually add connection requests to pending
+    networkService.addManualPendingRequest(userId);
     console.log("Sending connection request to:", userId);
     try {
       // First, show loading state if needed
@@ -69,9 +58,14 @@ const ProfilePage = () => {
       await networkService.requestConnection(userId);
 
       // Update the UI to show pending status
+      setConnectionStatus({
+        isConnected: false,
+        isPending: true,
+        status: "pending"
+      });
       setUserRelationship(prev => ({
         ...prev,
-        connectionStatus: "pending",
+        status: "pending",
         isPending: true
       }));
 
@@ -142,11 +136,11 @@ const ProfilePage = () => {
           // Get connection status
           try {
             const connectionStatus = await networkService.getConnectionStatus(userId);
-            setUserRelationship(connectionStatus);
+            // setUserRelationship(connectionStatus);
             setConnectionStatus({
-              isConnected: status.connectionStatus === 'connected',
-              isPending: status.connectionStatus === 'pending',
-              status: status.connectionStatus
+              isConnected: connectionStatus.isConnected || false,
+              isPending: connectionStatus.isPending || false,
+              status: connectionStatus.status || "none"
             });
           } catch (error) {
             console.error("Error fetching connection status:", error);
@@ -580,12 +574,12 @@ const ProfilePage = () => {
                 <div className="flex justify-end mb-4">
                   {!isCurrentUser && (
                     <div className="space-x-2">
-                      {userRelationship.connectionStatus === "connected" ? (
+                      {connectionStatus.isConnected === true ? (
                         // Already connected
                         <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
                           Connected
                         </button>
-                      ) : userRelationship.connectionStatus === "pending" ? (
+                      ) : connectionStatus.isPending === true ? (
                         // Request pending
                         <button className="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg" disabled>
                           Request Pending

@@ -147,7 +147,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
 
   const handleConnect = async (userId, userType) => {
     try {
-      await api.sendConnectionRequest(userId);
+      await networkService.requestConnection(userId);
       // Update the user's status in the appropriate list
       if (userType === "nearby") {
         setNearbyUsers((prev) =>
@@ -173,7 +173,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
 
   const handleFollow = async (userId, userType) => {
     try {
-      const response = await api.followUser(userId);
+      const response = await networkService.toggleFollow(userId);
       // Update the user's status in the appropriate list
       if (userType === "nearby") {
         setNearbyUsers((prev) =>
@@ -211,7 +211,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
       >
         <main className="max-w-7xl mx-auto p-4 md:p-6 mt-20">
           {/* Dashboard Header */}
-          <div className="bg-white rounded-xl shadow-md mb-6 p-4 md:p-6 border-l-4 border-orange-500">
+          <div className="bg-white rounded-xl shadow-md mb-6 p-4 md:p-6 border-l-4 border-green-500">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
               <div>
                 <h1 className="text-2xl font-bold text-gray-800">
@@ -233,7 +233,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 </button>
                 <button
                   onClick={() => navigate("/network/filter")}
-                  className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 flex items-center"
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 flex items-center"
                 >
                   <Filter className="h-4 w-4 mr-2" />
                   Advanced Filters
@@ -249,8 +249,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 onClick={() => setActiveSection("all")}
                 className={`flex-1 text-center py-4 px-4 font-medium text-sm focus:outline-none transition-colors duration-200 ${
                   activeSection === "all"
-                    ? "text-orange-600 border-b-2 border-orange-500"
-                    : "text-gray-500 hover:text-orange-500"
+                    ? "text-green-600 border-b-2 border-green-500"
+                    : "text-gray-500 hover:text-green-500"
                 }`}
               >
                 All
@@ -259,8 +259,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 onClick={() => setActiveSection("nearby")}
                 className={`flex-1 text-center py-4 px-4 font-medium text-sm focus:outline-none transition-colors duration-200 ${
                   activeSection === "nearby"
-                    ? "text-orange-600 border-b-2 border-orange-500"
-                    : "text-gray-500 hover:text-orange-500"
+                    ? "text-green-600 border-b-2 border-green-500"
+                    : "text-gray-500 hover:text-green-500"
                 }`}
               >
                 Nearby
@@ -269,8 +269,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 onClick={() => setActiveSection("suggested")}
                 className={`flex-1 text-center py-4 px-4 font-medium text-sm focus:outline-none transition-colors duration-200 ${
                   activeSection === "suggested"
-                    ? "text-orange-600 border-b-2 border-orange-500"
-                    : "text-gray-500 hover:text-orange-500"
+                    ? "text-green-600 border-b-2 border-green-500"
+                    : "text-gray-500 hover:text-green-500"
                 }`}
               >
                 Suggested
@@ -283,14 +283,14 @@ const NetworkExplorePage = ({user,onLogout}) => {
             <div className={`mb-8 ${activeSection !== "all" ? "mb-0" : ""}`}>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center">
-                  <MapPin className="h-5 w-5 text-orange-500 mr-2" />
+                  <MapPin className="h-5 w-5 text-green-500 mr-2" />
                   <h2 className="text-xl font-semibold text-gray-800">
                     Nearby Professionals
                   </h2>
                 </div>
                 <Link
                   to="/network/nearby"
-                  className="text-orange-500 hover:text-orange-600 text-sm flex items-center"
+                  className="text-green-500 hover:text-green-600 text-sm flex items-center"
                 >
                   See All <ChevronRight className="h-4 w-4 ml-1" />
                 </Link>
@@ -307,7 +307,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                       key={user._id}
                       className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                     >
-                      <div className="h-24 bg-gradient-to-r from-orange-100 to-orange-200 relative">
+                      <div className="h-24 bg-gradient-to-r from-green-100 to-green-200 relative">
                         {/* User distance badge */}
                         {user.distance && (
                           <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700 shadow-sm">
@@ -329,8 +329,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               className="h-20 w-20 rounded-full object-cover"
                             />
                           ) : (
-                            <div className="h-20 w-20 rounded-full bg-orange-100 flex items-center justify-center">
-                              <span className="text-xl font-medium text-orange-600">
+                            <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center">
+                              <span className="text-xl font-medium text-green-600">
                                 {user.firstName?.charAt(0)}
                                 {user.lastName?.charAt(0)}
                               </span>
@@ -343,7 +343,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
 
                         <div className="mt-10">
                           <h3
-                            className="text-lg font-medium text-gray-900 hover:text-orange-600 cursor-pointer"
+                            className="text-lg font-medium text-gray-900 hover:text-green-600 cursor-pointer"
                             onClick={() => navigate(`/profile/${user._id}`)}
                           >
                             {user.firstName} {user.lastName}
@@ -364,7 +364,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               {user.skills.slice(0, 2).map((skill, index) => (
                                 <span
                                   key={index}
-                                  className="text-xs bg-orange-50 text-orange-700 px-2 py-1 rounded"
+                                  className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded"
                                 >
                                   {typeof skill === "string"
                                     ? skill
@@ -391,7 +391,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                                   ? "bg-gray-100 text-gray-500"
                                   : user.connectionStatus === "connected"
                                   ? "bg-green-100 text-green-700"
-                                  : "bg-orange-500 text-white hover:bg-orange-600"
+                                  : "bg-green-500 text-white hover:bg-green-600"
                               }`}
                             >
                               <div className="flex items-center justify-center">
@@ -408,7 +408,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               onClick={() => handleFollow(user._id, "nearby")}
                               className={`flex-1 py-2 rounded-md text-sm font-medium ${
                                 user.isFollowing
-                                  ? "bg-blue-100 text-blue-700"
+                                  ? "bg-green-100 text-green-700"
                                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                               }`}
                             >
@@ -425,8 +425,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 </div>
               ) : (
                 <div className="bg-white rounded-xl shadow-md p-8 text-center">
-                  <div className="inline-flex h-16 w-16 rounded-full bg-orange-100 items-center justify-center mb-4">
-                    <MapPin className="h-8 w-8 text-orange-600" />
+                  <div className="inline-flex h-16 w-16 rounded-full bg-green-100 items-center justify-center mb-4">
+                    <MapPin className="h-8 w-8 text-green-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
                     No Nearby Professionals
@@ -438,7 +438,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                   </p>
                   <button
                     onClick={getUserLocation}
-                    className="inline-flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                    className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                   >
                     Retry
                   </button>
@@ -451,14 +451,14 @@ const NetworkExplorePage = ({user,onLogout}) => {
             <div>
               <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center">
-                  <Users className="h-5 w-5 text-orange-500 mr-2" />
+                  <Users className="h-5 w-5 text-green-500 mr-2" />
                   <h2 className="text-xl font-semibold text-gray-800">
                     Suggested For You
                   </h2>
                 </div>
                 <Link
                   to="/network/suggested"
-                  className="text-orange-500 hover:text-orange-600 text-sm flex items-center"
+                  className="text-green-500 hover:text-green-600 text-sm flex items-center"
                 >
                   See All <ChevronRight className="h-4 w-4 ml-1" />
                 </Link>
@@ -475,7 +475,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                       key={user._id}
                       className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
                     >
-                      <div className="h-24 bg-gradient-to-r from-blue-100 to-blue-200 relative">
+                      <div className="h-24 bg-gradient-to-r from-green-100 to-green-200 relative">
                         {/* Mutual connections badge */}
                         {user.mutualConnections > 0 && (
                           <div className="absolute top-2 right-2 bg-white px-2 py-1 rounded-full text-xs font-medium text-gray-700 shadow-sm">
@@ -495,8 +495,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               className="h-20 w-20 rounded-full object-cover"
                             />
                           ) : (
-                            <div className="h-20 w-20 rounded-full bg-blue-100 flex items-center justify-center">
-                              <span className="text-xl font-medium text-blue-600">
+                            <div className="h-20 w-20 rounded-full bg-green-100 flex items-center justify-center">
+                              <span className="text-xl font-medium text-green-600">
                                 {user.firstName?.charAt(0)}
                                 {user.lastName?.charAt(0)}
                               </span>
@@ -509,7 +509,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
 
                         <div className="mt-10">
                           <h3
-                            className="text-lg font-medium text-gray-900 hover:text-blue-600 cursor-pointer"
+                            className="text-lg font-medium text-gray-900 hover:text-green-600 cursor-pointer"
                             onClick={() => navigate(`/profile/${user._id}`)}
                           >
                             {user.firstName} {user.lastName}
@@ -530,7 +530,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               {user.skills.slice(0, 2).map((skill, index) => (
                                 <span
                                   key={index}
-                                  className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded"
+                                  className="text-xs bg-green-50 text-green-700 px-2 py-1 rounded"
                                 >
                                   {typeof skill === "string"
                                     ? skill
@@ -559,7 +559,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                                   ? "bg-gray-100 text-gray-500"
                                   : user.connectionStatus === "connected"
                                   ? "bg-green-100 text-green-700"
-                                  : "bg-blue-500 text-white hover:bg-blue-600"
+                                  : "bg-green-500 text-white hover:bg-green-600"
                               }`}
                             >
                               <div className="flex items-center justify-center">
@@ -578,7 +578,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                               }
                               className={`flex-1 py-2 rounded-md text-sm font-medium ${
                                 user.isFollowing
-                                  ? "bg-blue-100 text-blue-700"
+                                  ? "bg-green-100 text-green-700"
                                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                               }`}
                             >
@@ -595,8 +595,8 @@ const NetworkExplorePage = ({user,onLogout}) => {
                 </div>
               ) : (
                 <div className="bg-white rounded-xl shadow-md p-8 text-center">
-                  <div className="inline-flex h-16 w-16 rounded-full bg-blue-100 items-center justify-center mb-4">
-                    <Users className="h-8 w-8 text-blue-600" />
+                  <div className="inline-flex h-16 w-16 rounded-full bg-green-100 items-center justify-center mb-4">
+                    <Users className="h-8 w-8 text-green-600" />
                   </div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">
                     No Suggestions Available
@@ -608,7 +608,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
                   </p>
                   <button
                     onClick={() => navigate("/profile/edit")}
-                    className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                   >
                     Complete Profile
                   </button>
@@ -618,7 +618,7 @@ const NetworkExplorePage = ({user,onLogout}) => {
           )}
 
           {/* Footer gradient */}
-          <footer className="bg-gradient-to-r from-orange-600 to-orange-700 text-white py-4 mt-8 rounded-lg">
+          <footer className="bg-gradient-to-r from-green-600 to-green-700 text-white py-4 mt-8 rounded-lg">
             <div className="max-w-7xl mx-auto px-4 text-center">
               <p className="text-sm">
                 Connect with professionals who match your interests and can help
