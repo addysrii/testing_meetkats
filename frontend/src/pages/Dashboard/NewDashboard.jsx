@@ -27,6 +27,7 @@ import defaultProfilePic from "../../assets/default-avatar.png";
 import eventService from "../../services/eventService";
 import networkService from "../../services/networkService";
 import nearbyUsersService from "../../services/nearbyUsersService";
+import Loader from "../../components/common/Loader";
 
 const CarouselCard = ({ event }) => {
   const truncateDescription = (text, maxLength = 80) => {
@@ -44,8 +45,6 @@ const CarouselCard = ({ event }) => {
       return "Date TBA";
     }
   };
-  // const { token, user } = useAuth();
-
 
   return (
     <div className="relative min-w-full h-80 rounded-2xl overflow-hidden shadow-lg">
@@ -100,11 +99,12 @@ const CarouselCard = ({ event }) => {
 
 const MergedDashboard = () => {
   // Auth and navigation
-  const { user, loading, logout,token } = useAuth();
+  const { user, loading, logout, token } = useAuth();
   const navigate = useNavigate();
   const toastContext = useToast();
   const toast = toastContext?.toast;
   const [loadings, setLoadings] = useState(true);
+  
   // State management
   const [activeSection, setActiveSection] = useState("overview");
   const [pendingRequests, setPendingRequests] = useState(0);
@@ -145,10 +145,12 @@ const MergedDashboard = () => {
     unit: "km",
   });
   const [refreshing, setRefreshing] = useState(false);
+  
   // Location state
   const [locationEnabled, setLocationEnabled] = useState(false);
   const [nearbyUsers, setNearbyUsers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
+  const [loadingNearbyUsers, setLoadingNearbyUsers] = useState(false);
   const locationControlRef = useRef(null);
 
   // Tasks state
@@ -156,22 +158,21 @@ const MergedDashboard = () => {
   const [newTask, setNewTask] = useState("");
 
   const [currentSlide, setCurrentSlide] = useState(0);
-
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  // Add state for connection requests modal
+  // Modal states
   const [showConnectionRequests, setShowConnectionRequests] = useState(false);
   const [showYourEvents, setShowYourEvents] = useState(false);
 
-  // Sidebar open state for mobile
+  // Sidebar state
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   useEffect(() => {
     console.log("Token on Dashboard load:", token);
     console.log("User on Dashboard load:", user);
   }, [token]);
+
   useEffect(() => {
-    // Redirect to login if not authenticated
-   
     if (!loading && !user && !token) {
       navigate("/login");
     }
@@ -215,7 +216,7 @@ const MergedDashboard = () => {
       try {
         const apiFilters = {
           filter: filter,
-          limit: 3, // Only get a few events for the dashboard
+          limit: 3,
         };
 
         if (categoryFilter && categoryFilter !== "All") {
@@ -297,6 +298,9 @@ const MergedDashboard = () => {
 
   // Fetch nearby users function
   const fetchNearbyUsers = async (latitude, longitude, distance) => {
+    setLoadingNearbyUsers(true);
+    setLocationError(null);
+
     try {
       if (!latitude || !longitude || isNaN(latitude) || isNaN(longitude)) {
         throw new Error("Invalid coordinates provided");
@@ -308,14 +312,12 @@ const MergedDashboard = () => {
         distance,
       });
 
-      // Extract the users array from the response
       const nearbyUsersArray = nearbyResponse.users || nearbyResponse || [];
 
       if (!Array.isArray(nearbyUsersArray)) {
         throw new Error("Invalid response format from server");
       }
 
-      // Get connections to exclude them from results
       let connections = [];
       try {
         connections = await networkService.getConnections("all");
@@ -324,14 +326,12 @@ const MergedDashboard = () => {
         connections = [];
       }
 
-      // Create a Set of connection IDs for faster lookup
       const connectionIds = new Set(
         Array.isArray(connections)
           ? connections.map((conn) => conn._id || conn.id)
           : []
       );
 
-      // Filter out users who are already connections
       const filteredUsers = nearbyUsersArray.filter(
         (user) =>
           user._id &&
@@ -339,7 +339,6 @@ const MergedDashboard = () => {
           !connectionIds.has(user.id)
       );
 
-      // Enhance user objects with more info
       const enhancedUsers = filteredUsers.map((user) => ({
         ...user,
         name:
@@ -349,14 +348,22 @@ const MergedDashboard = () => {
         distanceFormatted: formatDistance(user.distance),
         title: user.headline || user.title || "Professional",
         company: user.company || user.industry || "Not specified",
+        connectionStatus: null,
       }));
 
-      // Keep only the closest 3 users
-      setNearbyUsers(enhancedUsers.slice(0, 3));
+      const sortedUsers = enhancedUsers.sort((a, b) => a.distance - b.distance);
+      setNearbyUsers(sortedUsers.slice(0, 3));
+
     } catch (error) {
       console.error("Error fetching nearby professionals:", error);
       setLocationError(error.message || "Failed to fetch nearby professionals");
       setNearbyUsers([]);
+      
+      if (error.message.includes("location") || error.message.includes("geolocation")) {
+        setLocationError("Please enable location services to find nearby professionals");
+      }
+    } finally {
+      setLoadingNearbyUsers(false);
     }
   };
 
@@ -478,7 +485,6 @@ const MergedDashboard = () => {
   // Handle connecting with a nearby user
   const handleConnect = async (userId) => {
     try {
-      // Show loading state
       setNearbyUsers((prev) =>
         prev.map((user) =>
           user._id === userId || user.id === userId
@@ -487,15 +493,12 @@ const MergedDashboard = () => {
         )
       );
 
-      // Send connection request with the correct payload format
       const response = await networkService.requestConnection({
-        requestId: userId, // The server expects requestId instead of userId
+        requestId: userId,
         message: "",
       });
 
-      // If we get a request ID back, save it
       if (response && response._id) {
-        // Update UI to show pending state
         setNearbyUsers((prev) =>
           prev.map((user) =>
             user._id === userId || user.id === userId
@@ -523,7 +526,6 @@ const MergedDashboard = () => {
     } catch (error) {
       console.error("Error sending connection request:", error);
 
-      // Reset the connection status on error
       setNearbyUsers((prev) =>
         prev.map((user) =>
           user._id === userId || user.id === userId
@@ -585,7 +587,6 @@ const MergedDashboard = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // The useEffect will trigger a new API call with the searchQuery
   };
 
   const nextSlide = () => {
@@ -656,54 +657,70 @@ const MergedDashboard = () => {
               </div>
             </div>
           </div>
+          
           {/* Events Carousel */}
           <div className="w-full h-[220px] sm:h-[315px] relative mb-8">
-            <div className="overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl h-full">
-              <div
-                className="flex transition-transform duration-500 ease-in-out h-full"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {events.map((event, index) => (
-                  <div
-                    key={event._id || event.id || index}
-                    onClick={() => handleEventClick(event._id || event.id)}
-                    className="cursor-pointer min-w-full"
-                  >
-                    <CarouselCard event={event} />
-                  </div>
-                ))}
+            {loadingData ? (
+              <div className="h-full flex items-center justify-center bg-gray-50 rounded-2xl sm:rounded-3xl shadow-xl">
+                <Loader />
               </div>
-            </div>
-            {events.length > 1 && (
+            ) : (
               <>
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
-                >
-                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
-                >
-                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-                </button>
-                <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
-                  {events.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentSlide(index)}
-                      className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all cursor-pointer ${
-                        currentSlide === index
-                          ? "bg-white scale-125"
-                          : "bg-white/50 hover:bg-white/75"
-                      }`}
-                    />
-                  ))}
+                <div className="overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl h-full">
+                  <div
+                    className="flex transition-transform duration-500 ease-in-out h-full"
+                    style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                  >
+                    {events.length > 0 ? (
+                      events.map((event, index) => (
+                        <div
+                          key={event._id || event.id || index}
+                          onClick={() => handleEventClick(event._id || event.id)}
+                          className="cursor-pointer min-w-full"
+                        >
+                          <CarouselCard event={event} />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="min-w-full h-full flex items-center justify-center bg-gray-50">
+                        <p className="text-gray-500">No events found</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {events.length > 1 && (
+                  <>
+                    <button
+                      onClick={prevSlide}
+                      className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
+                    >
+                      <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                    </button>
+                    <button
+                      onClick={nextSlide}
+                      className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
+                    >
+                      <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                    </button>
+                    <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
+                      {events.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentSlide(index)}
+                          className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all cursor-pointer ${
+                            currentSlide === index
+                              ? "bg-white scale-125"
+                              : "bg-white/50 hover:bg-white/75"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
+
           {/* Connection Requests Modal */}
           {showConnectionRequests && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-0">
@@ -770,6 +787,7 @@ const MergedDashboard = () => {
               </div>
             </div>
           )}
+          
           {/* Your Events Modal */}
           {showYourEvents && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-2 sm:p-0">
@@ -833,6 +851,7 @@ const MergedDashboard = () => {
               </div>
             </div>
           )}
+          
           {/* Nearby Professionals Section */}
           <div className="w-full">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-2 sm:gap-0">
@@ -859,83 +878,87 @@ const MergedDashboard = () => {
               </button>
             </div>
             <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-6">
-              {nearbyUsers.map((user) => (
-                <div
-                  key={user._id || user.id}
-                  className="flex-none w-[280px] bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                >
-                  <div className="relative h-40">
-                    <img
-                      src={user.profilePicture}
-                      alt={user.name}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = defaultProfilePic;
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="text-white text-lg font-semibold truncate">
-                        {user.name}
-                      </h3>
-                      {user.title && (
-                        <p className="text-white/90 text-sm truncate">
-                          {user.title}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="p-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                      <MapPin className="w-4 h-4 text-orange-500" />
-                      <span className="font-medium">
-                        {user.distanceFormatted}
-                      </span>
-                    </div>
-
-                    {user.company && (
-                      <div className="flex items-center gap-2 mb-4">
-                        <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
-                          <svg
-                            className="w-4 h-4 text-orange-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            />
-                          </svg>
-                        </div>
-                        <p className="text-sm text-gray-600 truncate">
-                          {user.company}
-                        </p>
-                      </div>
-                    )}
-
-                    <button
-                      onClick={() => handleConnect(user._id || user.id)}
-                      disabled={user.connectionStatus === "pending"}
-                      className={`w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer ${
-                        user.connectionStatus === "pending"
-                          ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                          : "bg-orange-500 text-white hover:bg-orange-600 hover:shadow-md"
-                      }`}
-                    >
-                      {user.connectionStatus === "pending"
-                        ? "Request Sent"
-                        : "Connect"}
-                    </button>
-                  </div>
+              {loadingNearbyUsers ? (
+                <div className="w-full flex justify-center items-center min-h-[300px]">
+                  <Loader />
                 </div>
-              ))}
+              ) : nearbyUsers.length > 0 ? (
+                nearbyUsers.map((user) => (
+                  <div
+                    key={user._id || user.id}
+                    className="flex-none w-[280px] bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  >
+                    <div className="relative h-40">
+                      <img
+                        src={user.profilePicture}
+                        alt={user.name}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = defaultProfilePic;
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+                      <div className="absolute bottom-0 left-0 right-0 p-4">
+                        <h3 className="text-white text-lg font-semibold truncate">
+                          {user.name}
+                        </h3>
+                        {user.title && (
+                          <p className="text-white/90 text-sm truncate">
+                            {user.title}
+                          </p>
+                        )}
+                      </div>
+                    </div>
 
-              {nearbyUsers.length === 0 && (
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                        <MapPin className="w-4 h-4 text-orange-500" />
+                        <span className="font-medium">
+                          {user.distanceFormatted}
+                        </span>
+                      </div>
+
+                      {user.company && (
+                        <div className="flex items-center gap-2 mb-4">
+                          <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
+                            <svg
+                              className="w-4 h-4 text-orange-500"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                              />
+                            </svg>
+                          </div>
+                          <p className="text-sm text-gray-600 truncate">
+                            {user.company}
+                          </p>
+                        </div>
+                      )}
+
+                      <button
+                        onClick={() => handleConnect(user._id || user.id)}
+                        disabled={user.connectionStatus === "pending"}
+                        className={`w-full py-2.5 rounded-xl text-sm font-medium transition-all duration-300 cursor-pointer ${
+                          user.connectionStatus === "pending"
+                            ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                            : "bg-orange-500 text-white hover:bg-orange-600 hover:shadow-md"
+                        }`}
+                      >
+                        {user.connectionStatus === "pending"
+                          ? "Request Sent"
+                          : "Connect"}
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
                 <div className="w-full text-center py-12 bg-white rounded-2xl shadow-lg">
                   {locationError ? (
                     <div className="flex flex-col items-center gap-3">
@@ -974,6 +997,7 @@ const MergedDashboard = () => {
             </div>
           </div>
         </div>
+        
         {/* Right sidebar */}
         <div className="w-full lg:w-[35%] h-auto lg:h-[798px] min-w-0">
           <div className="bg-white rounded-2xl shadow-lg p-3 sm:p-5 h-full flex flex-col">
@@ -1028,6 +1052,7 @@ const MergedDashboard = () => {
                   ))}
               </div>
             </div>
+            
             {/* Calendar Section */}
             <div className="mt-auto pt-4 sm:pt-5 border-t border-gray-100 w-full">
               <div className="flex items-center justify-between mb-2 sm:mb-3">

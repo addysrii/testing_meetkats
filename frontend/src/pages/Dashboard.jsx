@@ -28,6 +28,7 @@ import networkService from "../services/networkService";
 import nearbyUsersService from "../services/nearbyUsersService";
 import LocationPermissionIcon from "../components/LocationPermissionIcon";
 import Footer from "../components/footer/Footer";
+import Loader from "../components/common/Loader";
 
 const MergedDashboard = () => {
   // Auth and navigation
@@ -85,6 +86,9 @@ const MergedDashboard = () => {
   // Tasks state
   const [planner, setPlanner] = useState([]);
   const [newTask, setNewTask] = useState("");
+
+  // New loading state
+  const [loadingNearby, setLoadingNearby] = useState(true);
 
   useEffect(() => {
     // Redirect to login if not authenticated
@@ -214,6 +218,7 @@ const MergedDashboard = () => {
   // Fetch nearby users function
   // Updated fetchNearbyUsers function
   const fetchNearbyUsers = async (latitude, longitude, distance) => {
+    setLoadingNearby(true);
     try {
       if (!latitude || !longitude || isNaN(latitude) || isNaN(longitude)) {
         throw new Error("Invalid coordinates provided");
@@ -268,6 +273,8 @@ const MergedDashboard = () => {
       console.error("Error fetching nearby professionals:", error);
       setLocationError(error.message || "Failed to fetch nearby professionals");
       setNearbyUsers([]);
+    } finally {
+      setLoadingNearby(false);
     }
   };
 
@@ -470,6 +477,10 @@ const MergedDashboard = () => {
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-orange-500"></div>
       </div>
     );
+  }
+
+  if (loadingData || loadingNearby) {
+    return <Loader size="large" color="orange" />;
   }
 
   return (
@@ -1407,3 +1418,5 @@ const MergedDashboard = () => {
 };
 
 export default MergedDashboard;
+
+
