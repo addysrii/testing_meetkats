@@ -43,7 +43,7 @@ const ProfilePage = () => {
     isPending: isPending,
     status: 'none'
   });
-  
+
 
   //Handle Connect Functionality
   const handleConnect = async (userId) => {
@@ -1287,15 +1287,21 @@ const ProfilePage = () => {
 
                     {Array.isArray(profile.skills) && profile.skills.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
-                        {profile.skills.map((skill, index) => (
-                          <div
-                            key={index}
-                            className="bg-green-50 rounded-full px-4 py-2 text-gray-700 border border-green-100"
-                          >
-                            {skill.name?.charAt(0).toUpperCase() + skill.name?.slice(1)}{" "}
-                            {skill.endorsements > 0 && `(${skill.endorsements})`}
-                          </div>
-                        ))}
+                        {profile.skills.map((skill, index) => {
+                          const skillName = typeof skill === 'string' ? skill : skill.name;
+                          const endorsementCount = typeof skill === 'object' && skill.endorsements ? skill.endorsements : 0;
+
+                          return (
+                            <div
+                              key={index}
+                              className="bg-green-50 rounded-full px-4 py-2 text-gray-700 border border-green-100"
+                            >
+                              {skillName.charAt(0).toUpperCase() + skillName.slice(1)}{" "}
+                              {endorsementCount > 0 && `(${endorsementCount})`}
+                            </div>
+                          );
+                        })}
+
                       </div>
                     ) : (
                       <div className="text-center py-8 border rounded-lg bg-white">

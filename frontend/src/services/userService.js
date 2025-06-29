@@ -147,30 +147,66 @@ const userService = {
   },
   
   // Update user profile
-  updateProfile: async (profileData, profileImage) => {
-    try {
-      let response;
-      
-      if (profileImage) {
-        // If there's an image, use the utility function to create FormData
-        const formData = createFormData(profileData, 'profileImage', profileImage);
-        
-        response = await api.put('/api/profile', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-      } else {
-        // If no image, send JSON
-        response = await api.put('/api/profile', profileData);
-      }
-      
-      return normalizeData(response.data);
-    } catch (error) {
-      console.error('Error updating profile:', error.response?.data || error.message);
-      throw error;
+updateProfile: async (profileData, profileImage) => {
+  try {
+    const formData = new FormData();
+
+    // Always add full profile data
+Object.entries(profileData).forEach(([key, value]) => {
+  if (value === undefined || value === null) return;
+
+  if (Array.isArray(value)) {
+    // 👇 Handle `skills` as an array of names or IDs
+    if (key === 'skills') {
+      value.forEach((item, idx) => {
+        formData.append(`${key}[${idx}]`, item);
+      });
     }
-  },
+
+    // 👇 Special handling for socialLinks (object array)
+    else if (key === 'socialLinks') {
+      value.forEach((item, idx) => {
+        Object.entries(item).forEach(([field, val]) => {
+          formData.append(`${key}[${idx}][${field}]`, val);
+        });
+      });
+    }
+
+    // Default array handler
+    else {
+      value.forEach((item, idx) => {
+        formData.append(`${key}[${idx}]`, item);
+      });
+    }
+  } else if (typeof value === 'object') {
+    formData.append(key, JSON.stringify(value));
+  } else {
+    formData.append(key, value);
+  }
+});
+
+
+
+
+
+    // Add profile image if available
+    if (profileImage) {
+      formData.append('profileImage', profileImage);
+    }
+
+    const response = await api.put('/api/profile', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return normalizeData(response.data);
+  } catch (error) {
+    console.error('Error updating profile:', error.response?.data || error.message);
+    throw error;
+  }
+},
+
   
   // Delete user account
   deleteAccount: async () => {

@@ -14,7 +14,7 @@ const EditProfilePage = () => {
   const [saving, setSaving] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [formErrors, setFormErrors] = useState({});
-  
+
   // Form state
   const [formData, setFormData] = useState({
     firstName: '',
@@ -33,25 +33,25 @@ const EditProfilePage = () => {
     socialLinks: [], // Changed to array format to match API structure
     skills: []
   });
-  
+
   // Profile picture state
   const [profilePicture, setProfilePicture] = useState(null);
   const [profilePicturePreview, setProfilePicturePreview] = useState('');
-  
+
   // Skills input state
   const [skillsInput, setSkillsInput] = useState('');
   const [skillsList, setSkillsList] = useState([]);
-  
+
   // Fetch current user data
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         setLoading(true);
-        
+
         // Get current user info
         const userInfo = await userService.getCurrentUser();
         setCurrentUser(userInfo);
-        
+
         // Initialize form with existing data
         setFormData({
           firstName: userInfo.firstName || '',
@@ -70,14 +70,14 @@ const EditProfilePage = () => {
           socialLinks: userInfo.socialLinks?.length ? userInfo.socialLinks : [],
           skills: []
         });
-        
+
         // Transform social links for the form
         const socialLinksObj = {
           linkedin: '',
           twitter: '',
           website: ''
         };
-        
+
         if (userInfo.socialLinks?.length) {
           userInfo.socialLinks.forEach(link => {
             if (link.url?.includes('linkedin.com')) {
@@ -89,15 +89,16 @@ const EditProfilePage = () => {
             }
           });
         }
-        
+
         // Set skillsList for the UI
         if (userInfo.skills?.length) {
           if (typeof userInfo.skills[0] === 'string') {
-            // Handle skills stored as strings/IDs
+            // Skills are plain strings like ["express js"]
             setSkillsList(userInfo.skills.map((skill, index) => ({
-              id: skill,
-              name: `Skill ${index + 1}`
+              id: index + 1,
+              name: skill  // ✅ show the actual skill name
             })));
+
           } else {
             // Handle skills stored as objects
             setSkillsList(userInfo.skills.map(skill => ({
@@ -106,11 +107,11 @@ const EditProfilePage = () => {
             })));
           }
         }
-        
+
         if (userInfo.profileImage) {
           setProfilePicturePreview(userInfo.profileImage);
         }
-        
+
         setLoading(false);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -120,14 +121,14 @@ const EditProfilePage = () => {
         });
       }
     };
-    
+
     fetchUserData();
   }, []);
-  
+
   // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
-    
+
     // Handle nested objects (location)
     if (name.includes('.')) {
       const [parent, child] = name.split('.');
@@ -144,7 +145,7 @@ const EditProfilePage = () => {
         [name]: value
       }));
     }
-    
+
     // Clear error for this field if exists
     if (formErrors[name]) {
       setFormErrors(prev => ({
@@ -153,21 +154,21 @@ const EditProfilePage = () => {
       }));
     }
   };
-  
+
   // Handle social link changes
   const handleSocialLinkChange = (type, value) => {
     // Find existing link of this type or create new one
     const updatedLinks = [...formData.socialLinks];
-    const existingIndex = updatedLinks.findIndex(link => 
+    const existingIndex = updatedLinks.findIndex(link =>
       (type === 'linkedin' && link.url?.includes('linkedin.com')) ||
       (type === 'twitter' && link.url?.includes('twitter.com')) ||
       (type === 'website' && !link.url?.includes('linkedin.com') && !link.url?.includes('twitter.com'))
     );
-    
+
     if (value) {
       // Add or update link
       if (existingIndex >= 0) {
-        updatedLinks[existingIndex] = { 
+        updatedLinks[existingIndex] = {
           ...updatedLinks[existingIndex],
           url: value,
           platform: type
@@ -185,12 +186,12 @@ const EditProfilePage = () => {
         updatedLinks.splice(existingIndex, 1);
       }
     }
-    
+
     setFormData(prev => ({
       ...prev,
       socialLinks: updatedLinks
     }));
-    
+
     // Clear errors
     if (formErrors.socialLinks) {
       setFormErrors(prev => ({
@@ -202,7 +203,7 @@ const EditProfilePage = () => {
       }));
     }
   };
-  
+
   // Handle profile picture change
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
@@ -214,14 +215,14 @@ const EditProfilePage = () => {
         }));
         return;
       }
-      
+
       setProfilePicture(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfilePicturePreview(reader.result);
       };
       reader.readAsDataURL(file);
-      
+
       // Clear error if exists
       if (formErrors.profilePicture) {
         setFormErrors(prev => ({
@@ -231,12 +232,12 @@ const EditProfilePage = () => {
       }
     }
   };
-  
+
   // Handle skills input
   const handleSkillsInputChange = (e) => {
     setSkillsInput(e.target.value);
   };
-  
+
   // Add a skill to the list
   const addSkill = () => {
     if (skillsInput.trim()) {
@@ -246,18 +247,18 @@ const EditProfilePage = () => {
           id: `temp-${Date.now()}`,
           name: skillsInput.trim()
         };
-        
+
         setSkillsList([...skillsList, newSkill]);
       }
       setSkillsInput('');
     }
   };
-  
+
   // Remove a skill from the list
   const removeSkill = (skillId) => {
     setSkillsList(skillsList.filter(skill => skill.id !== skillId));
   };
-  
+
   // Handle Enter key in skills input
   const handleSkillsKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -265,14 +266,14 @@ const EditProfilePage = () => {
       addSkill();
     }
   };
-  
+
   // Validate form
   const validateForm = () => {
     const errors = {};
-    
+
     if (!formData.firstName.trim()) errors.firstName = 'First name is required';
     if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
-    
+
     // Email validation
     if (formData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -280,79 +281,51 @@ const EditProfilePage = () => {
         errors.email = 'Please enter a valid email address';
       }
     }
-    
+
     // URL validations for social links
     const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/;
-    
+
     formData.socialLinks.forEach(link => {
       if (link.url && !urlRegex.test(link.url)) {
         if (!errors.socialLinks) errors.socialLinks = {};
         errors.socialLinks[link.platform] = 'Please enter a valid URL';
       }
     });
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
-  
+
   // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+
+    if (!validateForm()) return;
+
     try {
       setSaving(true);
-      
-      // Prepare data for API
+
       const profileData = {
         ...formData,
-        // Add skills from our UI list
         skills: skillsList.map(skill => skill.name)
       };
-      
-      // If there's a new profile picture, we need to handle it separately
-      if (profilePicture) {
-        const formDataWithImage = new FormData();
-        
-        // Add the profile picture
-        formDataWithImage.append('profileImage', profilePicture);
-        
-        // Add other fields
-        Object.entries(profileData).forEach(([key, value]) => {
-          // Skip the profilePicture field to avoid conflicts
-          if (key === 'profilePicture') return;
-          
-          if (typeof value === 'object' && value !== null) {
-            formDataWithImage.append(key, JSON.stringify(value));
-          } else {
-            formDataWithImage.append(key, value);
-          }
-        });
-        
-        // Use userService to update profile with image
-      }
-        // If no new profile picture, use the regular update method
-        await userService.updateProfile(profileData);
-      
-      
+
+      // Always pass both data and image (image can be null)
+      await userService.updateProfile(profileData, profilePicture);
+
       setSaving(false);
-      
-      // Navigate back to profile page
       navigate(`/profile/${currentUser.id || currentUser._id}`);
     } catch (error) {
       console.error('Error updating profile:', error);
       setSaving(false);
-      
-      // Handle API error
       setFormErrors({
-        api: error.message || 'An error occurred while updating your profile. Please try again.'
+        api: error.message || 'An error occurred while updating your profile.'
       });
     }
   };
-  
+
+
+
   // Helper to get social link value
   const getSocialLinkValue = (type) => {
     const link = formData.socialLinks.find(link => {
@@ -363,7 +336,7 @@ const EditProfilePage = () => {
     });
     return link?.url || '';
   };
-  
+
   if (loading) {
     return (
       <div className="flex h-screen bg-orange-50">
@@ -376,7 +349,7 @@ const EditProfilePage = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="flex h-screen bg-orange-50">
       <Sidebar user={authUser || {}} />
@@ -385,20 +358,20 @@ const EditProfilePage = () => {
           <div className="container mx-auto px-4 py-8">
             <div className="flex justify-between items-center mb-6">
               <h1 className="text-2xl font-bold text-gray-800">Edit Profile</h1>
-              <Link 
+              <Link
                 to={`/profile/${currentUser?.id || currentUser?._id || ''}`}
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
               >
                 Cancel
               </Link>
             </div>
-            
+
             {formErrors.api && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
                 {formErrors.api}
               </div>
             )}
-            
+
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Profile Picture Section */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -406,17 +379,17 @@ const EditProfilePage = () => {
                   <h2 className="text-lg font-medium text-gray-900 mb-4">Profile Picture</h2>
                   <div className="flex items-center">
                     <div className="relative">
-                      <img 
-                        src={profilePicturePreview || 'https://via.placeholder.com/128'} 
-                        alt="Profile Preview" 
+                      <img
+                        src={profilePicturePreview || 'https://via.placeholder.com/128'}
+                        alt="Profile Preview"
                         className="h-32 w-32 rounded-full object-cover"
                       />
                       <label className="absolute bottom-0 right-0 bg-orange-500 text-white p-2 rounded-full cursor-pointer">
                         <FaCamera />
-                        <input 
-                          type="file" 
-                          accept="image/*" 
-                          onChange={handleProfilePictureChange} 
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleProfilePictureChange}
                           className="hidden"
                         />
                       </label>
@@ -435,7 +408,7 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Basic Information */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
@@ -451,15 +424,14 @@ const EditProfilePage = () => {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.firstName ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.firstName ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.firstName && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.firstName}</p>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
                         Last Name*
@@ -470,15 +442,14 @@ const EditProfilePage = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.lastName ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.lastName ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.lastName && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.lastName}</p>
                       )}
                     </div>
-                    
+
                     <div className="md:col-span-2">
                       <label htmlFor="headline" className="block text-sm font-medium text-gray-700">
                         Professional Headline
@@ -496,7 +467,7 @@ const EditProfilePage = () => {
                         A short description of your professional role or expertise
                       </p>
                     </div>
-                    
+
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                         Email Address
@@ -507,15 +478,14 @@ const EditProfilePage = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.email ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.email ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.email && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.email}</p>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
                         Phone Number
@@ -532,7 +502,7 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Location Information */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
@@ -551,7 +521,7 @@ const EditProfilePage = () => {
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="location.city" className="block text-sm font-medium text-gray-700">
                         City
@@ -565,7 +535,7 @@ const EditProfilePage = () => {
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="location.state" className="block text-sm font-medium text-gray-700">
                         State/Province
@@ -579,7 +549,7 @@ const EditProfilePage = () => {
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       />
                     </div>
-                    
+
                     <div>
                       <label htmlFor="location.country" className="block text-sm font-medium text-gray-700">
                         Country
@@ -596,7 +566,7 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* About/Bio */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
@@ -614,7 +584,7 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Social Links */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
@@ -630,15 +600,14 @@ const EditProfilePage = () => {
                         value={getSocialLinkValue('linkedin')}
                         onChange={(e) => handleSocialLinkChange('linkedin', e.target.value)}
                         placeholder="https://linkedin.com/in/your-profile"
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.socialLinks?.linkedin ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.socialLinks?.linkedin ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.socialLinks?.linkedin && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.socialLinks.linkedin}</p>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="twitter" className="flex items-center text-sm font-medium text-gray-700">
                         <FaTwitter className="mr-2 text-blue-400" /> Twitter Profile
@@ -649,15 +618,14 @@ const EditProfilePage = () => {
                         value={getSocialLinkValue('twitter')}
                         onChange={(e) => handleSocialLinkChange('twitter', e.target.value)}
                         placeholder="https://twitter.com/your-handle"
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.socialLinks?.twitter ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.socialLinks?.twitter ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.socialLinks?.twitter && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.socialLinks.twitter}</p>
                       )}
                     </div>
-                    
+
                     <div>
                       <label htmlFor="website" className="flex items-center text-sm font-medium text-gray-700">
                         <FaGlobe className="mr-2 text-gray-600" /> Personal Website
@@ -668,9 +636,8 @@ const EditProfilePage = () => {
                         value={getSocialLinkValue('website')}
                         onChange={(e) => handleSocialLinkChange('website', e.target.value)}
                         placeholder="https://your-website.com"
-                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${
-                          formErrors.socialLinks?.website ? 'border-red-300' : ''
-                        }`}
+                        className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:ring-orange-500 ${formErrors.socialLinks?.website ? 'border-red-300' : ''
+                          }`}
                       />
                       {formErrors.socialLinks?.website && (
                         <p className="mt-1 text-sm text-red-600">{formErrors.socialLinks.website}</p>
@@ -679,12 +646,12 @@ const EditProfilePage = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Skills */}
               <div className="bg-white rounded-lg shadow overflow-hidden">
                 <div className="p-6">
                   <h2 className="text-lg font-medium text-gray-900 mb-4">Skills</h2>
-                  
+
                   {/* Skills input */}
                   <div className="flex items-center space-x-2 mb-4">
                     <div className="flex-grow">
@@ -706,13 +673,13 @@ const EditProfilePage = () => {
                       Add
                     </button>
                   </div>
-                  
+
                   {/* Skills list */}
                   {skillsList.length > 0 ? (
                     <div className="flex flex-wrap gap-2 mt-4">
                       {skillsList.map(skill => (
-                        <div 
-                          key={skill.id} 
+                        <div
+                          key={skill.id}
                           className="bg-orange-50 rounded-full px-4 py-2 text-gray-700 border border-orange-200 flex items-center"
                         >
                           {skill.name}
@@ -729,16 +696,16 @@ const EditProfilePage = () => {
                   ) : (
                     <p className="text-sm text-gray-500 italic">No skills added yet. Add some skills to showcase your expertise.</p>
                   )}
-                  
+
                   <p className="mt-4 text-xs text-gray-500">
                     List your professional skills, technologies, or areas of expertise
                   </p>
                 </div>
               </div>
-              
+
               {/* Submit Buttons */}
               <div className="flex justify-end space-x-4">
-                <Link 
+                <Link
                   to={`/profile/${currentUser?.id || currentUser?._id || ''}`}
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
                 >
@@ -747,9 +714,8 @@ const EditProfilePage = () => {
                 <button
                   type="submit"
                   disabled={saving}
-                  className={`px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 ${
-                    saving ? 'opacity-75 cursor-not-allowed' : ''
-                  }`}
+                  className={`px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 ${saving ? 'opacity-75 cursor-not-allowed' : ''
+                    }`}
                 >
                   {saving ? 'Saving...' : 'Save Changes'}
                 </button>
