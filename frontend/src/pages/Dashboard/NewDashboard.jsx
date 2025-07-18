@@ -974,7 +974,8 @@ const MergedDashboard = () => {
                       coverImage: { url: "/grab.webp" },
                       startDateTime: "2025-08-04T12:00:00+05:30",
                       location: { name: "Online" },
-                    },
+                    },      
+                                  
                     {
                       id: "acereframe2025",
                       name: "AceReframe: The UI/UX Challenge",
