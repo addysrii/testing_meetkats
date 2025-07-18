@@ -813,37 +813,36 @@ const MergedDashboard = () => {
               </div>
               {(hackathonCarouselEvents.length > 1 ||
                 dashboardHardcodedEvents.length > 1) && (
-                <>
-                  <button
-                    onClick={prevHackathonSlide}
-                    className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
-                  >
-                    <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-                  </button>
-                  <button
-                    onClick={nextHackathonSlide}
-                    className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
-                  >
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
-                  </button>
-                  <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
-                    {(hackathonCarouselEvents.length > 0
-                      ? hackathonCarouselEvents
-                      : dashboardHardcodedEvents.slice(0, 3)
-                    ).map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setHackathonSlide(index)}
-                        className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all cursor-pointer ${
-                          hackathonSlide === index
-                            ? "bg-white scale-125"
-                            : "bg-white/50 hover:bg-white/75"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </>
-              )}
+                  <>
+                    <button
+                      onClick={prevHackathonSlide}
+                      className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
+                    >
+                      <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                    </button>
+                    <button
+                      onClick={nextHackathonSlide}
+                      className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white rounded-full p-2 sm:p-3 shadow-lg transition-all hover:scale-110 cursor-pointer"
+                    >
+                      <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                    </button>
+                    <div className="absolute bottom-2 sm:bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1 sm:space-x-2">
+                      {(hackathonCarouselEvents.length > 0
+                        ? hackathonCarouselEvents
+                        : dashboardHardcodedEvents.slice(0, 3)
+                      ).map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setHackathonSlide(index)}
+                          className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all cursor-pointer ${hackathonSlide === index
+                              ? "bg-white scale-125"
+                              : "bg-white/50 hover:bg-white/75"
+                            }`}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
             </div>
             {/* Non-hackathon events as cards below carousel */}
             {nonHackathonEvents.length > 0 && (
@@ -975,6 +974,27 @@ const MergedDashboard = () => {
                       startDateTime: "2025-08-04T12:00:00+05:30",
                       location: { name: "Online" },
                     },
+                    {
+                      id: "acereframe2025",
+                      name: "AceReframe: The UI/UX Challenge",
+                      coverImage: { url: "/ace.webp" },
+                      startDateTime: "2025-07-14T09:00:00Z",
+                      location: { name: "Online" },
+                    },
+                    {
+                      id: "aihiringshow2025",
+                      name: "The AI Hiring Show: Tech + Business Edition",
+                      coverImage: { url: "/THEAI.webp" },
+                      startDateTime: "2025-08-02T09:00:00+05:30",
+                      location: { name: "New Delhi, Delhi, India" },
+                    },
+                    {
+                      id: "opensource2025",
+                      name: "Open Source Summer Code",
+                      coverImage: { url: "/open.webp" },
+                      startDateTime: "2025-07-21T09:00:00+05:30",
+                      location: { name: "Online" },
+                    },
                   ].map((event) => (
                     <div
                       key={event.id}
@@ -1031,15 +1051,13 @@ const MergedDashboard = () => {
                   dayClassName={(date) =>
                     `text-xs sm:text-sm rounded-full transition duration-150 ease-in-out \
                     hover:bg-orange-100 \
-                    ${
-                      date.toDateString() === new Date().toDateString()
-                        ? "!text-orange-600 font-bold"
-                        : ""
+                    ${date.toDateString() === new Date().toDateString()
+                      ? "!text-orange-600 font-bold"
+                      : ""
                     }\
-                    ${
-                      date.toDateString() === selectedDate?.toDateString()
-                        ? "!bg-orange-500 !text-white hover:!bg-orange-600"
-                        : ""
+                    ${date.toDateString() === selectedDate?.toDateString()
+                      ? "!bg-orange-500 !text-white hover:!bg-orange-600"
+                      : ""
                     }`
                   }
                   renderCustomHeader={({
