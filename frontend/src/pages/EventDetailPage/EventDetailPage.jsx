@@ -177,8 +177,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
           setLoading(false);
           return;
         }
-
-        // If eventId is one of the hardcoded events, use hardcoded event data
         if (
           [
             "skillshift",
@@ -188,6 +186,12 @@ export const EventDetailPage = ({ user, onLogout }) => {
             "acereframe2025",
             "aihiringshow2025",
             "opensource2025",
+            "zuorapromptathon2025",
+            "spaceappsnoida2025",
+            "tvsepic7it2025",
+            "vignettefilm2025",
+            "timecapsule2025",
+            "48hourmusic2025",
           ].includes(eventId)
         ) {
           let eventData;
@@ -267,7 +271,7 @@ export const EventDetailPage = ({ user, onLogout }) => {
                 url: "/ideation.webp",
               },
               attendeeCounts: { going: 0 },
-              ticketUrl: "", // Replace with actual registration link if available
+              ticketUrl: "",
             };
           } else if (eventId === "acereframe2025") {
             eventData = {
@@ -329,7 +333,128 @@ export const EventDetailPage = ({ user, onLogout }) => {
               ticketUrl:
                 "https://unstop.com/hackathons/open-source-summer-code-nexorainfotech-1524774",
             };
+          } else if (eventId === "zuorapromptathon2025") {
+            eventData = {
+              id: "zuorapromptathon2025",
+              name: "Zuora Prompt-A-Thon 2025: The 10x Catalyst",
+              description: `Welcome to the Zuora Prompt-A-Thon 2025: The 10x Catalyst—an experience designed for professionals who are ready to think differently, experiment boldly, and explore the true potential of generative AI.\n\nThis Prompt-A-Thon is a creative space for professionals who have a creative mind focused on solving real business challenges using smart, structured, and strategic prompting. Whether you want to sharpen your prompting skills, exchange ideas with forward-thinkers, or gain visibility with an innovation-led global brand, this is where it all begins.\n\n**Eligibility Criteria**\nOpen to working professionals with at least 3 years of experience in software development, or related technical roles such as DevOps, QA, and data engineering. Also open to techno-functional professionals working as product managers, solution architects, etc. Applicants must be currently based in India.\n\n**Team Size:** Solo\n**Mode:** In Person\n**Fee:** Free\n\n**Dates:**\n02 Jul 25, 12:01 AM IST - 30 Jul 25, 11:59 PM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-02T00:01:00+05:30",
+              endDateTime: "2025-07-30T23:59:00+05:30",
+              location: {
+                name: "In Person (India)",
+                address: "India",
+              },
+              virtual: false,
+              category: "Hackathon",
+              coverImage: {
+                url: "/zuora.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://vision.hack2skill.com/event/zuora-prompt-a-thon-2025?sectionid=6862172eaf151d42f18f2273",
+            };
+          } else if (eventId === "spaceappsnoida2025") {
+            eventData = {
+              id: "spaceappsnoida2025",
+              name: "Space Apps Challenge Noida 2025",
+              description: `Registration for the 2025 NASA Space Apps Challenge opens July 17!\n\nThe main event page will be opening on the 17th of July. Once you register on our platform, you will be getting an opportunity to stand out from others by registering on the H2S platform.\n\n**Team Size:** 2-6\n**Mode:** In Person\n**Fee:** Free\n\n**Dates:**\n01 Jul 25, 04:55 PM IST - 07 Sep 25, 11:59 PM IST\n\nLocation: Noida\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-01T16:55:00+05:30",
+              endDateTime: "2025-09-07T23:59:00+05:30",
+              location: {
+                name: "Noida",
+                address: "Noida, India",
+              },
+              virtual: false,
+              category: "Hackathon",
+              coverImage: {
+                url: "/space.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://vision.hack2skill.com/event/nasaspaceappsnoida2025?sectionid=6863c5a8ec35720c9409e656",
+            };
+          } else if (eventId === "tvsepic7it2025") {
+            eventData = {
+              id: "tvsepic7it2025",
+              name: "TVS Credit E.P.I.C 7.0 — IT Challenge",
+              description: `TVS Credit presents E.P.I.C (Enrich, Perform, Innovate, Challenge) a campus challenge programme designed for college students.\n\nThis contest offers you a platform to apply your technical knowledge and skills to real-life business problems. Through your participation, you stand the chance to network with the best minds in the industry, hone your skills through the challenges, and to top it all, win exciting cash rewards.\n\n**Eligibility Criteria:**\n- B.Tech/B.E students from 3rd and 4th year, M.E./M.Tech students and MBA (IT) students are eligible to participate.\n- The participants should be full-time students of the same college.\n- The participants could either register individually or as a team of two.\n- One person can’t be a member of more than one team.\n- No cross-college teams allowed.\n\n**Team Size:** 1-2\n**Mode:** Online\n\n**Stages:**\n- Round 1: Assessment (MCQs + Coding)\n- Round 2: Case Study Challenge\n- Round 3: Grand Finale (Prototype Building)\n\n**Prizes:**\n- 1st Prize: INR 1,00,000\n- 2nd Prize: INR 75,000\n- 3rd Prize: INR 50,000\n- PPI opportunities for select top performers\n- Participation Certificates\n\n**Registration Deadline:** 03 Aug 25, 11:59 PM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-09T00:00:00+05:30",
+              endDateTime: "2025-08-03T23:59:00+05:30",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Challenge",
+              coverImage: {
+                url: "/tvs.png",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/competitions/tvs-credit-epic-70-it-challenge-epic-season-7-tvs-credit-1510621",
+            };
+          } else if (eventId === "vignettefilm2025") {
+            eventData = {
+              id: "vignettefilm2025",
+              name: "Vignette | The Film-Making Competition",
+              description: `Vignette is the canvas for your cinematic vision — the official filmmaking event of Atharv Ranbhoomi 2025, where creativity meets craft, and storytelling becomes spectacle. Whether you're a one-take wonder or a director in the making, this is your chance to shoot something unforgettable.\n\n**About the Event:**\nVignette celebrates the art of filmmaking in its raw, expressive, and imaginative form. From scripting to shooting, directing to editing — every frame you capture is a window into your world.\nWhether you’re into thrillers, dramas, documentaries, or satire — if you’ve got a story to tell and a lens to tell it with, Vignette is where it all comes together.\n\n**Why Should You Participate:**\n- Explore your passion for visual storytelling in a national arena\n- Compete with some of India’s most talented campus filmmakers\n- Gain recognition for your creative voice, technique, and narrative\n- Shoot and screen your work at IIM Indore’s fest, Atharv Ranbhoomi 2025\n- Be judged on everything from story structure and cinematography to editing and innovation\n\n**Eligibility & Guidelines:**\n- Open to college students across India\n- Multiple teams per college allowed\n- Each participant can be part of only one team\n- Final filmmaking challenges will take place on campus at IIM Indore\n- Submissions must follow format and content guidelines (shared post-registration)\n- Films in any language are allowed, but subtitles are mandatory for vernacular entries\n- Judges’ decisions will be final and binding\n- Stay updated via email, Instagram, and the Atharv website for themes and announcements\n\nSo gather your crew, charge your batteries, and hit record — because VIGNETTE 2025 isn’t just about filmmaking. It’s about crafting stories that stay.\n\n**Location:** IIM INDORE, Indore, Madhya Pradesh, India\n**Registration Deadline:** 01 Aug 25, 12:00 AM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-14T00:00:00+05:30",
+              endDateTime: "2025-08-01T00:00:00+05:30",
+              location: {
+                name: "IIM INDORE, Indore, Madhya Pradesh, India",
+                address: "IIM INDORE, Indore, Madhya Pradesh, India",
+              },
+              virtual: false,
+              category: "Film Competition",
+              coverImage: {
+                url: "/film.png",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/events/vignette-the-film-making-competition-atharv-ranbhoomi-2025-the-international-management-cultural-literary-and-spo-1504667",
+            };
+          } else if (eventId === "timecapsule2025") {
+            eventData = {
+              id: "timecapsule2025",
+              name: "Time Capsule",
+              description: `A Photography Contest by Petrichor '26, the annual techno-cultural fest of IIT Palakkad!\n\nRelive your childhood through a photograph of an object that holds memories — a toy, lunchbox, book, or anything that sparks nostalgia.\n\n**Rules at a Glance:**\n- Only objects allowed as the subject – No people, animals, or landscapes.\n- The object can be kept anywhere (enhancing the theme) as long as it's the focus.\n- Submit 1 photo per participant.\n- Include a title + a caption (max 50 words).\n- Only basic edits allowed (brightness, contrast, crop).\n- No filters, AI images, or internet-sourced photos.\n- File Format: JPG/PNG | Max Size: 10MB\n- Rename file as: YourName_Title.jpg\n- Submit via: Gform link\n\n**Judging Criteria:**\n- Relevance to Theme\n- Visual Appeal\n- Storytelling & Caption\n- Originality & Creativity\n\n**Disqualification If:**\n- Entry includes people, scenery as the main focus, or AI/stock content\n- More than one entry\n- Late submission\n\n**Prize pool:** ₹3,500\n\n**Submission link:** https://forms.gle/nWpJA16Zy4T7Naxs6\n\n**Location:** Online\n**Registration Deadline:** 02 Aug 25, 11:59 PM IST\n**Deadline:** 02 Aug 25, 11:59 PM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-16T00:00:00+05:30",
+              endDateTime: "2025-08-02T23:59:00+05:30",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Photography Contest",
+              coverImage: {
+                url: "/time.png",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/events/time-capsule-petrichor-26-iit-palakkad-1524746",
+            };
+          } else if (eventId === "48hourmusic2025") {
+            eventData = {
+              id: "48hourmusic2025",
+              name: "48 Hour Music Challenge",
+              description: `MAGAN, the Official Music Club of SRM IST Delhi NCR presents The 48-Hour Music Challenge inviting college students from across India to take on a unique musical mission to create a complete original performance based on a surprise theme, in just two days.\n\n**General Guidelines – 48-Hour Music Challenge**\n- Open to all college students across India\n- Perform solo or in a group (maximum 4 members)\n- All music genres are welcome, but your piece must reflect the given theme/topic\n- The 48-Hour Music Challenge is a theme-based musical competition where participants are given a topic or concept and exactly 48 hours to create and submit an original music performance based on it.\n- It’s about pushing creativity under pressure. Whether you’re a solo artist, rapper, instrumentalist, or a group, the goal is to express the given theme through your music all in just two days.\n\n**Performance Duration & Breakdown**\n- Total performance duration: 3 to 5 minutes\n- Talk about how the theme inspired your piece\n- Up to 4 minutes: Your pre-recorded performance\n- The performance video will be played during the live event on Magan's YouTube channel\n\n**Creative Requirements**\n- The piece must be original (lyrics, music, or both)\n- Covers, remixes, or previously released content are not allowed\n- Use of AI-generated music, vocals, or lyrics is strictly prohibited\n- Use of the following is allowed: Instruments, Loop pedals, MIDI, Beatboxing, Digital Audio Workstations (DAWs)\n\n**Stages and Timelines**\n- Video Submission Round\n- Submission Deadline: 21th July, 11:59 PM IST\n- File format: MP4 (preferred), recorded in horizontal/landscape mode\n- Only one submission per team/participant is allowed\n\n**Location:** Online\n**Start:** 21 Jul 25, 12:00 AM IST\n**End:** 21 Jul 25, 11:59 PM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-21T00:00:00+05:30",
+              endDateTime: "2025-07-21T23:59:00+05:30",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Music Competition",
+              coverImage: {
+                url: "/srm.jpg",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/p/48-hour-music-challenge-srm-institute-of-science-and-technology-srmist-delhincr-campus-1510189",
+            };
           }
+
           setEvent(eventData);
           setUserResponse(null);
           setLoading(false);
@@ -852,10 +977,16 @@ export const EventDetailPage = ({ user, onLogout }) => {
                       event.id === "ideationx2" ||
                       event.id === "acereframe2025" ||
                       event.id === "aihiringshow2025" ||
-                      event.id === "opensource2025" ? (
+                      event.id === "opensource2025" ||
+                      event.id === "zuorapromptathon2025" ||
+                      event.id === "spaceappsnoida2025" ||
+                      event.id === "tvsepic7it2025" ||
+                      event.id === "vignettefilm2025" ||
+                      event.id === "timecapsule2025" ||
+                      event.id === "48hourmusic2025" ? (
                         <>
                           <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
-                            Book your ticket for this event on Unstop.
+                            Book your ticket for this event.
                           </p>
                           <a
                             href={event.ticketUrl}
