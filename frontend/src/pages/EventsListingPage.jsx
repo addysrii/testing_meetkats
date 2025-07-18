@@ -501,7 +501,67 @@ const EventListingPage = () => {
           ticketUrl:
             "https://unstop.com/p/48-hour-music-challenge-srm-institute-of-science-and-technology-srmist-delhincr-campus-1510189",
         };
+        const grabHackEvent = {
+          id: "grabhack2025",
+          name: "GrabHack: Campus Edition",
+          description: `Grab Taxi aims to amplify its brand presence across top Indian campuses by positioning itself as an exciting, future-ready workplace. As part of this initiative, Grab invites engineering students to GrabHack: Shaping the Future…Dream It. Build It. Grab It.—a premier AI-focused hackathon. Participants will tackle real-world challenges by choosing from three cutting-edge tracks: Generative AI + Agentic Automation in Fintech, Gen AI-powered Personalised User Experiences, and Generative AI for Monetising Payment Capabilities. This is your chance to showcase your skills and shape the future with Grab.\n\nEligibility & Team Rules:\n- Open to all students enrolled in full-time BE/B.Tech and Integrated Dual Degree course programmes from the eligible list of engineering colleges.\n- Teams of 2 or 3 members, same college only.\n- Any specialization, cross-year/specialization allowed, no cross-college.\n\nRounds:\n1. Computer Fundamentals MCQ Assessment\n2. Executive Summary Submission (1-2 slides PDF)\n3. Detailed Submission + Coding Test (3-5 slides PDF + 3-min video)\n4. Grand Finale (presentation to Grab leadership)\n\nPrizes:\n- Winner: INR 1,50,000 + PPI\n- 1st Runner-Up: INR 1,00,000 + PPI\n- 2nd Runner-Up: INR 50,000 + PPI\n- All finalists: PPI\n- All participants: e-certificates\n\nStart: 04 Aug 25, 12:00 PM IST\nEnd: 04 Aug 25, 08:00 PM IST\n\nFor more details and registration, visit the official website: https://unstop.com/hackathons/grabhack-campus-edition-grab-1525360`,
+          startDateTime: "2025-08-04T12:00:00+05:30",
+          endDateTime: "2025-08-04T20:00:00+05:30",
+          location: {
+            name: "Online",
+            address: "Online",
+          },
+          virtual: true,
+          category: "Hackathon",
+          coverImage: {
+            url: "/grab.webp",
+          },
+          attendeeCounts: { going: 0 },
+          ticketUrl:
+            "https://unstop.com/hackathons/grabhack-campus-edition-grab-1525360",
+        };
+        const lorealEvent = {
+          id: "lorealsustainability2025",
+          name: "L'Oréal Sustainability Challenge 2025",
+          description: `Launching its 9th edition, L'Oréal is back with the Sustainability Challenge 2025. It is an all-Digital Challenge that resonates with L’Oréal’s sustainability program.\n\nAt L’Oréal we are continuously striving towards an ever more responsible & sustainable business model.\n\nOur commitments focus on three key pillars - the planet, the people, and our products – with multiple initiatives and day-to-day actions to achieve our goals.\n\nThis year for the L’Oréal Sustainability Challenge we will be focusing on the PEOPLE, PLANET & PRODUCT pillars. We want to create long-term and sustainable impact and to achieve this, we want young and passionate change agents like you, to contribute to a better and more sustainable planet, while also creating a community of our consumers and supporters who can take this journey with us.\n\nEligibility and Team Rules:\n- Open to all final & pre-final year full-time undergraduate & postgraduate students from any discipline in any college based out of India.\n- A team must consist of exactly 3 members.\n- Each member has to register with official college email IDs. If your college does not provide official email IDs, you can use your personal email address.\n- Cross-specialization & cross-college teams are eligible.\n- Cross-year teams are not eligible.\n- A student cannot be a part of more than one team.\n- Modification of team post registration will not be allowed.\n\nStructure of the competition:\n- Treasure Hunt (non-eliminatory)\n- Online Aptitude Assessment (all team members, 20 min)\n- Executive Summary Submission (choose a pillar, 3 slides + 2-min video)\n- Mentorship Session\n- Detailed Submission (up to 10 slides)\n- Virtual Presentation (top 20 teams)\n- Final Submission (up to 10 slides + 2 appendix)\n- Grand Finale (top 6 teams)\n\nPrizes:\n- PPIs for National Finalists and Semi-Finalists\n- Final-year MBA: CTC ₹28 LPA*\n- Pre-final MBA: stipend ₹1.6L/month*\n- Pre-final UG: stipend ₹80K/month*\n- Final-year UG: role-specific offer\n- L’Oréal goodies for all National Finalists\n\nRegistration Deadline: 10 Aug 25, 11:59 PM IST\n\nFor more details and registration, visit the official website: https://unstop.com/competitions/loreal-sustainability-challenge-2025-loreal-1504673`,
+          startDateTime: "2025-08-10T23:59:00+05:30",
+          endDateTime: "2025-08-10T23:59:00+05:30",
+          location: {
+            name: "Online",
+            address: "Online",
+          },
+          virtual: true,
+          category: "Challenge",
+          coverImage: {
+            url: "/loreal.webp",
+          },
+          attendeeCounts: { going: 0 },
+          ticketUrl:
+            "https://unstop.com/competitions/loreal-sustainability-challenge-2025-loreal-1504673",
+        };
+        const accentureEvent = {
+          id: "accenturestrategyconnect4",
+          name: "Accenture Strategy Connect Season 4",
+          description: `Shape your career with strategy-led reinvention across industries!\n\nKickstart your consulting career with Accenture Strategy Connect. This flagship program, now in its fourth year, offers you a unique opportunity to learn and grow by engaging with some of our most talented innovators and consulting leaders.\n\nStages and Timelines:\n1. Virtual Launch Webinar: 01 Aug 25, 05:00 PM IST - 01 Aug 25, 06:00 PM IST\n2. Preliminary Online Quiz\n3. Business Simulation Game Round\n4. Entrepreneurial Business Challenge\n5. Grand Finale\n\nEligibility:\n- Register your four-member team from your campus.\n- Cross-year and cross-specialization team formation is welcomed.\n- Open to full-time graduates and postgraduates (non-MBA) and engineering students from select 30 campuses.\n\nRewards & Prizes:\n- Pre-Placement Interviews (PPI) for all participants who clear the Simulation Round\n- Gift Vouchers Worth ₹14 Lakhs\n- 1st Prize (8 teams): ₹1,00,000 per team\n- 2nd Prize (8 teams): ₹48,000 per team\n- 3rd Prize (8 teams): ₹32,000 per team\n- Certificates for all winners and participants\n\nStart: 01 Aug 25, 05:00 PM IST\nEnd: 01 Aug 25, 06:00 PM IST\n\nFor more details and registration, visit the official website: https://unstop.com/competitions/accenture-strategy-connect-season-4-accenture-1511156`,
+          startDateTime: "2025-08-01T17:00:00+05:30",
+          endDateTime: "2025-08-01T18:00:00+05:30",
+          location: {
+            name: "Online",
+            address: "Online",
+          },
+          virtual: true,
+          category: "Challenge",
+          coverImage: {
+            url: "/accenture.webp",
+          },
+          attendeeCounts: { going: 0 },
+          ticketUrl:
+            "https://unstop.com/competitions/accenture-strategy-connect-season-4-accenture-1511156",
+        };
         setEvents([
+          accentureEvent,
+          lorealEvent,
+          grabHackEvent,
           musicChallengeEvent,
           timeCapsuleEvent,
           vignetteEvent,
