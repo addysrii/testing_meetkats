@@ -178,6 +178,164 @@ export const EventDetailPage = ({ user, onLogout }) => {
           return;
         }
 
+        // If eventId is one of the hardcoded events, use hardcoded event data
+        if (
+          [
+            "skillshift",
+            "datavortex2025",
+            "airothon2025",
+            "ideationx2",
+            "acereframe2025",
+            "aihiringshow2025",
+            "opensource2025",
+          ].includes(eventId)
+        ) {
+          let eventData;
+          if (eventId === "skillshift") {
+            eventData = {
+              id: "skillshift",
+              name: "SkillShift – Tech for Skilling & Employment",
+              description:
+                "SkillShift is a premier event focused on leveraging technology for skilling and employment. Join industry leaders, innovators, and job seekers for a day of insightful talks, networking, and opportunities. Don't miss the chance to upskill and connect!",
+              startDateTime: "2024-07-15T10:00:00Z",
+              endDateTime: "2024-07-15T18:00:00Z",
+              location: { name: "Virtual Event" },
+              virtual: true,
+              category: "Hackathon",
+              coverImage: {
+                url: "/skillshift.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/skillshift-tech-for-skilling-employment-fairseat-1525081",
+            };
+          } else if (eventId === "datavortex2025") {
+            eventData = {
+              id: "datavortex2025",
+              name: "DataVortex SkyIntellect Hackfest 2025",
+              description: `DataVortex SkyIntellect Hackfest 2025 is a global 24-hour software hackathon organized by student-led clubs of KL University — including the School of Data Science Club, Cyber Security Club, Garuda Club, and VEDA Club.\n\nThis hackathon invites student innovators to develop impactful, software-based solutions in emerging domains such as Data Science, Cybersecurity, and Drone Technology. With expert mentorship, global collaboration, and an exciting offline finale, it's an ideal platform to learn, innovate, and grow.\n\nPrizes & Internship Opportunities:\nTop 1 Team (per domain): Internship opportunities + ₹5,000 cash prize\nTop 2 Team (per domain): ₹2,000 cash prize\nTop 3 Team (per domain): ₹1,000 cash prize\n\nVenue: Koneru Lakshmaiah Education Foundation (K.L. University), Guntur\nKL University, Green Fields, Vaddeswaram, Andhra Pradesh 522302, Guntur, Andhra Pradesh, India\n\nRegistrations Open: 17 July 2025\nLast Date to Register: 5th August 2025\nFinal Hackathon Event (Offline): 6th & 7th October 2025`,
+              startDateTime: "2025-10-06T09:00:00Z",
+              endDateTime: "2025-10-07T18:00:00Z",
+              location: {
+                name: "KL University, Green Fields, Vaddeswaram, Andhra Pradesh 522302, Guntur, Andhra Pradesh, India",
+                address:
+                  "KL University, Green Fields, Vaddeswaram, Andhra Pradesh 522302, Guntur, Andhra Pradesh, India",
+              },
+              virtual: false,
+              category: "Hackathon",
+              coverImage: {
+                url: "/DataVortex.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/datavortex-skyintellect-hackfest-2025-koneru-lakshmaiah-education-foundation-kl-university-guntur-1521579",
+            };
+          } else if (eventId === "airothon2025") {
+            eventData = {
+              id: "airothon2025",
+              name: "AiroThon 2025 - Agentic AI Hackathon",
+              description: `AiroThon 2025 is a platform for professionals, developers, engineers, and data scientists to find creative, practical solutions using MS Platform to real-world problems in BFSI, Healthcare, and Manufacturing domains.\n\nTheme: Agentic AI\n\nCash Pool Prize: 75,000 INR\nRegistration Fee: Free\nEligibility: Fresher, Experienced Professionals, Engineering Students\n\nStages: Pre-screening, Online submission and presentations, top 10 teams for offline battle.\n\nVenue: Online\n\nImportant Dates:\n- Start of Pre-screening Submission: 16th July 2025\n- Last Date of Pre-screening PPT Submission: 21st July 2025\n- Pre-screening Result Announcement: 27th July 2025\n- Round 1 Hackathon (Online): 11th August 2025\n- Round 2 Offline: 22nd August 2025\n\nFor more details and problem statements, visit the event page.`,
+              startDateTime: "2025-07-16T09:00:00Z",
+              endDateTime: "2025-08-22T18:00:00Z",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Hackathon",
+              coverImage: {
+                url: "/airo.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/airothon-2025-agentic-ai-hackathon-airo-digital-labs-1524702",
+            };
+          } else if (eventId === "ideationx2") {
+            eventData = {
+              id: "ideationx2",
+              name: "IdeationX 2.0",
+              description: `IdeationX 2.0 is a national innovation challenge by SBI Life, inviting students from select 100 colleges to reinvent the insurance sector.\n\nTotal Prizes: ₹18,00,000\n\nCompetition Structure:\n1. Idea Screening Submission: 2-min elevator pitch video\n2. Detailed Summary Round: 8-10 slide presentation\n3. Zonal Semi-Final (Offline): Regional in-person pitch\n4. Grand Finale (Offline): Present to SBI Life execs and industry leaders\n\nRewards:\n- Winner: ₹10,00,000 + goodies, certificates, trophies\n- 1st Runner-Up: ₹5,00,000 + goodies, certificates, trophies\n- 2nd Runner-Up: ₹3,00,000 + goodies, certificates, trophies\n- Semi-Finalists: Goodies, certificates\n- Select participants: PPIs, CNBC feature, celebrity interaction\n\nEligibility: Teams of 3, students from select 100 colleges, no cross-college teams.\n\nRegistration Deadline: 3rd Aug 2025, 11:59 PM IST\n\nFor more details and registration, visit the official website.`,
+              startDateTime: "2025-07-16T09:00:00Z",
+              endDateTime: "2025-08-03T23:59:00Z",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Hackathon",
+              coverImage: {
+                url: "/ideation.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl: "", // Replace with actual registration link if available
+            };
+          } else if (eventId === "acereframe2025") {
+            eventData = {
+              id: "acereframe2025",
+              name: "AceReframe: The UI/UX Challenge",
+              description: `AceReframe: The UI/UX Challenge is a national-level solo design competition by Bootcoding (creators of AceInt). Reimagine and redesign any page of the AceInt platform to elevate its user experience and interface.\n\nOpen to individuals only.\n\nRewards:\n- Winner: Cash Prize + Direct Interview Opportunity with Bootcoding\n- First Runner-Up: Cash Prize + Direct Interview Opportunity\n- Top 5: Certificates/Goodies\n\nRegistration Deadline: 29th July 2025, 12:00 AM IST\nSubmission Deadline: 18th July 2025, 11:59 PM IST\n\nFor more details and registration, visit the event page.`,
+              startDateTime: "2025-07-14T09:00:00Z",
+              endDateTime: "2025-07-29T00:00:00Z",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Hackathon",
+              coverImage: {
+                url: "/ace.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/acereframe-the-uiux-challenge-bootcoding-pvt-ltd-1522662",
+            };
+          } else if (eventId === "aihiringshow2025") {
+            eventData = {
+              id: "aihiringshow2025",
+              name: "The AI Hiring Show: Tech + Business Edition",
+              description: `The AI Hiring Show - 2nd Edition by Rabbitt Learning is back, bringing together AI developers, marketers, product thinkers, problem solvers, and recruiters from top companies.\n\nWho Should Attend?\n- AI Developers, Engineers, Coders\n- Product, Strategy, and Business Students\n- Marketers, Creators, and Operators\n- College Students (any stream)\n- Working Professionals (0–4 years experience)\n\nEvent Details:\n- Date: 2nd August 2025\n- Location: New Delhi (In-person only)\n- Time: 9:00 AM – 6:00 PM\n- Registration Fee: Free\n\nFormat: Problem Solving Sprint, Pitch Round, Hiring & Final Conversations.\n\nOutcomes: On-the-spot job offers, interview calls, certificates, networking, and more.\n\nRegistration Deadline: 30th July 2025, 11:00 PM IST\n\nFor more details and registration, visit the event page.`,
+              startDateTime: "2025-08-02T09:00:00+05:30",
+              endDateTime: "2025-08-02T18:00:00+05:30",
+              location: {
+                name: "New Delhi, Delhi, India",
+                address: "New Delhi, Delhi, India",
+              },
+              virtual: false,
+              category: "Hackathon",
+              coverImage: {
+                url: "/THEAI.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/the-ai-hiring-show-tech-business-edition-rabbittai-1525713",
+            };
+          } else if (eventId === "opensource2025") {
+            eventData = {
+              id: "opensource2025",
+              name: "Open Source Summer Code",
+              description: `Open Source Summer Code is a 1-month hands-on coding journey for students passionate about open-source and real-world projects.\n\nWhy Join?\n- Contribute to real open-source projects\n- Build a strong project portfolio\n- Receive mentorship from experienced developers\n- Network with tech peers\n- Internship tie-ups for top contributors\n\nPrizes:\n- 1st Prize: ₹4,000 cash + Goodies worth ₹10,000\n- 2nd Prize: ₹3,000 cash + Goodies worth ₹8,000\n- 3rd Prize: ₹1,000 cash + Goodies worth ₹5,000\n\nPlatform: Git, GitHub, WhatsApp, Discord\n\nRegistration Deadline: 29th July 2025, 11:55 PM IST\n\nFor more details and registration, visit the event page.`,
+              startDateTime: "2025-07-21T09:00:00+05:30",
+              endDateTime: "2025-08-21T18:00:00+05:30",
+              location: {
+                name: "Online",
+                address: "Online",
+              },
+              virtual: true,
+              category: "Hackathon",
+              coverImage: {
+                url: "/open.webp",
+              },
+              attendeeCounts: { going: 0 },
+              ticketUrl:
+                "https://unstop.com/hackathons/open-source-summer-code-nexorainfotech-1524774",
+            };
+          }
+          setEvent(eventData);
+          setUserResponse(null);
+          setLoading(false);
+          return;
+        }
+
         console.log("Fetching event with ID:", eventId);
 
         // Fetch event details from API
@@ -688,22 +846,48 @@ export const EventDetailPage = ({ user, onLogout }) => {
                       <h3 className="font-['Roboto',Helvetica] font-semibold text-black text-xl md:text-2xl mb-2">
                         Tickets
                       </h3>
-                      <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
-                        {ticketsLoading
-                          ? "Loading..."
-                          : ticketTypes && ticketTypes.length > 0
-                          ? `${ticketTypes.length} ticket type${
+                      {event.id === "skillshift" ||
+                      event.id === "datavortex2025" ||
+                      event.id === "airothon2025" ||
+                      event.id === "ideationx2" ||
+                      event.id === "acereframe2025" ||
+                      event.id === "aihiringshow2025" ||
+                      event.id === "opensource2025" ? (
+                        <>
+                          <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
+                            Book your ticket for this event on Unstop.
+                          </p>
+                          <a
+                            href={event.ticketUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block px-4 py-2 mt-2 text-sm font-medium text-white bg-green-600 rounded hover:bg-green-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2"
+                          >
+                            Book Ticket
+                          </a>
+                        </>
+                      ) : ticketsLoading ? (
+                        <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
+                          Loading...
+                        </p>
+                      ) : ticketTypes && ticketTypes.length > 0 ? (
+                        <>
+                          <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
+                            {`${ticketTypes.length} ticket type${
                               ticketTypes.length > 1 ? "s" : ""
-                            } available`
-                          : "Free Event"}
-                      </p>
-                      {ticketTypes && ticketTypes.length > 0 && (
-                        <button
-                          onClick={handleBuyTickets}
-                          className="cursor-pointer inline-block px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-                        >
-                          Book Tickets
-                        </button>
+                            } available`}
+                          </p>
+                          <button
+                            onClick={handleBuyTickets}
+                            className="cursor-pointer inline-block px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
+                          >
+                            Book Tickets
+                          </button>
+                        </>
+                      ) : (
+                        <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
+                          Free Event
+                        </p>
                       )}
                     </div>
 
