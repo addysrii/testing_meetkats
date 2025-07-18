@@ -772,20 +772,20 @@ const MergedDashboard = () => {
                 ))
               ) : (
                 <div className="w-full text-center py-12 bg-white rounded-2xl shadow-lg">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
-                      <Users className="w-6 h-6 text-gray-400" />
-                    </div>
-                    <p className="text-gray-600">
-                      No nearby professionals found
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Try refreshing or adjusting your location settings
-                    </p>
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
+                        <Users className="w-6 h-6 text-gray-400" />
+                      </div>
+                      <p className="text-gray-600">
+                        No nearby professionals found
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Try refreshing or adjusting your location settings
+                      </p>
                   </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
           </div>
           */}
           {/* Hackathon Carousel */}
@@ -948,6 +948,63 @@ const MergedDashboard = () => {
                       </div>
                     </div>
                   ))}
+              </div>
+
+              {/* Featured New Events Section */}
+              <div className="mt-6 mb-2">
+                <div className="space-y-3">
+                  {[
+                    {
+                      id: "accenturestrategyconnect4",
+                      name: "Accenture Strategy Connect Season 4",
+                      coverImage: { url: "/accenture.webp" },
+                      startDateTime: "2025-08-01T17:00:00+05:30",
+                      location: { name: "Online" },
+                    },
+                    {
+                      id: "lorealsustainability2025",
+                      name: "L'Oréal Sustainability Challenge 2025",
+                      coverImage: { url: "/loreal.webp" },
+                      startDateTime: "2025-08-10T23:59:00+05:30",
+                      location: { name: "Online" },
+                    },
+                    {
+                      id: "grabhack2025",
+                      name: "GrabHack: Campus Edition",
+                      coverImage: { url: "/grab.webp" },
+                      startDateTime: "2025-08-04T12:00:00+05:30",
+                      location: { name: "Online" },
+                    },
+                  ].map((event) => (
+                    <div
+                      key={event.id}
+                      onClick={() => handleEventClick(event.id)}
+                      className="bg-orange-50 rounded-xl p-3 flex flex-col shadow hover:shadow-md transition cursor-pointer mb-2"
+                    >
+                      <div className="flex items-center gap-3">
+                        <img
+                          src={event.coverImage.url}
+                          alt={event.name}
+                          className="w-12 h-12 object-cover rounded-lg"
+                        />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-bold text-base mb-1 truncate">
+                            {event.name}
+                          </div>
+                          <div className="text-xs text-gray-600 mb-1">
+                            {new Date(event.startDateTime).toLocaleDateString(
+                              "en-US",
+                              { month: "short", day: "numeric" }
+                            )}
+                          </div>
+                          <div className="text-xs text-gray-500 mb-1">
+                            {event.location?.name || "Location TBA"}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
