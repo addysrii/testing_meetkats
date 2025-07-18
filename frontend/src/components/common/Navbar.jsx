@@ -189,46 +189,46 @@ const Sidebar = ({ user = {}, onLogout }) => {
         </svg>
       ),
     },
-    {
-      name: "Network",
-      href: "/network",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      name: "Discover",
-      href: "/discover",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-5 w-5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-      ),
-    },
+    // {
+    //   name: "Network",
+    //   href: "/network",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       className="h-5 w-5"
+    //       fill="none"
+    //       viewBox="0 0 24 24"
+    //       stroke="currentColor"
+    //     >
+    //       <path
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //         strokeWidth={2}
+    //         d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+    //       />
+    //     </svg>
+    //   ),
+    // },
+    // {
+    //   name: "Discover",
+    //   href: "/discover",
+    //   icon: (
+    //     <svg
+    //       xmlns="http://www.w3.org/2000/svg"
+    //       className="h-5 w-5"
+    //       fill="none"
+    //       viewBox="0 0 24 24"
+    //       stroke="currentColor"
+    //     >
+    //       <path
+    //         strokeLinecap="round"
+    //         strokeLinejoin="round"
+    //         strokeWidth={2}
+    //         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    //       />
+    //     </svg>
+    //   ),
+    // },
     {
       name: "Events",
       href: "/events",
@@ -249,7 +249,7 @@ const Sidebar = ({ user = {}, onLogout }) => {
         </svg>
       ),
     },
-        {
+    {
       name: "Portfolio",
       href: "/portfolio",
       icon: (
@@ -302,7 +302,6 @@ const Sidebar = ({ user = {}, onLogout }) => {
                   to={item.href}
                   className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition-colors"
                 >
-                  
                   <span className="text-sm font-medium">{item.name}</span>
                 </Link>
               ))}
@@ -391,8 +390,9 @@ const Sidebar = ({ user = {}, onLogout }) => {
                         notificationItems.map((notification) => (
                           <div
                             key={notification.id}
-                            className={`px-4 py-3 hover:bg-gray-50 border-b border-gray-50 cursor-pointer transition-colors ${notification.read ? "bg-white" : "bg-blue-25"
-                              }`}
+                            className={`px-4 py-3 hover:bg-gray-50 border-b border-gray-50 cursor-pointer transition-colors ${
+                              notification.read ? "bg-white" : "bg-blue-25"
+                            }`}
                             onClick={() =>
                               !notification.read &&
                               handleMarkAsRead(notification.id)
@@ -666,8 +666,9 @@ const Sidebar = ({ user = {}, onLogout }) => {
       {/* Mobile Slide-out Menu */}
       <div
         ref={mobileMenuRef}
-        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 lg:hidden ${mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-in-out z-50 lg:hidden ${
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Mobile Menu Header */}
@@ -740,10 +741,11 @@ const Sidebar = ({ user = {}, onLogout }) => {
                     notificationItems.slice(0, 3).map((notification) => (
                       <div
                         key={notification.id}
-                        className={`p-3 rounded-lg border ${notification.read
+                        className={`p-3 rounded-lg border ${
+                          notification.read
                             ? "bg-white border-gray-200"
                             : "bg-blue-50 border-blue-200"
-                          }`}
+                        }`}
                         onClick={() =>
                           !notification.read &&
                           handleMarkAsRead(notification.id)
