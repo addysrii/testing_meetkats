@@ -178,10 +178,7 @@ export const EventDetailPage = ({ user, onLogout }) => {
           return;
         }
         if (["skillshift","datavortex2025","airothon2025","ideationx2","acereframe2025","aihiringshow2025","opensource2025","zuorapromptathon2025","spaceappsnoida2025","tvsepic7it2025","vignettefilm2025","timecapsule2025","48hourmusic2025","grabhack2025","lorealsustainability2025","accenturestrategyconnect4",].includes(eventId)) {
-          let eventData;
-          eventsData=()=>{
-            return listevents.find((event) => event.id === eventId);
-          }
+          let eventData=listevents.find((event) => event.id === eventId);
 
           setEvent(eventData);
           setUserResponse(null);
