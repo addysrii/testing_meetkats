@@ -26,7 +26,7 @@ import { useAuth } from "../../context/AuthContext";
 import eventService from "../../services/eventService";
 import ticketService from "../../services/ticketService";
 import Sidebar from "../../components/common/Navbar";
-import listevents from "./eventsdb.js"
+import {listevents} from "../eventsdb.js"
 // Image component with fallback
 const ImageWithFallback = ({
   src,
