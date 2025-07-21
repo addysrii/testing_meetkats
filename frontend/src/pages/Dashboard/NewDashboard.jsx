@@ -973,6 +973,28 @@ const MergedDashboard = () => {
                       coverImage: { url: "/grab.webp" },
                       startDateTime: "2025-08-04T12:00:00+05:30",
                       location: { name: "Online" },
+                    },      
+                                  
+                    {
+                      id: "acereframe2025",
+                      name: "AceReframe: The UI/UX Challenge",
+                      coverImage: { url: "/ace.webp" },
+                      startDateTime: "2025-07-14T09:00:00Z",
+                      location: { name: "Online" },
+                    },
+                    {
+                      id: "aihiringshow2025",
+                      name: "The AI Hiring Show: Tech + Business Edition",
+                      coverImage: { url: "/THEAI.webp" },
+                      startDateTime: "2025-08-02T09:00:00+05:30",
+                      location: { name: "New Delhi, Delhi, India" },
+                    },
+                    {
+                      id: "opensource2025",
+                      name: "Open Source Summer Code",
+                      coverImage: { url: "/open.webp" },
+                      startDateTime: "2025-07-21T09:00:00+05:30",
+                      location: { name: "Online" },
                     },
                     {
                       id: "acereframe2025",

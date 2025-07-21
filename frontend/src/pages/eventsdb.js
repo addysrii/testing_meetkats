@@ -1,401 +1,601 @@
 export const categories = [
   {
-    id: 'Technology',
-    title: 'Technology',
-    icon: '💻',
-    description: 'Explore cutting-edge tech events, hackathons, and innovation meetups'
+    id: "Technology",
+    title: "Technology",
+    icon: "💻",
+    description:
+      "Explore cutting-edge tech events, hackathons, and innovation meetups",
   },
   {
-    id: 'Arts & Culture',
-    title: 'Arts & Culture',
-    icon: '🎨',
-    description: 'Immerse yourself in creative exhibitions, performances, and cultural celebrations'
+    id: "Arts & Culture",
+    title: "Arts & Culture",
+    icon: "🎨",
+    description:
+      "Immerse yourself in creative exhibitions, performances, and cultural celebrations",
   },
   {
-    id: 'Social',
-    title: 'Social',
-    icon: '🤝',
-    description: 'Connect with like-minded people through networking and community events'
+    id: "Social",
+    title: "Social",
+    icon: "🤝",
+    description:
+      "Connect with like-minded people through networking and community events",
   },
   {
-    id: 'Workshops',
-    title: 'Workshops',
-    icon: '🛠️',
-    description: 'Learn new skills through hands-on workshops and training sessions'
+    id: "Workshops",
+    title: "Workshops",
+    icon: "🛠️",
+    description:
+      "Learn new skills through hands-on workshops and training sessions",
   },
   {
-    id: 'Conferences',
-    title: 'Conferences',
-    icon: '🎤',
-    description: 'Attend professional conferences and industry summits'
+    id: "Conferences",
+    title: "Conferences",
+    icon: "🎤",
+    description: "Attend professional conferences and industry summits",
   },
   {
-    id: 'Gaming',
-    title: 'Gaming',
-    icon: '🎮',
-    description: 'Join gaming tournaments, esports events, and game development meetups'
-  }
+    id: "Gaming",
+    title: "Gaming",
+    icon: "🎮",
+    description:
+      "Join gaming tournaments, esports events, and game development meetups",
+  },
 ];
 
 export const eventsData = {
-  'Technology': [
+  Technology: [
     {
-      "title": "Speaker Series - Ms. Banu Mushtaq (Author, International Booker Prize ’25, Lawyer & Activist)",
-      "date": "August 2, 2025",
-      "time": "2:00 PM onwards",
-      "location": "IIM Bangalore Auditorium, Bangalore, India",
-      "description": "A session featuring Ms. Banu Mushtaq - acclaimed author recognized by the International Booker Prize ’25, practicing lawyer, and human rights activist – as part of the VENIX 2025 Speaker Series at IIM Bangalore.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879cdec87b17_speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist.webp?d=1920x557",
-      "price": "Free",
-      "attendees": "Open to IIM Bangalore community & invited guests",
-      "category": "Speaker Series",
-      "redirectUrl": "/speaker-series-banu-mushtaq"
-    },
-
-    {
-      title: 'Web Development Bootcamp',
-      date: 'August 5, 2025',
-      time: '10:00 AM - 4:00 PM',
-      location: 'Online Event',
-      description: 'Intensive 3-day bootcamp covering modern web development technologies including React, Node.js, and cloud deployment.',
-      image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop&crop=center',
-      price: '$199',
-      attendees: '200+ attendees',
-      category: 'Workshop',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "speaker-series-banu-mushtaq",
+      name: "Speaker Series - Ms. Banu Mushtaq (Author, International Booker Prize ’25, Lawyer & Activist)",
+      description:
+        "A session featuring Ms. Banu Mushtaq - acclaimed author recognized by the International Booker Prize ’25, practicing lawyer, and human rights activist – as part of the VENIX 2025 Speaker Series at IIM Bangalore.",
+      startDateTime: "August 2, 2025",
+      endDateTime: "August 2, 2025",
+      location: {
+        name: "IIM Bangalore Auditorium, Bangalore, India",
+        address: "IIM Bangalore Auditorium, Bangalore, India",
+      },
+      virtual: false,
+      category: "Speaker Series",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879cdec87b17_speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist.webp?d=1920x557",
+      },
+      attendeeCounts: {
+        going: 0,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Blockchain Innovation Conference',
-      date: 'August 12, 2025',
-      time: '8:30 AM - 5:00 PM',
-      location: 'Crypto Center, Austin',
-      description: 'Explore the latest developments in blockchain technology, cryptocurrencies, and decentralized applications.',
-      image: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop&crop=center',
-      price: '$399',
-      attendees: '800+ attendees',
-      category: 'Conference',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "web-development-bootcamp",
+      name: "Web Development Bootcamp",
+      description:
+        "Intensive 3-day bootcamp covering modern web development technologies including React, Node.js, and cloud deployment.",
+      startDateTime: "2025-08-05T10:00:00",
+      endDateTime: "2025-08-05T16:00:00",
+      location: {
+        name: "Online Event",
+        address: "Online Event",
+      },
+      virtual: true,
+      category: "Workshop",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 200,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Mobile App Development Workshop',
-      date: 'August 18, 2025',
-      time: '11:00 AM - 5:00 PM',
-      location: 'Innovation Lab, Seattle',
-      description: 'Learn to build mobile applications using React Native and Flutter with hands-on projects.',
-      image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop&crop=center',
-      price: '$149',
-      attendees: '150+ attendees',
-      category: 'Workshop',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    }
+      id: "blockchain-innovation-conference",
+      name: "Blockchain Innovation Conference",
+      description:
+        "Explore the latest developments in blockchain technology, cryptocurrencies, and decentralized applications.",
+      startDateTime: "2025-08-12T08:30:00",
+      endDateTime: "2025-08-12T17:00:00",
+      location: {
+        name: "Crypto Center, Austin",
+        address: "Crypto Center, Austin",
+      },
+      virtual: false,
+      category: "Conference",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 800,
+      },
+      ticketUrl: "",
+    },
+    {
+      id: "mobile-app-development-workshop",
+      name: "Mobile App Development Workshop",
+      description:
+        "Learn to build mobile applications using React Native and Flutter with hands-on projects.",
+      startDateTime: "2025-08-18T11:00:00",
+      endDateTime: "2025-08-18T17:00:00",
+      location: {
+        name: "Innovation Lab, Seattle",
+        address: "Innovation Lab, Seattle",
+      },
+      virtual: false,
+      category: "Workshop",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 150,
+      },
+      ticketUrl: "",
+    },
   ],
-  'Arts & Culture': [
+  "Arts & Culture": [
     {
-      "title": "Verse Voyage – The Writing Challenge",
-      "date": "July 16, 2025",
-      "time": "Not specified",
-      "location": "Online (Mastermind Publication opportunity)",
-      "description": "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg",
-      "price": "Free",
-      "attendees": "Open to all participants",
-      "category": "Writing Challenge",
-      "redirectUrl": "/verse-voyage-the-writing-challenge-mastermind-publication-1524767"
-    }
-    ,
-    {
-      title: 'Cultural Heritage Festival',
-      date: 'August 8, 2025',
-      time: '12:00 PM - 10:00 PM',
-      location: 'Central Park, New York',
-      description: 'Celebrate diverse cultures through music, dance, food, and traditional performances.',
-      image: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=250&fit=crop&crop=center',
-      price: 'Free',
-      attendees: '5000+ visitors',
-      category: 'Festival',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "verse-voyage-the-writing-challenge-mastermind-publication-1524767",
+      name: "Verse Voyage – The Writing Challenge",
+      description:
+        "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
+      startDateTime: "July 16, 2025",
+      endDateTime: "July 16, 2025",
+      location: {
+        name: "Online (Mastermind Publication opportunity)",
+        address: "Online (Mastermind Publication opportunity)",
+      },
+      virtual: true,
+      category: "Writing Challenge",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg",
+      },
+      attendeeCounts: {
+        going: 0,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Photography Workshop',
-      date: 'August 15, 2025',
-      time: '9:00 AM - 3:00 PM',
-      location: 'Art Studio, Los Angeles',
-      description: 'Master the art of photography with professional techniques and equipment training.',
-      image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=250&fit=crop&crop=center',
-      price: '$89',
-      attendees: '30+ participants',
-      category: 'Workshop',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    }
+      id: "cultural-heritage-festival",
+      name: "Cultural Heritage Festival",
+      description:
+        "Celebrate diverse cultures through music, dance, food, and traditional performances.",
+      startDateTime: "2025-08-08T12:00:00",
+      endDateTime: "2025-08-08T22:00:00",
+      location: {
+        name: "Central Park, New York",
+        address: "Central Park, New York",
+      },
+      virtual: false,
+      category: "Festival",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 5000,
+      },
+      ticketUrl: "",
+    },
+    {
+      id: "photography-workshop",
+      name: "Photography Workshop",
+      description:
+        "Master the art of photography with professional techniques and equipment training.",
+      startDateTime: "2025-08-15T09:00:00",
+      endDateTime: "2025-08-15T15:00:00",
+      location: {
+        name: "Art Studio, Los Angeles",
+        address: "Art Studio, Los Angeles",
+      },
+      virtual: false,
+      category: "Workshop",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 30,
+      },
+      ticketUrl: "",
+    },
   ],
-  'Social': [
+  Social: [
     {
-      title: 'Networking Night',
-      date: 'July 28, 2025',
-      time: '6:00 PM - 9:00 PM',
-      location: 'Business Center, Chicago',
-      description: 'Connect with professionals from various industries in a relaxed, friendly environment.',
-      image: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=250&fit=crop&crop=center',
-      price: '$45',
-      attendees: '200+ professionals',
-      category: 'Networking',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "networking-night",
+      name: "Networking Night",
+      description:
+        "Connect with professionals from various industries in a relaxed, friendly environment.",
+      startDateTime: "2025-07-28T18:00:00",
+      endDateTime: "2025-07-28T21:00:00",
+      location: {
+        name: "Business Center, Chicago",
+        address: "Business Center, Chicago",
+      },
+      virtual: false,
+      category: "Networking",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 200,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Community Volunteer Day',
-      date: 'August 3, 2025',
-      time: '8:00 AM - 4:00 PM',
-      location: 'Local Community Center',
-      description: 'Join fellow volunteers in making a positive impact in our local community.',
-      image: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop&crop=center',
-      price: 'Free',
-      attendees: '300+ volunteers',
-      category: 'Community',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "community-volunteer-day",
+      name: "Community Volunteer Day",
+      description:
+        "Join fellow volunteers in making a positive impact in our local community.",
+      startDateTime: "2025-08-03T08:00:00",
+      endDateTime: "2025-08-03T16:00:00",
+      location: {
+        name: "Local Community Center",
+        address: "Local Community Center",
+      },
+      virtual: false,
+      category: "Community",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 300,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Speed Networking Event',
-      date: 'August 10, 2025',
-      time: '5:30 PM - 8:30 PM',
-      location: 'Startup Hub, San Francisco',
-      description: 'Meet new people and expand your professional network through structured speed networking.',
-      image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=250&fit=crop&crop=center',
-      price: '$35',
-      attendees: '150+ professionals',
-      category: 'Networking',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    }
+      id: "speed-networking-event",
+      name: "Speed Networking Event",
+      description:
+        "Meet new people and expand your professional network through structured speed networking.",
+      startDateTime: "2025-08-10T17:30:00",
+      endDateTime: "2025-08-10T20:30:00",
+      location: {
+        name: "Startup Hub, San Francisco",
+        address: "Startup Hub, San Francisco",
+      },
+      virtual: false,
+      category: "Networking",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 150,
+      },
+      ticketUrl: "",
+    },
   ],
-  'Workshops': [
+  Workshops: [
     {
-      "title": "AI & Me: How Smart Tech Is Supercharging My Career",
-      "date": "July 2025 (specific date not listed)",
-      "time": "Not specified",
-      "location": "Online (pre‑graduation)",
-      "description": "A session for aspiring engineers about how smart technologies are accelerating career growth by blending tech with leadership and business insight.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/687a4ed99c912_61f3e96c6eb18_whatsapp_image_2021-11-17_at_17.56.21.png?d=200x200",
-      "price": "Not specified",
-      "attendees": "Targeted at pre‑graduate students",
-      "category": "Webinar / Workshop",
-      "redirectUrl": "/ai-and-me-career-boost"
+      id: "ai-and-me-career-boost",
+      name: "AI & Me: How Smart Tech Is Supercharging My Career",
+      description:
+        "A session for aspiring engineers about how smart technologies are accelerating career growth by blending tech with leadership and business insight.",
+      startDateTime: "July 2025",
+      endDateTime: "July 2025",
+      location: {
+        name: "Online (pre‑graduation)",
+        address: "Online (pre‑graduation)",
+      },
+      virtual: true,
+      category: "Webinar / Workshop",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/687a4ed99c912_61f3e96c6eb18_whatsapp_image_2021-11-17_at_17.56.21.png?d=200x200",
+      },
+      attendeeCounts: {
+        going: 0,
+      },
+      ticketUrl: "",
     },
     {
-      "title": "Generative AI Explained: The Smart Assistant That Creates Everything",
-      "date": "July 2025 (specific date not listed)",
-      "time": "Not specified",
-      "location": "Online (pre‑graduation)",
-      "description": "An introductory session on how generative AI functions as an intelligent assistant capable of creating content across formats.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/687a5c561e3a4_generative-ai-explained-the-smart-assistant-that-creates-everything.webp?d=1920x557",
-      "price": "Not specified",
-      "attendees": "Targeted at pre‑graduate students",
-      "category": "Webinar / Workshop",
-      "redirectUrl": "/generative-ai-explained"
+      id: "generative-ai-explained",
+      name: "Generative AI Explained: The Smart Assistant That Creates Everything",
+      description:
+        "An introductory session on how generative AI functions as an intelligent assistant capable of creating content across formats.",
+      startDateTime: "July 2025",
+      endDateTime: "July 2025",
+      location: {
+        name: "Online (pre‑graduation)",
+        address: "Online (pre‑graduation)",
+      },
+      virtual: true,
+      category: "Webinar / Workshop",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/687a5c561e3a4_generative-ai-explained-the-smart-assistant-that-creates-everything.webp?d=1920x557",
+      },
+      attendeeCounts: {
+        going: 0,
+      },
+      ticketUrl: "",
     },
     {
-      "title": "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
-      "date": "July 2025 (specific date not listed)",
-      "time": "Not specified",
-      "location": "Online (part of Venix 2025)",
-      "description": "Two‑part online workshop featuring AI‑enhanced Excel functionalities and presentation storytelling powered by AI tools.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879196a39017_workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations.webp?d=1920x557",
-      "price": "Purchasing required (price not displayed)",
-      "attendees": "Open to Venix 2025 participants",
-      "category": "Workshop Series",
-      "redirectUrl": "/office-ai-combo-workshop"
+      id: "office-ai-combo-workshop",
+      name: "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
+      description:
+        "Two‑part online workshop featuring AI‑enhanced Excel functionalities and presentation storytelling powered by AI tools.",
+      startDateTime: "July 2025",
+      endDateTime: "July 2025",
+      location: {
+        name: "Online (part of Venix 2025)",
+        address: "Online (part of Venix 2025)",
+      },
+      virtual: true,
+      category: "Workshop Series",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879196a39017_workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations.webp?d=1920x557",
+      },
+      attendeeCounts: {
+        going: 0,
+      },
+      ticketUrl: "",
     },
     {
-      "title": "BGMI Gaming Event – IIIT Delhi",
-      "date": "July 23, 2025",
-      "time": "Not specified",
-      "location": "A007, RnD Building, Indraprastha Institute of Information Technology Delhi",
-      "description": "On‑campus BGMI gaming event expected to draw enthusiastic gamers and tech students.",
-      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6878cb72eb357_bgmi-gaming-event.webp?d=1920x557",
-      "price": "Not specified",
-      "attendees": "Expected 80+ attendees",
-      "category": "Gaming Event / Workshop",
-      "redirectUrl": "/bgmi-gaming-event"
-    }
+      id: "bgmi-gaming-event",
+      name: "BGMI Gaming Event – IIIT Delhi",
+      description:
+        "On‑campus BGMI gaming event expected to draw enthusiastic gamers and tech students.",
+      startDateTime: "July 23, 2025",
+      endDateTime: "July 23, 2025",
+      location: {
+        name: "A007, RnD Building, Indraprastha Institute of Information Technology Delhi",
+        address:
+          "A007, RnD Building, Indraprastha Institute of Information Technology Delhi",
+      },
+      virtual: false,
+      category: "Gaming Event / Workshop",
+      coverImage: {
+        url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6878cb72eb357_bgmi-gaming-event.webp?d=1920x557",
+      },
+      attendeeCounts: {
+        going: 80,
+      },
+      ticketUrl: "",
+    },
   ],
-  'Conferences': [
+  Conferences: [
     {
-      title: 'Future of Business Conference',
-      date: 'August 1, 2025',
-      time: '8:00 AM - 6:00 PM',
-      location: 'Convention Center, Miami',
-      description: 'Industry leaders discuss emerging trends and the future of business in a post-digital world.',
-      image: 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=250&fit=crop&crop=center',
-      price: '$450',
-      attendees: '1200+ attendees',
-      category: 'Conference',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "future-of-business-conference",
+      name: "Future of Business Conference",
+      description:
+        "Industry leaders discuss emerging trends and the future of business in a post-digital world.",
+      startDateTime: "2025-08-01T08:00:00",
+      endDateTime: "2025-08-01T18:00:00",
+      location: {
+        name: "Convention Center, Miami",
+        address: "Convention Center, Miami",
+      },
+      virtual: false,
+      category: "Conference",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 1200,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Healthcare Innovation Summit',
-      date: 'August 9, 2025',
-      time: '9:00 AM - 5:00 PM',
-      location: 'Medical Center, Houston',
-      description: 'Explore breakthrough innovations in healthcare technology and patient care.',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop&crop=center',
-      price: '$350',
-      attendees: '800+ professionals',
-      category: 'Summit',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "healthcare-innovation-summit",
+      name: "Healthcare Innovation Summit",
+      description:
+        "Explore breakthrough innovations in healthcare technology and patient care.",
+      startDateTime: "2025-08-09T09:00:00",
+      endDateTime: "2025-08-09T17:00:00",
+      location: {
+        name: "Medical Center, Houston",
+        address: "Medical Center, Houston",
+      },
+      virtual: false,
+      category: "Summit",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 800,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Sustainability & Environment Conference',
-      date: 'August 16, 2025',
-      time: '8:30 AM - 6:30 PM',
-      location: 'Green Building, Portland',
-      description: 'Discuss sustainable practices and environmental solutions with industry experts.',
-      image: 'https://images.unsplash.com/photo-1569163139394-de4e4f43e4e3?w=400&h=250&fit=crop&crop=center',
-      price: '$280',
-      attendees: '600+ attendees',
-      category: 'Conference',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    }
+      id: "sustainability-environment-conference",
+      name: "Sustainability & Environment Conference",
+      description:
+        "Discuss sustainable practices and environmental solutions with industry experts.",
+      startDateTime: "2025-08-16T08:30:00",
+      endDateTime: "2025-08-16T18:30:00",
+      location: {
+        name: "Green Building, Portland",
+        address: "Green Building, Portland",
+      },
+      virtual: false,
+      category: "Conference",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1569163139394-de4e4f43e4e3?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 600,
+      },
+      ticketUrl: "",
+    },
   ],
-  'Gaming': [
+  Gaming: [
     {
-      title: 'Esports Championship',
-      date: 'July 26, 2025',
-      time: '2:00 PM - 11:00 PM',
-      location: 'Gaming Arena, Las Vegas',
-      description: 'Watch top esports teams compete in popular games with exciting prize pools.',
-      image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=250&fit=crop&crop=center',
-      price: '$75',
-      attendees: '2000+ fans',
-      category: 'Tournament',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "esports-championship",
+      name: "Esports Championship",
+      description:
+        "Watch top esports teams compete in popular games with exciting prize pools.",
+      startDateTime: "2025-07-26T14:00:00",
+      endDateTime: "2025-07-26T23:00:00",
+      location: {
+        name: "Gaming Arena, Las Vegas",
+        address: "Gaming Arena, Las Vegas",
+      },
+      virtual: false,
+      category: "Tournament",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 2000,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Game Development Meetup',
-      date: 'August 4, 2025',
-      time: '6:00 PM - 9:00 PM',
-      location: 'Game Studio, Los Angeles',
-      description: 'Connect with game developers and learn about the latest tools and techniques.',
-      image: 'https://images.unsplash.com/photo-1556438064-2d7646166914?w=400&h=250&fit=crop&crop=center',
-      price: '$25',
-      attendees: '120+ developers',
-      category: 'Meetup',
-      redirectUrl: '/events/ai-machine-learning-summit'
+      id: "game-development-meetup",
+      name: "Game Development Meetup",
+      description:
+        "Connect with game developers and learn about the latest tools and techniques.",
+      startDateTime: "2025-08-04T18:00:00",
+      endDateTime: "2025-08-04T21:00:00",
+      location: {
+        name: "Game Studio, Los Angeles",
+        address: "Game Studio, Los Angeles",
+      },
+      virtual: false,
+      category: "Meetup",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1556438064-2d7646166914?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 120,
+      },
+      ticketUrl: "",
     },
     {
-      title: 'Retro Gaming Convention',
-      date: 'August 11, 2025',
-      time: '10:00 AM - 8:00 PM',
-      location: 'Convention Hall, Orlando',
-      description: 'Celebrate classic games with tournaments, exhibitions, and special guest appearances.',
-      image: 'https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=250&fit=crop&crop=center',
-      price: '$40',
-      attendees: '3000+ gamers',
-      category: 'Convention',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    }
-  ]
+      id: "retro-gaming-convention",
+      name: "Retro Gaming Convention",
+      description:
+        "Celebrate classic games with tournaments, exhibitions, and special guest appearances.",
+      startDateTime: "2025-08-11T10:00:00",
+      endDateTime: "2025-08-11T20:00:00",
+      location: {
+        name: "Convention Hall, Orlando",
+        address: "Convention Hall, Orlando",
+      },
+      virtual: false,
+      category: "Convention",
+      coverImage: {
+        url: "https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?w=400&h=250&fit=crop&crop=center",
+      },
+      attendeeCounts: {
+        going: 3000,
+      },
+      ticketUrl: "",
+    },
+  ],
 };
 
 export const listevents = [
   {
-  "id": "verse-voyage-the-writing-challenge-mastermind-publication-1524767",
-  "name": "Verse Voyage – The Writing Challenge",
-  "description": "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
-  "startDateTime": "July 16, 2025",
-  "endDateTime": "August 16, 2025",
-  "location": {
-    "name": "Online"
-  },
-  "virtual": true,
-  "category": "Writing Challenge",
-  "coverImage": {
-    "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg"
-  },
-  "price": "Free",
-  "attendeeCounts": {
-    "going": 0
-  },
-  "ticketUrl": "https://unstop.com/events/verse-voyage-the-writing-challenge-mastermind-publication-1524767"
-},
-  {
-    "id": "speaker-series-banu-mushtaq",
-    "name": "Speaker Series - Ms. Banu Mushtaq (Author, International Booker Prize ’25, Lawyer & Activist)",
-    "description": "A session featuring Ms. Banu Mushtaq - acclaimed author recognized by the International Booker Prize ’25, practicing lawyer, and human rights activist – as part of the VENIX 2025 Speaker Series at IIM Bangalore.",
-    "startDateTime": "August 2, 2025 2:00 PM",
-    "endDateTime": "August 2, 2025",
-    "location": {
-      "name": "IIM Bangalore Auditorium, Bangalore, India"
+    id: "verse-voyage-the-writing-challenge-mastermind-publication-1524767",
+    name: "Verse Voyage – The Writing Challenge",
+    description:
+      "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
+    startDateTime: "July 16, 2025",
+    endDateTime: "August 16, 2025",
+    location: {
+      name: "Online",
     },
-    "virtual": false,
-    "category": "Speaker Series",
-    "coverImage": {
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879cdec87b17_speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist.webp?d=1920x557"
+    virtual: true,
+    category: "Writing Challenge",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg",
     },
-    "price": "Free",
-    "attendeeCounts": {
-      "going": 0
+    price: "Free",
+    attendeeCounts: {
+      going: 0,
     },
-    "ticketUrl": "https://unstop.com/conferences/speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist-venix-2025-iim-bangalores-inte-1519185"
+    ticketUrl:
+      "https://unstop.com/events/verse-voyage-the-writing-challenge-mastermind-publication-1524767",
   },
   {
-    "id": "ai-and-me-career-boost",
-    "name": "AI & Me: How Smart Tech Is Supercharging My Career",
-    "description": "A session for aspiring engineers about how smart technologies are accelerating career growth by blending tech with leadership and business insight.",
-    "startDateTime": "July 2025",
-    "endDateTime": "July 2025",
-    "location": { "name": "Online (pre‑graduation)" },
-    "virtual": true,
-    "category": "Webinar / Workshop",
-    "coverImage": {
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/687a4ed99c912_61f3e96c6eb18_whatsapp_image_2021-11-17_at_17.56.21.png?d=200x200"
+    id: "speaker-series-banu-mushtaq",
+    name: "Speaker Series - Ms. Banu Mushtaq (Author, International Booker Prize ’25, Lawyer & Activist)",
+    description:
+      "A session featuring Ms. Banu Mushtaq - acclaimed author recognized by the International Booker Prize ’25, practicing lawyer, and human rights activist – as part of the VENIX 2025 Speaker Series at IIM Bangalore.",
+    startDateTime: "August 2, 2025 2:00 PM",
+    endDateTime: "August 2, 2025",
+    location: {
+      name: "IIM Bangalore Auditorium, Bangalore, India",
     },
-    "price": "Not specified",
-    "attendeeCounts": { "going": 0 },
-    "ticketUrl": "https://unstop.com/workshops-webinars/ai-me-how-smart-tech-is-supercharging-my-career-pregrad-1526029"
+    virtual: false,
+    category: "Speaker Series",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879cdec87b17_speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist.webp?d=1920x557",
+    },
+    price: "Free",
+    attendeeCounts: {
+      going: 0,
+    },
+    ticketUrl:
+      "https://unstop.com/conferences/speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist-venix-2025-iim-bangalores-inte-1519185",
   },
   {
-    "id": "generative-ai-explained",
-    "name": "Generative AI Explained: The Smart Assistant That Creates Everything",
-    "description": "An introductory session on how generative AI functions as an intelligent assistant capable of creating content across formats.",
-    "startDateTime": "July 2025",
-    "endDateTime": "July 2025",
-    "location": { "name": "Online (pre‑graduation)" },
-    "virtual": true,
-    "category": "Webinar / Workshop",
-    "coverImage": {
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/687a5c561e3a4_generative-ai-explained-the-smart-assistant-that-creates-everything.webp?d=1920x557"
+    id: "ai-and-me-career-boost",
+    name: "AI & Me: How Smart Tech Is Supercharging My Career",
+    description:
+      "A session for aspiring engineers about how smart technologies are accelerating career growth by blending tech with leadership and business insight.",
+    startDateTime: "July 2025",
+    endDateTime: "July 2025",
+    location: { name: "Online (pre‑graduation)" },
+    virtual: true,
+    category: "Webinar / Workshop",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/687a4ed99c912_61f3e96c6eb18_whatsapp_image_2021-11-17_at_17.56.21.png?d=200x200",
     },
-    "price": "Not specified",
-    "attendeeCounts": { "going": 0 },
-    "ticketUrl": "https://unstop.com/workshops-webinars/generative-ai-explained-the-smart-assistant-that-creates-everything-pregrad-1526024"
+    price: "Not specified",
+    attendeeCounts: { going: 0 },
+    ticketUrl:
+      "https://unstop.com/workshops-webinars/ai-me-how-smart-tech-is-supercharging-my-career-pregrad-1526029",
   },
   {
-    "id": "office-ai-combo-workshop",
-    "name": "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
-    "description": "Two‑part online workshop featuring AI‑enhanced Excel functionalities and presentation storytelling powered by AI tools.",
-    "startDateTime": "July 2025",
-    "endDateTime": "July 2025",
-    "location": { "name": "Online (part of Venix 2025)" },
-    "virtual": true,
-    "category": "Workshop Series",
-    "coverImage": {
-      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879196a39017_workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations.webp?d=1920x557"
+    id: "generative-ai-explained",
+    name: "Generative AI Explained: The Smart Assistant That Creates Everything",
+    description:
+      "An introductory session on how generative AI functions as an intelligent assistant capable of creating content across formats.",
+    startDateTime: "July 2025",
+    endDateTime: "July 2025",
+    location: { name: "Online (pre‑graduation)" },
+    virtual: true,
+    category: "Webinar / Workshop",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/687a5c561e3a4_generative-ai-explained-the-smart-assistant-that-creates-everything.webp?d=1920x557",
     },
-    "price": "Purchasing required (price not displayed)",
-    "attendeeCounts": { "going": 0 },
-    "ticketUrl": "https://unstop.com/workshops-webinars/workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations-venix-2025-1524849"
+    price: "Not specified",
+    attendeeCounts: { going: 0 },
+    ticketUrl:
+      "https://unstop.com/workshops-webinars/generative-ai-explained-the-smart-assistant-that-creates-everything-pregrad-1526024",
   },
   {
-    "id": "bgmi-gaming-event",
-    "name": "BGMI Gaming Event – IIIT Delhi",
-    "description": "On‑campus BGMI gaming event expected to draw enthusiastic gamers and tech students.",
-    "startDateTime": "July 23, 2025",
-    "endDateTime": "July 23, 2025",
-    "location": { name: "A007, RnD Building, Indraprastha Institute of Information Technology Delhi" },
-    "virtual": false,
-    "category": "Gaming Event / Workshop",
-    "coverImage": { url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6878cb72eb357_bgmi-gaming-event.webp?d=1920x557" },
-    "price": "Not specified",
-    "attendeeCounts": { going: 80 },
-    "ticketUrl": "https://unstop.com/workshops-webinars/bgmi-gaming-event-indraprastha-institute-of-information-technology-iiit-delhi-1525004"
+    id: "office-ai-combo-workshop",
+    name: "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
+    description:
+      "Two‑part online workshop featuring AI‑enhanced Excel functionalities and presentation storytelling powered by AI tools.",
+    startDateTime: "July 2025",
+    endDateTime: "July 2025",
+    location: { name: "Online (part of Venix 2025)" },
+    virtual: true,
+    category: "Workshop Series",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879196a39017_workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations.webp?d=1920x557",
+    },
+    price: "Purchasing required (price not displayed)",
+    attendeeCounts: { going: 0 },
+    ticketUrl:
+      "https://unstop.com/workshops-webinars/workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations-venix-2025-1524849",
+  },
+  {
+    id: "bgmi-gaming-event",
+    name: "BGMI Gaming Event – IIIT Delhi",
+    description:
+      "On‑campus BGMI gaming event expected to draw enthusiastic gamers and tech students.",
+    startDateTime: "July 23, 2025",
+    endDateTime: "July 23, 2025",
+    location: {
+      name: "A007, RnD Building, Indraprastha Institute of Information Technology Delhi",
+    },
+    virtual: false,
+    category: "Gaming Event / Workshop",
+    coverImage: {
+      url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6878cb72eb357_bgmi-gaming-event.webp?d=1920x557",
+    },
+    price: "Not specified",
+    attendeeCounts: { going: 80 },
+    ticketUrl:
+      "https://unstop.com/workshops-webinars/bgmi-gaming-event-indraprastha-institute-of-information-technology-iiit-delhi-1525004",
   },
   {
     id: "skillshift",
@@ -717,5 +917,5 @@ export const listevents = [
     attendeeCounts: { going: 0 },
     ticketUrl:
       "https://unstop.com/competitions/accenture-strategy-connect-season-4-accenture-1511156",
-  }
+  },
 ];

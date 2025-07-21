@@ -26,7 +26,7 @@ import { useAuth } from "../../context/AuthContext";
 import eventService from "../../services/eventService";
 import ticketService from "../../services/ticketService";
 import Sidebar from "../../components/common/Navbar";
-import {listevents} from "../eventsdb.js"
+import { listevents, eventsData } from "../eventsdb.js";
 // Image component with fallback
 const ImageWithFallback = ({
   src,
@@ -96,8 +96,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
       ],
     },
   ]);
-
-  // Format date for display
   const formatDate = (dateString) => {
     if (!dateString) return "Date TBA";
 
@@ -115,7 +113,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
     }
   };
 
-  // Format time for display
   const formatTime = (dateString) => {
     if (!dateString) return "Time TBA";
 
@@ -128,7 +125,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
     }
   };
 
-  // Safely get the attendee count
   const getAttendeeCount = (attendeeCounts, type) => {
     if (!attendeeCounts) return 0;
 
@@ -145,7 +141,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
     return 0;
   };
 
-  // Calculate time remaining until event
   const getTimeRemaining = (eventDate) => {
     if (!eventDate) return null;
 
@@ -153,7 +148,7 @@ export const EventDetailPage = ({ user, onLogout }) => {
     const event = new Date(eventDate);
     const diff = event - now;
 
-    if (diff <= 0) return null; // Event has passed
+    if (diff <= 0) return null;
 
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -171,108 +166,43 @@ export const EventDetailPage = ({ user, onLogout }) => {
   useEffect(() => {
     const fetchEventDetails = async () => {
       setLoading(true);
+      setError(null);
       try {
-        // Check if we have a valid eventId
         if (!eventId) {
           setError("Invalid event ID. Please check the URL and try again.");
           setLoading(false);
           return;
         }
-        let k=[]
-        listevents.filter((event) => k.push(event.id));
-        setmyevents(k);
-        if (k.includes(eventId)) {
-          let eventData=listevents.find((event) => event.id === eventId);
+        let eventData = listevents.find((event) => event.id === eventId);
 
+        if (!eventData) {
+          const allEventsFromData = Object.values(eventsData).flat();
+          eventData = allEventsFromData.find((event) => event.id === eventId);
+        }
+        if (eventData) {
           setEvent(eventData);
-          setUserResponse(null);
           setLoading(false);
           return;
         }
 
-        console.log("Fetching event with ID:", eventId);
-
-        // Fetch event details from API
+        console.log("Event not found in local data, trying API...");
         const response = await eventService.getEvent(eventId);
-        if (!response || !response.data) {
-          throw new Error("No data received from server");
-        }
-
-        const eventData = response.data;
-        setEvent(eventData);
-        setUserResponse(eventData.userResponse);
-
-        // Check if current user is the host
-        if (authUser && eventData.createdBy) {
-          const creatorId = eventData.createdBy._id || eventData.createdBy.id;
-          const userId = authUser.id;
-          const isCreator = creatorId === userId;
-
-          const isEventHost = eventData.attendees?.some((attendee) => {
-            const attendeeId = attendee.user?._id || attendee.user;
-            return (
-              attendeeId === userId &&
-              ["host", "organizer"].includes(attendee.role)
-            );
-          });
-
-          setIsHost(isCreator || isEventHost);
-          setOrganizer(eventData.createdBy);
-        }
-
-        // Fetch ticket types if available
-        try {
-          setTicketsLoading(true);
-          const ticketsResponse = await ticketService.getEventTicketTypes(
-            eventId
-          );
-          const ticketData = ticketsResponse.data || [];
-          setTicketTypes(Array.isArray(ticketData) ? ticketData : []);
-        } catch (ticketError) {
-          console.error("Error fetching ticket types:", ticketError);
-        } finally {
-          setTicketsLoading(false);
-        }
-
-        // Fetch attendees
-        try {
-          setLoadingAttendees(true);
-          const attendeesResponse = await eventService.getEventAttendees(
-            eventId
-          );
-          const attendeeData = attendeesResponse?.going || [];
-          setAttendees(Array.isArray(attendeeData) ? attendeeData : []);
-        } catch (attendeesError) {
-          console.error("Error fetching attendees:", attendeesError);
-        } finally {
-          setLoadingAttendees(false);
-        }
-
-        // Check if event has custom form
-        try {
-          setFormLoading(true);
-          const formResponse = await eventService.getCustomForm(eventId);
-          setHasForm(!!formResponse);
-        } catch (formError) {
-          console.log("No custom form found for this event");
-          setHasForm(false);
-        } finally {
-          setFormLoading(false);
+        if (response.data) {
+          setEvent(response.data);
+        } else {
+          setError(`No event found with ID: ${eventId}`);
         }
       } catch (err) {
         console.error("Error fetching event details:", err);
-        setError(
-          err.message || "Failed to load event details. Please try again later."
-        );
+        setError("Could not load event details. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchEventDetails();
-  }, [eventId, authUser]);
+  }, [eventId]);
 
-  // Handle user response to event (going, maybe, declined)
   const handleResponseClick = async (status) => {
     try {
       // Check if we have a valid eventId
@@ -700,7 +630,7 @@ export const EventDetailPage = ({ user, onLogout }) => {
                       <h3 className="font-['Roboto',Helvetica] font-semibold text-black text-xl md:text-2xl mb-2">
                         Tickets
                       </h3>
-                      {myevents.includes(event.id) ? (
+                      {event.ticketUrl && event.ticketUrl.trim() !== "" ? (
                         <>
                           <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
                             Book your ticket for this event.
@@ -713,24 +643,6 @@ export const EventDetailPage = ({ user, onLogout }) => {
                           >
                             Book Ticket
                           </a>
-                        </>
-                      ) : ticketsLoading ? (
-                        <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
-                          Loading...
-                        </p>
-                      ) : ticketTypes && ticketTypes.length > 0 ? (
-                        <>
-                          <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
-                            {`${ticketTypes.length} ticket type${
-                              ticketTypes.length > 1 ? "s" : ""
-                            } available`}
-                          </p>
-                          <button
-                            onClick={handleBuyTickets}
-                            className="cursor-pointer inline-block px-4 py-2 mt-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2"
-                          >
-                            Book Tickets
-                          </button>
                         </>
                       ) : (
                         <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
