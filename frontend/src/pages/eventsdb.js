@@ -49,7 +49,7 @@ export const eventsData = {
       "price": "Free",
       "attendees": "Open to IIM Bangalore community & invited guests",
       "category": "Speaker Series",
-      "redirectUrl": "https://unstop.com/conferences/speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist-venix-2025-iim-bangalores-inte-1519185"
+      "redirectUrl": "/speaker-series-banu-mushtaq"
     },
 
     {
@@ -91,17 +91,18 @@ export const eventsData = {
   ],
   'Arts & Culture': [
     {
-      title: 'Modern Art Exhibition',
-      date: 'July 30, 2025',
-      time: '10:00 AM - 8:00 PM',
-      location: 'Metropolitan Museum, New York',
-      description: 'Discover contemporary artworks from emerging artists around the world in this month-long exhibition.',
-      image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=400&h=250&fit=crop&crop=center',
-      price: '$25',
-      attendees: '1000+ visitors',
-      category: 'Exhibition',
-      redirectUrl: '/events/ai-machine-learning-summit'
-    },
+      "title": "Verse Voyage – The Writing Challenge",
+      "date": "July 16, 2025",
+      "time": "Not specified",
+      "location": "Online (Mastermind Publication opportunity)",
+      "description": "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
+      "image": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg",
+      "price": "Free",
+      "attendees": "Open to all participants",
+      "category": "Writing Challenge",
+      "redirectUrl": "/verse-voyage-the-writing-challenge-mastermind-publication-1524767"
+    }
+    ,
     {
       title: 'Cultural Heritage Festival',
       date: 'August 8, 2025',
@@ -176,7 +177,7 @@ export const eventsData = {
       "price": "Not specified",
       "attendees": "Targeted at pre‑graduate students",
       "category": "Webinar / Workshop",
-      "redirectUrl": "https://unstop.com/workshops-webinars/ai-me-how-smart-tech-is-supercharging-my-career-pregrad-1526029"
+      "redirectUrl": "/ai-and-me-career-boost"
     },
     {
       "title": "Generative AI Explained: The Smart Assistant That Creates Everything",
@@ -188,7 +189,7 @@ export const eventsData = {
       "price": "Not specified",
       "attendees": "Targeted at pre‑graduate students",
       "category": "Webinar / Workshop",
-      "redirectUrl": "https://unstop.com/workshops-webinars/generative-ai-explained-the-smart-assistant-that-creates-everything-pregrad-1526024"
+      "redirectUrl": "/generative-ai-explained"
     },
     {
       "title": "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
@@ -200,7 +201,7 @@ export const eventsData = {
       "price": "Purchasing required (price not displayed)",
       "attendees": "Open to Venix 2025 participants",
       "category": "Workshop Series",
-      "redirectUrl": "https://unstop.com/workshops-webinars/workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations-venix-2025-1524849"
+      "redirectUrl": "/office-ai-combo-workshop"
     },
     {
       "title": "BGMI Gaming Event – IIIT Delhi",
@@ -212,7 +213,7 @@ export const eventsData = {
       "price": "Not specified",
       "attendees": "Expected 80+ attendees",
       "category": "Gaming Event / Workshop",
-      "redirectUrl": "https://unstop.com/workshops-webinars/bgmi-gaming-event-indraprastha-institute-of-information-technology-iiit-delhi-1525004"
+      "redirectUrl": "/bgmi-gaming-event"
     }
   ],
   'Conferences': [
@@ -294,6 +295,108 @@ export const eventsData = {
 };
 
 export const listevents = [
+  {
+  "id": "verse-voyage-the-writing-challenge-mastermind-publication-1524767",
+  "name": "Verse Voyage – The Writing Challenge",
+  "description": "Participate in an exclusive writing challenge—'Verse Voyage'—where your poems can be turned into a published book through Mastermind Publication.",
+  "startDateTime": "July 16, 2025",
+  "endDateTime": "August 16, 2025",
+  "location": {
+    "name": "Online"
+  },
+  "virtual": true,
+  "category": "Writing Challenge",
+  "coverImage": {
+    "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/uploadedManual-67f37d8e4aec5_logo_file.jpg"
+  },
+  "price": "Free",
+  "attendeeCounts": {
+    "going": 0
+  },
+  "ticketUrl": "https://unstop.com/events/verse-voyage-the-writing-challenge-mastermind-publication-1524767"
+},
+  {
+    "id": "speaker-series-banu-mushtaq",
+    "name": "Speaker Series - Ms. Banu Mushtaq (Author, International Booker Prize ’25, Lawyer & Activist)",
+    "description": "A session featuring Ms. Banu Mushtaq - acclaimed author recognized by the International Booker Prize ’25, practicing lawyer, and human rights activist – as part of the VENIX 2025 Speaker Series at IIM Bangalore.",
+    "startDateTime": "August 2, 2025 2:00 PM",
+    "endDateTime": "August 2, 2025",
+    "location": {
+      "name": "IIM Bangalore Auditorium, Bangalore, India"
+    },
+    "virtual": false,
+    "category": "Speaker Series",
+    "coverImage": {
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879cdec87b17_speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist.webp?d=1920x557"
+    },
+    "price": "Free",
+    "attendeeCounts": {
+      "going": 0
+    },
+    "ticketUrl": "https://unstop.com/conferences/speaker-series-ms-banu-mushtaq-author-intl-booker-prize25-lawyer-and-activist-venix-2025-iim-bangalores-inte-1519185"
+  },
+  {
+    "id": "ai-and-me-career-boost",
+    "name": "AI & Me: How Smart Tech Is Supercharging My Career",
+    "description": "A session for aspiring engineers about how smart technologies are accelerating career growth by blending tech with leadership and business insight.",
+    "startDateTime": "July 2025",
+    "endDateTime": "July 2025",
+    "location": { "name": "Online (pre‑graduation)" },
+    "virtual": true,
+    "category": "Webinar / Workshop",
+    "coverImage": {
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/150x150/687a4ed99c912_61f3e96c6eb18_whatsapp_image_2021-11-17_at_17.56.21.png?d=200x200"
+    },
+    "price": "Not specified",
+    "attendeeCounts": { "going": 0 },
+    "ticketUrl": "https://unstop.com/workshops-webinars/ai-me-how-smart-tech-is-supercharging-my-career-pregrad-1526029"
+  },
+  {
+    "id": "generative-ai-explained",
+    "name": "Generative AI Explained: The Smart Assistant That Creates Everything",
+    "description": "An introductory session on how generative AI functions as an intelligent assistant capable of creating content across formats.",
+    "startDateTime": "July 2025",
+    "endDateTime": "July 2025",
+    "location": { "name": "Online (pre‑graduation)" },
+    "virtual": true,
+    "category": "Webinar / Workshop",
+    "coverImage": {
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/687a5c561e3a4_generative-ai-explained-the-smart-assistant-that-creates-everything.webp?d=1920x557"
+    },
+    "price": "Not specified",
+    "attendeeCounts": { "going": 0 },
+    "ticketUrl": "https://unstop.com/workshops-webinars/generative-ai-explained-the-smart-assistant-that-creates-everything-pregrad-1526024"
+  },
+  {
+    "id": "office-ai-combo-workshop",
+    "name": "Workshop Series: Office + AI Combo – AI‑Powered Excel, Visual Storytelling Through Presentations",
+    "description": "Two‑part online workshop featuring AI‑enhanced Excel functionalities and presentation storytelling powered by AI tools.",
+    "startDateTime": "July 2025",
+    "endDateTime": "July 2025",
+    "location": { "name": "Online (part of Venix 2025)" },
+    "virtual": true,
+    "category": "Workshop Series",
+    "coverImage": {
+      "url": "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6879196a39017_workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations.webp?d=1920x557"
+    },
+    "price": "Purchasing required (price not displayed)",
+    "attendeeCounts": { "going": 0 },
+    "ticketUrl": "https://unstop.com/workshops-webinars/workshop-series-office-ai-combo-ai-powered-excel-visual-storytelling-through-presentations-venix-2025-1524849"
+  },
+  {
+    "id": "bgmi-gaming-event",
+    "name": "BGMI Gaming Event – IIIT Delhi",
+    "description": "On‑campus BGMI gaming event expected to draw enthusiastic gamers and tech students.",
+    "startDateTime": "July 23, 2025",
+    "endDateTime": "July 23, 2025",
+    "location": { name: "A007, RnD Building, Indraprastha Institute of Information Technology Delhi" },
+    "virtual": false,
+    "category": "Gaming Event / Workshop",
+    "coverImage": { url: "https://d8it4huxumps7.cloudfront.net/uploads/images/opportunity/banner/6878cb72eb357_bgmi-gaming-event.webp?d=1920x557" },
+    "price": "Not specified",
+    "attendeeCounts": { going: 80 },
+    "ticketUrl": "https://unstop.com/workshops-webinars/bgmi-gaming-event-indraprastha-institute-of-information-technology-iiit-delhi-1525004"
+  },
   {
     id: "skillshift",
     name: "SkillShift – Tech for Skilling & Employment",

@@ -58,6 +58,7 @@ const ImageWithFallback = ({
 };
 
 export const EventDetailPage = ({ user, onLogout }) => {
+  const [myevents, setmyevents] = useState([]);
   const { eventId } = useParams();
   const navigate = useNavigate();
   const { user: authUser } = useAuth();
@@ -177,7 +178,10 @@ export const EventDetailPage = ({ user, onLogout }) => {
           setLoading(false);
           return;
         }
-        if (["skillshift","datavortex2025","airothon2025","ideationx2","acereframe2025","aihiringshow2025","opensource2025","zuorapromptathon2025","spaceappsnoida2025","tvsepic7it2025","vignettefilm2025","timecapsule2025","48hourmusic2025","grabhack2025","lorealsustainability2025","accenturestrategyconnect4",].includes(eventId)) {
+        let k=[]
+        listevents.filter((event) => k.push(event.id));
+        setmyevents(k);
+        if (k.includes(eventId)) {
           let eventData=listevents.find((event) => event.id === eventId);
 
           setEvent(eventData);
@@ -696,22 +700,7 @@ export const EventDetailPage = ({ user, onLogout }) => {
                       <h3 className="font-['Roboto',Helvetica] font-semibold text-black text-xl md:text-2xl mb-2">
                         Tickets
                       </h3>
-                      {event.id === "skillshift" ||
-                      event.id === "datavortex2025" ||
-                      event.id === "airothon2025" ||
-                      event.id === "ideationx2" ||
-                      event.id === "acereframe2025" ||
-                      event.id === "aihiringshow2025" ||
-                      event.id === "opensource2025" ||
-                      event.id === "zuorapromptathon2025" ||
-                      event.id === "spaceappsnoida2025" ||
-                      event.id === "tvsepic7it2025" ||
-                      event.id === "vignettefilm2025" ||
-                      event.id === "timecapsule2025" ||
-                      event.id === "48hourmusic2025" ||
-                      event.id === "grabhack2025" ||
-                      event.id === "lorealsustainability2025" ||
-                      event.id === "accenturestrategyconnect4" ? (
+                      {myevents.includes(event.id) ? (
                         <>
                           <p className="font-['Roboto',Helvetica] font-light text-black text-base max-w-[203px] mx-auto md:mx-0">
                             Book your ticket for this event.

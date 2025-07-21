@@ -2,132 +2,139 @@ import React, { useState } from 'react';
 import Sidebar from "../components/common/Navbar";
 import { useAuth } from "../context/AuthContext";
 import { FooterBlock } from "./BhoomiLandingPage/sections/FooterBlock";
-import {categories, eventsData} from './eventsdb.js'; // Import categories and events data
+import { categories, eventsData } from './eventsdb.js'; // Import categories and events data
 const Category = () => {
   const { user, logout } = useAuth();
   const [currentView, setCurrentView] = useState('categories');
   const [selectedCategory, setSelectedCategory] = useState('');
-  
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleCategoryClick = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setCurrentView('events');
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedCategory(categoryId);
+      setCurrentView('events');
+      setIsTransitioning(false);
+    }, 300);
   };
 
   const handleBackClick = () => {
-    setCurrentView('categories');
-    setSelectedCategory('');
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentView('categories');
+      setSelectedCategory('');
+      setIsTransitioning(false);
+    }, 300);
   };
+
 
   const CategoryCard = ({ category, index }) => (
     <div
-      className="bg-white bg-opacity-80 rounded-3xl p-10 text-center cursor-pointer transition-all duration-300 ease-out border-2 border-transparent backdrop-blur-sm relative overflow-hidden hover:-translate-y-3 hover:scale-105 hover:shadow-xl hover:shadow-green-300/20 hover:border-green-400 hover:bg-opacity-95 group animate-pulse"
+      className="group relative bg-white/90 backdrop-blur-sm rounded-2xl p-8 text-center cursor-pointer transition-all duration-500 ease-out border border-green-100/50 shadow-sm hover:shadow-xl hover:shadow-green-200/25 hover:-translate-y-2 hover:scale-105 hover:border-green-300/60 hover:bg-white/95 animate-fade-in-up"
       style={{
-        animationDelay: `${index * 0.1}s`,
-        animationDuration: '0.6s',
-        animationFillMode: 'both',
-        animationName: 'fadeInUp'
+        animationDelay: `${index * 150}ms`,
+        animationFillMode: 'both'
       }}
       onClick={() => handleCategoryClick(category.id)}
     >
-      <div className="absolute top-0 left-[-100%] w-full h-full bg-gradient-to-r from-transparent via-green-300/10 to-transparent transition-all duration-500 group-hover:left-full"></div>
-      <span className="text-6xl mb-5 block transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-        {category.icon}
-      </span>
-      <h3 className="text-2xl font-bold text-green-800 mb-4 transition-colors duration-300">
+      {/* Shimmer effect */}
+      <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full rounded-2xl pointer-events-none"></div>
+
+      {/* Icon */}
+      <div className="mb-6 transform transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
+        <span className="text-5xl block filter drop-shadow-sm">
+          {category.icon}
+        </span>
+      </div>
+
+      {/* Content */}
+      <h3 className="text-xl font-bold text-green-800 mb-4 transition-colors duration-300 group-hover:text-green-900">
         {category.title}
       </h3>
-      <p className="text-green-700 opacity-80 leading-relaxed transition-opacity duration-300 group-hover:opacity-100">
+      <p className="text-green-600/80 text-sm leading-relaxed transition-all duration-300 group-hover:text-green-700">
         {category.description}
       </p>
+
+      {/* Hover indicator */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-green-400 to-green-500 rounded-full opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:w-12"></div>
     </div>
   );
 
   const EventCard = ({ event, index }) => (
     <div
-      className="bg-white bg-opacity-95 rounded-3xl overflow-hidden border-2 border-transparent transition-all duration-300 ease-out cursor-pointer shadow-lg shadow-black/8 hover:-translate-y-2 hover:shadow-xl hover:shadow-green-300/15 hover:border-green-400 animate-pulse"
+      className="group bg-white/95 backdrop-blur-sm rounded-2xl overflow-hidden border border-green-100/50 shadow-sm hover:shadow-xl hover:shadow-green-200/25 transition-all duration-500 ease-out cursor-pointer hover:-translate-y-1 hover:border-green-300/60 animate-fade-in-up"
       style={{
-        animationDelay: `${index * 0.1}s`,
-        animationDuration: '0.6s',
-        animationFillMode: 'both',
-        animationName: 'fadeInUp'
+        animationDelay: `${index * 100}ms`,
+        animationFillMode: 'both'
       }}
     >
-      <div className="relative w-full h-48 overflow-hidden">
+      {/* Image container */}
+      <div className="relative h-48 overflow-hidden">
         <img
           src={event.image}
           alt={event.title}
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute top-3 left-3 bg-green-800 bg-opacity-90 text-white px-3 py-1 rounded-full text-sm font-semibold backdrop-blur-sm">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div className="absolute top-3 left-3 bg-green-600/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-lg">
           {event.category}
         </div>
       </div>
 
       <div className="p-6">
-        <h3 className="text-xl font-bold text-green-800 mb-4 leading-tight">
+        <h3 className="text-lg font-bold text-green-800 mb-4 leading-tight group-hover:text-green-900 transition-colors duration-300">
           {event.title}
         </h3>
 
-        <div className="flex gap-5 mb-3 flex-wrap">
-          <div className="text-green-400 font-semibold text-sm flex items-center gap-1.5">
-            <span className="text-xs opacity-80">📅</span>
-            {event.date}
+        {/* Event details */}
+        <div className="space-y-2 mb-4">
+          <div className="flex items-center gap-2 text-green-600 text-sm">
+            <span className="text-green-400">📅</span>
+            <span className="font-medium">{event.date}</span>
+            <span className="text-green-400 mx-2">•</span>
+            <span className="text-green-400">⏰</span>
+            <span className="font-medium">{event.time}</span>
           </div>
-          <div className="text-green-600 font-medium text-sm flex items-center gap-1.5">
-            <span className="text-xs opacity-80">⏰</span>
-            {event.time}
+          <div className="flex items-center gap-2 text-green-600 text-sm">
+            <span className="text-green-400">📍</span>
+            <span className="font-medium">{event.location}</span>
           </div>
         </div>
 
-        <div className="text-green-700 text-sm mb-4 flex items-center gap-1.5 font-medium">
-          <span className="text-xs opacity-80">📍</span>
-          {event.location}
-        </div>
-
-        <p className="text-green-600 leading-relaxed text-sm mb-5">
+        <p className="text-green-600/80 text-sm leading-relaxed mb-5">
           {event.description}
         </p>
 
-        <div className="flex justify-between items-center pt-4 border-t border-green-300/20">
-          <div className="text-green-700 text-xs font-medium flex items-center gap-1.5">
-            <span className="text-xs opacity-80">👥</span>
-            {event.attendees}
+        <div className="flex justify-between items-center pt-4 border-t border-green-100">
+          <div className="flex items-center gap-2 text-green-600 text-xs">
+            <span className="text-green-400">👥</span>
+            <span className="font-medium">{event.attendees}</span>
           </div>
 
-          <div className="flex gap-2.5">
-            <button
-              className="bg-gradient-to-br from-green-400 to-green-600 text-white border-none px-5 py-2 rounded-full font-semibold cursor-pointer transition-all duration-300 text-base hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-300/40"
-              onClick={() => window.open(event.redirectUrl, '_blank')}
-            >
-              View
-            </button>
-          </div>
+          <button
+            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-2.5 rounded-full font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-300/30 focus:outline-none focus:ring-2 focus:ring-green-400/50"
+            onClick={() => window.open(`/events${event.redirectUrl}`, '_blank')}
+          >
+            View Event
+          </button>
         </div>
       </div>
     </div>
+
   );
 
   const CategoriesPage = () => (
-    <div className="animate-pulse" style={{ animationName: 'fadeIn', animationDuration: '0.5s' }}>
-      <div className="text-center mb-10">
-        <h1 className="text-5xl text-green-800 mb-2.5 animate-pulse" style={{
-          textShadow: '2px 2px 4px rgba(45, 90, 45, 0.1)',
-          animationName: 'fadeInDown',
-          animationDuration: '0.8s'
-        }}>
+    <div className={`transition-all duration-300 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+      <div className="text-center mb-12 animate-fade-in">
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent mb-4 pb-4 animate-slide-in-down">
           Event Categories
         </h1>
-        <p className="text-xl text-green-700 opacity-80 animate-pulse" style={{
-          animationDelay: '0.2s',
-          animationName: 'fadeInDown',
-          animationDuration: '0.8s'
-        }}>
-          Discover amazing events across different categories
+        <p className="text-xl text-green-600/80 max-w-2xl mx-auto animate-slide-in-down" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+          Discover amazing events across different categories and connect with like-minded people
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category, index) => (
           <CategoryCard key={category.id} category={category} index={index} />
         ))}
@@ -137,30 +144,25 @@ const Category = () => {
 
   const EventsPage = () => {
     const events = eventsData[selectedCategory] || [];
+    const categoryTitle = categories.find(cat => cat.id === selectedCategory)?.title || selectedCategory;
 
     return (
-      <div className="animate-pulse" style={{ animationName: 'fadeIn', animationDuration: '0.5s' }}>
-        <div className="text-center mb-10">
-          <h1 className="text-5xl text-green-800 mb-2.5 animate-pulse" style={{
-            textShadow: '2px 2px 4px rgba(45, 90, 45, 0.1)',
-            animationName: 'fadeInDown',
-            animationDuration: '0.8s'
-          }}>
-            {selectedCategory} Events
+      <div className={`transition-all duration-300 ${isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}>
+        <div className="text-center mb-12 animate-fade-in">
+          <h1 className="text-5xl font-bold bg-gradient-to-r from-green-700 to-green-600 bg-clip-text text-transparent mb-4 pb-4 animate-slide-in-down">
+            {categoryTitle} Events
           </h1>
-          <p className="text-xl text-green-700 opacity-80 animate-pulse" style={{
-            animationDelay: '0.2s',
-            animationName: 'fadeInDown',
-            animationDuration: '0.8s'
-          }}>
-            Discover amazing {selectedCategory.toLowerCase()} events
+          <p className="text-xl text-green-600/80 max-w-2xl mx-auto animate-slide-in-down" style={{ animationDelay: '200ms', animationFillMode: 'both' }}>
+            Explore exciting {categoryTitle.toLowerCase()} events happening near you
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
           {events.length === 0 ? (
-            <div className="text-center text-green-700 italic mt-12 text-lg col-span-full">
-              No events found in this category yet. Check back soon!
+            <div className="col-span-full text-center py-16 animate-fade-in">
+              <div className="text-6xl mb-4 opacity-50">🔍</div>
+              <p className="text-green-600/60 text-lg mb-2">No events found in this category yet</p>
+              <p className="text-green-500/60 text-sm">Check back soon for exciting updates!</p>
             </div>
           ) : (
             events.map((event, index) => (
@@ -175,48 +177,63 @@ const Category = () => {
   return (
     <>
       <Sidebar user={user || {}} onLogout={logout} />
-      <div className="min-h-screen bg-gradient-to-br mt-10 from-green-50 to-green-100 text-green-900">
-        <style jsx>{`
-                    @keyframes fadeInDown {
-                        from {
-                            opacity: 0;
-                            transform: translateY(-30px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
+      <div className="mt-20 min-h-screen bg-gradient-to-br from-green-50/80 via-white to-green-50/60">
+        {/* Custom CSS */}
+        <style>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
 
-                    @keyframes fadeInUp {
-                        from {
-                            opacity: 0;
-                            transform: translateY(30px);
-                        }
-                        to {
-                            opacity: 1;
-                            transform: translateY(0);
-                        }
-                    }
+        @keyframes slide-in-down {
+          from {
+            opacity: 0;
+            transform: translateY(-30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-                    @keyframes fadeIn {
-                        from {
-                            opacity: 0;
-                        }
-                        to {
-                            opacity: 1;
-                        }
-                    }
-                `}</style>
+        @keyframes fade-in-up {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
 
-        <div className="max-w-7xl mx-auto p-5">
+        .animate-fade-in {
+          animation: fade-in 0.6s ease-out forwards;
+        }
+
+        .animate-slide-in-down {
+          animation: slide-in-down 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-up {
+          animation: fade-in-up 0.6s ease-out forwards;
+          opacity: 0;
+        }
+      `}</style>
+
+        <div className="max-w-7xl mx-auto px-6 py-12">
           {/* Back Button */}
           {currentView === 'events' && (
             <button
               onClick={handleBackClick}
-              className="cursor-pointer fixed top-24 left-5 z-50 bg-green-100 bg-opacity-50 border-2 border-green-300 text-green-800 px-5 py-2 rounded-full font-semibold transition-all duration-300 hover:bg-green-300 hover:text-white hover:-translate-y-1 hover:shadow-lg backdrop-blur-sm"
+              className="fixed top-24 left-6 z-50 bg-white/90 backdrop-blur-sm border border-green-200 text-green-700 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-green-50 hover:text-green-800 hover:border-green-300 hover:-translate-y-0.5 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400/50 animate-slide-in-down"
             >
-              ← Back to Categories
+              <span className="mr-2">←</span>
+              Back to Categories
             </button>
           )}
 
@@ -224,6 +241,7 @@ const Category = () => {
           {currentView === 'categories' ? <CategoriesPage /> : <EventsPage />}
         </div>
       </div>
+
       <FooterBlock />
     </>
   );
