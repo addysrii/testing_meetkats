@@ -13,7 +13,7 @@ import axios from 'axios';
 // };
 
 // const API_URL = getApiUrl();
-const API_URL = 'https://meetkats-backend.onrender.com';
+const API_URL = 'https://new-backend-w86d.onrender.com';
 console.log(`API URL: ${API_URL}`);
 
 // Axios instance
