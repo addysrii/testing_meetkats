@@ -502,7 +502,7 @@ const handleStartQuiz = () => {
      
  <audio
   ref={audioRef}
-  src="https://res.cloudinary.com/dnnl72vrp/video/upload/v1753266877/frontend_public_Background_Music_1_w8fcr4.mp3"  
+  src="https://res.cloudinary.com/dnnl72vrp/video/upload/v1753268097/WhatsApp_Audio_2025-07-23_at_16.21.25_e2047be9_l45aou.mp3"  
   loop
 />
       <button
