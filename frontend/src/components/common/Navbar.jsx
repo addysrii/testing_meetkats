@@ -290,7 +290,7 @@ const Sidebar = ({ user = {}, onLogout }) => {
       ),
     },
      {
-      name: "quiz",
+      name: "Quiz",
       href: "/quiz-platform",
       icon: (
         <svg
