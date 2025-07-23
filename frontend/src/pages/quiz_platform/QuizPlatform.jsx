@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { saveQuizResult } from "../../supabase/quizApi";
-import BackgroundMusic from "../../../public/Background_Music.mp3"; // Adjust path as needed
+import BackgroundMusic from "../../../public/Background_Music.mp3";
 
-// Hardcoded quiz data
+
 const hardcodedQuiz = {
   title: "Marvel Cinematic Universe Challenge",
-  timer: 600, // 10 minutes in seconds
+  timer: 600, 
   questions: [
-    // Easy (8 Questions)
+
     {
       text: "What is the name of Tony Stark’s company in Iron Man (2008)?",
       options: [
@@ -189,14 +189,14 @@ const QuizPlatform = () => {
   };
 
   // Start quiz
-  const handleStartQuiz = () => {
-    setUserAnswers(Array(currentQuiz.questions.length).fill(null);
-    setQuizResult(null);
-    setTimeLeft(currentQuiz.timer);
-    setTimerActive(true);
-    setStep("quiz");
-    setCurrentQuestion(0);
-  };
+const handleStartQuiz = () => {
+  setUserAnswers(Array(currentQuiz.questions.length).fill(null));
+  setQuizResult(null);
+  setTimeLeft(currentQuiz.timer);
+  setTimerActive(true);
+  setStep("quiz");
+  setCurrentQuestion(0);
+};
 
   // Handle answer selection (no auto-advance)
   const handleAnswer = (qIdx, oIdx) => {
