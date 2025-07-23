@@ -1,10 +1,10 @@
 // webappy/frontend/src/supabase/quizApi.js
 import { supabase } from "./client";
 
-export async function saveQuizResult({ name, email, score }) {
+export async function saveQuizResult({ name, email, score,time }) {
   const { data, error } = await supabase
     .from("meetkats_quiz")
-    .insert([{ name, email, score }]);
+    .insert([{ name, email, score ,time}]);
   if (error) throw error;
   return data;
 }

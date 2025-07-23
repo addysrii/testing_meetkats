@@ -42,6 +42,7 @@ const QuizLeaderboard = () => {
                 <th className="py-2 px-2">Name</th>
                 <th className="py-2 px-2">Email</th>
                 <th className="py-2 px-2">Score</th>
+                <th className="py-2 px-2">Submitted at</th>
               </tr>
             </thead>
             <tbody>
@@ -49,10 +50,11 @@ const QuizLeaderboard = () => {
                 <tr key={entry.id || idx} className="border-t">
                   <td className="py-2 px-2 font-semibold">{idx + 1}</td>
                   <td className="py-2 px-2">{entry.name}</td>
-                  <td className="py-2 px-2 text-xs text-gray-500">
+                  <td className="py-2 px-2 text-gray-500">
                     {entry.email}
                   </td>
                   <td className="py-2 px-2">{entry.score}</td>
+                  <td className="py-2 px-2">{entry.time}</td>
                 </tr>
               ))}
             </tbody>

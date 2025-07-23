@@ -157,7 +157,7 @@ const QuizPlatform = () => {
         try {
           const result = await fetchQuizResultByEmail(user.email);
           if (result) {
-            navigate("/dashboard", { replace: true });
+            setStep("thankyou");
           }
         } catch (err) {
           // If error is not 'no rows found', log it
@@ -255,6 +255,7 @@ const handleStartQuiz = () => {
           user?.username ||
           "Anonymous",
         email: user?.email || "unknown@example.com",
+        time: formatTime(timeLeft),
         score,
       });
     } catch (error) {
@@ -488,7 +489,7 @@ const handleStartQuiz = () => {
       </p>
       <button
         className="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow hover:from-green-500 hover:to-green-700 transition-all"
-        onClick={() => setStep("intro")}
+        onClick={() => navigate("/dashboard")}
       >
         Back to Home
       </button>
