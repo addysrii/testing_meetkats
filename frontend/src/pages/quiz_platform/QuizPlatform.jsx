@@ -150,6 +150,9 @@ const hardcodedQuiz = {
 const QuizPlatform = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  useEffect(() => {
+    setStep("thankyou");
+  },[]);
   // Redirect to dashboard if user already attempted quiz
   useEffect(() => {
     const checkQuizAttempt = async () => {
@@ -180,7 +183,6 @@ const QuizPlatform = () => {
   const [userAnswers, setUserAnswers] = useState(
     Array(hardcodedQuiz.questions.length).fill(null)
   );
-  const [quizResult, setQuizResult] = useState(null);
   const [timeLeft, setTimeLeft] = useState(hardcodedQuiz.timer);
   const [timerActive, setTimerActive] = useState(false);
   const [step, setStep] = useState("thankyou"); // intro | quiz | thankyou
