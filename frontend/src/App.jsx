@@ -65,6 +65,8 @@ import CouponManagementPage from './pages/CouponManagementPage';
 import QRCertificateGenerator from "./pages/CertificateCreation.jsx"
 import RegisterEvent from './pages/RegisterEvent';
 import Category from './pages/Category.jsx';
+import QuizPlatform from "./pages/quiz_platform/QuizPlatform";
+import QuizLeaderboard from "./pages/quiz_platform/QuizLeaderboard";
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -108,6 +110,9 @@ const App = () => {
             <Route path="/refundpolicy" element={<Refundpolicy />} />
             <Route path="/auth/linkedin-callback" element={<LinkCall />} />
 
+            {/* Quiz Platform Route */}
+            <Route path="/quiz-platform" element={<QuizPlatform />} />
+            <Route path="/quiz-leaderboard" element={<QuizLeaderboard />} />
             {/* Protected Routes - Require authentication */}
             <Route path="/profile-setup" element={
               <ProtectedRoute>

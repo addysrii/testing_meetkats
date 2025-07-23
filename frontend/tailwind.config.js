@@ -126,6 +126,22 @@ export default {
         float: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' }
+        },
+        pulseSlow: {
+          '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+          '50%': { opacity: '1', transform: 'scale(1.15)' }
+        },
+        pulseSlower: {
+          '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
+          '50%': { opacity: '0.9', transform: 'scale(1.2)' }
+        },
+        blobMove: {
+          '0%,100%': { transform: 'translateY(0) rotate(0deg)' },
+          '50%': { transform: 'translateY(-30px) rotate(10deg)' }
+        },
+        blobRotate: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
         }
       },
       animation: {
@@ -138,7 +154,10 @@ export default {
         "slide-in-right": "slideInRight 0.4s ease-out",
         "slide-in-bottom": "slideInBottom 0.4s ease-out",
         "float": "float 3s ease-in-out infinite",
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite"
+        "pulse-slow": "pulseSlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-slower": "pulseSlower 5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        'blob-move': 'blobMove 8s ease-in-out infinite',
+        'blob-rotate': 'blobRotate 18s linear infinite'
       },
       boxShadow: {
         card: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
