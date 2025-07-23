@@ -146,8 +146,12 @@ const hardcodedQuiz = {
   ],
 };
 
-// Redirect to dashboard if user already attempted quiz
-  React.useEffect(() => {
+
+const QuizPlatform = () => {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+  // Redirect to dashboard if user already attempted quiz
+  useEffect(() => {
     const checkQuizAttempt = async () => {
       if (!loading && user && user.email) {
         try {
@@ -165,11 +169,6 @@ const hardcodedQuiz = {
     };
     checkQuizAttempt();
   }, [user, loading, navigate]);
-
-  
-const QuizPlatform = () => {
-  const { user, loading } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && !user) {
