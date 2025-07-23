@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { saveQuizResult } from "../../supabase/quizApi";
+import BackgroundMusic from "../../../public/Background_Music.mp3"; // Adjust path as needed
 
 // Hardcoded quiz data
 const hardcodedQuiz = {
@@ -60,7 +61,7 @@ const hardcodedQuiz = {
       correct: 1,
     },
     {
-      text: "What’s the name of AI that replaces J.A.R.V.I.S. after Age of Ultron?",
+      text: "What's the name of AI that replaces J.A.R.V.I.S. after Age of Ultron?",
       options: ["EDITH", "FRIDAY", "KAREN", "HOMER"],
       correct: 1,
     },
@@ -71,7 +72,7 @@ const hardcodedQuiz = {
       correct: 2,
     },
     {
-      text: "What is the name of Scott Lang’s daughter?",
+      text: "What is the name of Scott Lang's daughter?",
       options: ["Cindy", "Cassie", "Carol", "Katie"],
       correct: 1,
     },
@@ -81,17 +82,17 @@ const hardcodedQuiz = {
       correct: 3,
     },
     {
-      text: "What is the name of Black Panther’s country?",
+      text: "What is the name of Black Panther's country?",
       options: ["Zamunda", "Wakanda", "Genosha", "Sokovia"],
       correct: 1,
     },
     {
-      text: "What’s the name of Thanos’s home planet?",
+      text: "What's the name of Thanos's home planet?",
       options: ["Titan", "Xandar", "Vormir", "Hala"],
       correct: 0,
     },
     {
-      text: "How many years pass between the snap and the Avengers’ time heist?",
+      text: "How many years pass between the snap and the Avengers' time heist?",
       options: ["3", "5", "7", "10"],
       correct: 1,
     },
@@ -113,16 +114,16 @@ const hardcodedQuiz = {
     },
     {
       text: "What powerful entity do the Ten Rings connect to in Shang-Chi?",
-      options: ["Mandarin", "Fin Fang Foom", "Dweller-in-Darkness", "K’un-Lun"],
+      options: ["Mandarin", "Fin Fang Foom", "Dweller-in-Darkness", "K'un-Lun"],
       correct: 2,
     },
     {
       text: "What causes the multiverse to crack in No Way Home?",
       options: [
-        "Kang’s intervention",
-        "Doctor Strange’s spell",
+        "Kang's intervention",
+        "Doctor Strange's spell",
         "Thanos using the Gauntlet",
-        "Loki’s escape",
+        "Loki's escape",
       ],
       correct: 1,
     },
@@ -148,7 +149,7 @@ const QuizPlatform = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading && !user) {
       navigate("/login", { replace: true });
     }
@@ -164,10 +165,32 @@ const QuizPlatform = () => {
   const [timerActive, setTimerActive] = useState(false);
   const [step, setStep] = useState("intro"); // intro | quiz | thankyou
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  // Initialize audio when component mounts
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.2; // Set initial volume
+    }
+  }, []);
+
+  const handleMusicToggle = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(error => {
+          console.error("Audio playback failed:", error);
+        });
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   // Start quiz
   const handleStartQuiz = () => {
-    setUserAnswers(Array(currentQuiz.questions.length).fill(null));
+    setUserAnswers(Array(currentQuiz.questions.length).fill(null);
     setQuizResult(null);
     setTimeLeft(currentQuiz.timer);
     setTimerActive(true);
@@ -213,17 +236,15 @@ const QuizPlatform = () => {
         email: user?.email || "unknown@example.com",
         score,
       });
-      // Optionally show a success message or update UI
     } catch (error) {
       console.error("Failed to save quiz result:", error.message);
-      // Optionally show an error message to the user
     }
 
     setStep("thankyou");
   };
 
   // Timer effect
-  React.useEffect(() => {
+  useEffect(() => {
     if (timerActive && timeLeft > 0) {
       const interval = setInterval(() => setTimeLeft((t) => t - 1), 1000);
       return () => clearInterval(interval);
@@ -285,10 +306,6 @@ const QuizPlatform = () => {
     </div>
   );
 
-  // Add custom keyframes for slower pulse in your global CSS or tailwind config:
-  // .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-  // .animate-pulse-slower { animation: pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-
   // Quiz attempt: show one question at a time
   const QuizAttempt = () => {
     const q = currentQuiz.questions[currentQuestion];
@@ -317,7 +334,6 @@ const QuizPlatform = () => {
                       : "bg-gray-50 border-gray-200"
                   }`}
                 onClick={() => handleAnswer(currentQuestion, oidx)}
-                // No longer disable after selection
               >
                 <span className="text-gray-700">{opt}</span>
               </button>
@@ -458,45 +474,41 @@ const QuizPlatform = () => {
     </div>
   );
 
-  // Background music player
-  const [isPlaying, setIsPlaying] = useState(true);
-  const audioRef = useRef(null);
-  const handleMusicToggle = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 via-60% to-white flex flex-col items-center justify-start py-10 px-2 relative overflow-hidden">
       <AnimatedBackground />
       {/* Background music audio player */}
       <audio
         ref={audioRef}
-        src="../../../public/Background_Music.mp3"
-        autoPlay
+        src={BackgroundMusic}
         loop
-        volume={0.2}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
       />
       <button
-        className="absolute top-6 right-6 z-10 bg-white/80 hover:bg-green-100 text-green-700 px-4 py-2 rounded-full shadow transition-all"
+        className="absolute top-6 right-6 z-10 bg-white/80 hover:bg-green-100 text-green-700 px-4 py-2 rounded-full shadow transition-all flex items-center"
         onClick={handleMusicToggle}
         aria-label={isPlaying ? "Pause music" : "Play music"}
       >
-        {isPlaying ? "Pause Music" : "Play Music"}
+        {isPlaying ? (
+          <>
+            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Pause Music
+          </>
+        ) : (
+          <>
+            <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414 1.414m2.828-9.9a9 9 0 012.728-2.728" />
+            </svg>
+            Play Music
+          </>
+        )}
       </button>
       <div className="w-full max-w-3xl">
         {step === "intro" && <Intro />}
         {step === "quiz" && <QuizAttempt />}
         {step === "thankyou" && <ThankYou />}
-        {/* Leaderboard is not accessible to users anymore */}
+        {step === "leaderboard" && <Leaderboard />}
       </div>
     </div>
   );
