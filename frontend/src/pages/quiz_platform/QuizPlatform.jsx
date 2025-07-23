@@ -181,7 +181,6 @@ const QuizPlatform = () => {
     Array(hardcodedQuiz.questions.length).fill(null)
   );
   const [quizResult, setQuizResult] = useState(null);
-  const [leaderboard, setLeaderboard] = useState([]);
   const [timeLeft, setTimeLeft] = useState(hardcodedQuiz.timer);
   const [timerActive, setTimerActive] = useState(false);
   const [step, setStep] = useState("thankyou"); // intro | quiz | thankyou
@@ -381,80 +380,7 @@ const handleStartQuiz = () => {
     );
   };
 
-  // Quiz result
-  const QuizResult = () => (
-    <div className="bg-green-50 rounded-xl shadow-lg p-8 mb-8 text-center animate-fade-in">
-      <h2 className="text-2xl font-bold text-green-700 mb-4">Quiz Result</h2>
-      <div className="text-4xl font-extrabold mb-2">
-        {quizResult.score} / {quizResult.total}
-      </div>
-      <div className="text-lg text-gray-700 mb-6">
-        {quizResult.score === quizResult.total
-          ? "Perfect Score! 🎉"
-          : quizResult.score > quizResult.total / 2
-          ? "Great job!"
-          : "Keep practicing!"}
-      </div>
-      <button
-        className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-blue-600 hover:to-blue-800 transition-all mr-4"
-        onClick={() => setStep("leaderboard")}
-      >
-        View Leaderboard
-      </button>
-      <button
-        className="bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-semibold shadow hover:bg-gray-400 transition-all"
-        onClick={() => setStep("intro")}
-      >
-        Back to Home
-      </button>
-    </div>
-  );
-
-  // Leaderboard
-  const Leaderboard = () => {
-    const sorted = [...leaderboard].sort(
-      (a, b) => b.score - a.score || a.time - b.time
-    );
-    return (
-      <div className="bg-yellow-50 rounded-xl shadow-lg p-8 mb-8 animate-fade-in">
-        <h2 className="text-2xl font-bold text-yellow-700 mb-4">Leaderboard</h2>
-        {sorted.length === 0 ? (
-          <p className="text-gray-500">No attempts yet.</p>
-        ) : (
-          <table className="w-full text-left">
-            <thead>
-              <tr>
-                <th className="py-2 px-2">Rank</th>
-                <th className="py-2 px-2">Score</th>
-                <th className="py-2 px-2">Time (mm:ss)</th>
-                <th className="py-2 px-2">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((entry, idx) => (
-                <tr key={idx} className="border-t">
-                  <td className="py-2 px-2 font-semibold">{idx + 1}</td>
-                  <td className="py-2 px-2">{entry.score}</td>
-                  <td className="py-2 px-2">{formatTime(entry.time)}</td>
-                  <td className="py-2 px-2 text-xs text-gray-500">
-                    {entry.date}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-        <div className="flex justify-center mt-6">
-          <button
-            className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-6 py-2 rounded-lg font-semibold shadow hover:from-blue-600 hover:to-blue-800 transition-all"
-            onClick={() => setStep("intro")}
-          >
-            Back to Home
-          </button>
-        </div>
-      </div>
-    );
-  };
+  
 
   // Intro/landing
   const Intro = () => (
@@ -530,7 +456,6 @@ const handleStartQuiz = () => {
         {step === "intro" && <Intro />}
         {step === "quiz" && <QuizAttempt />}
         {step === "thankyou" && <ThankYou />}
-        {step === "leaderboard" && <Leaderboard />}
       </div>
     </div>
   );
