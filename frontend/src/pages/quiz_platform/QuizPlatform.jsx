@@ -477,12 +477,12 @@ const handleStartQuiz = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 via-60% to-white flex flex-col items-center justify-start py-10 px-2 relative overflow-hidden">
       <AnimatedBackground />
-      {/* Background music audio player */}
-      <audio
-        ref={audioRef}
-        src={BackgroundMusic}
-        loop
-      />
+     
+ <audio
+  ref={audioRef}
+  src="/Background_Music.mp3"  
+  loop
+/>
       <button
         className="absolute top-6 right-6 z-10 bg-white/80 hover:bg-green-100 text-green-700 px-4 py-2 rounded-full shadow transition-all flex items-center"
         onClick={handleMusicToggle}
