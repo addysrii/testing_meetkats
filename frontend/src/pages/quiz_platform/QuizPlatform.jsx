@@ -184,7 +184,7 @@ const QuizPlatform = () => {
   const [leaderboard, setLeaderboard] = useState([]);
   const [timeLeft, setTimeLeft] = useState(hardcodedQuiz.timer);
   const [timerActive, setTimerActive] = useState(false);
-  const [step, setStep] = useState("intro"); // intro | quiz | thankyou
+  const [step, setStep] = useState("thankyou"); // intro | quiz | thankyou
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
