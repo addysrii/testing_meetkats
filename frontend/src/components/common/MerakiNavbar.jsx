@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, ChevronDown, Menu } from 'lucide-react';
 
-const Navbar = () => {
+const MerakiNavbar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,7 +24,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
@@ -38,38 +38,38 @@ const Navbar = () => {
                   <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
                 </div>
                 <span className="text-xl font-bold text-gray-900">Meraki</span>
-            </div>
+              </div>
             </div>
           </div>
 
           {/* Search Bar */}
           <div className="flex-1 max-w-2xl mx-8">
             <form onSubmit={handleSearch} className="relative">
-                <div className="relative">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                  <input
+                <input
                   type="text"
                   placeholder="Search for Plays, Sports, Activities, Hackathons and Comedy shows..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  />
-                </div>
-              </form>
-            </div>
+                />
+              </div>
+            </form>
+          </div>
 
           {/* Right side navigation */}
-            <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4">
             {/* Location Selector */}
             <div className="relative">
-                <button
+              <button
                 onClick={() => setIsLocationOpen(!isLocationOpen)}
                 className="flex items-center space-x-1 text-gray-700 hover:text-gray-900 focus:outline-none"
               >
                 <span>Select Location</span>
                 <ChevronDown className="w-4 h-4" />
-                </button>
-
+              </button>
+              
               {isLocationOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
                   <div className="py-1">
@@ -85,30 +85,30 @@ const Navbar = () => {
                     >
                       Delhi
                     </button>
-                <button
+                    <button
                       onClick={() => handleLocationSelect('Bangalore')}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Bangalore
-                </button>
-                      <button
+                    </button>
+                    <button
                       onClick={() => handleLocationSelect('Chennai')}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Chennai
-                      </button>
-                    </div>
+                    </button>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
 
             {/* Sign In Button */}
-              <button
+            <button
               onClick={handleSignIn}
               className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
             >
               Sign in
-              </button>
+            </button>
 
             {/* Hamburger Menu */}
             <button
@@ -118,7 +118,7 @@ const Navbar = () => {
               <Menu className="w-6 h-6" />
             </button>
           </div>
-                </div>
+        </div>
 
         {/* Mobile Menu */}
         {isMenuOpen && (
@@ -137,11 +137,11 @@ const Navbar = () => {
                 Contact
               </a>
             </div>
-                </div>
-              )}
+          </div>
+        )}
       </div>
     </nav>
   );
 };
 
-export default Navbar;
+export default MerakiNavbar; 
