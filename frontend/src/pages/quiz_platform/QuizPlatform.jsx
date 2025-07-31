@@ -151,6 +151,7 @@ const QuizPlatform = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
   useEffect(() => {
+    
     setStep("thankyou");
   },[]);
   // Redirect to dashboard if user already attempted quiz
@@ -388,12 +389,12 @@ const handleStartQuiz = () => {
   const Intro = () => (
     <div className="bg-white rounded-xl shadow-lg p-10 mb-8 text-center animate-fade-in">
       <h1 className="text-4xl font-extrabold mb-4 text-green-700">
-        Welcome to the Quiz Platform!
+        Welcome to the MeetKats Quiz Platform!
       </h1>
       <p className="text-lg text-gray-700 mb-8">
-        Test your knowledge with our 20-question Marvel Cinematic Universe
+        Test your knowledge with our {"Quiz Name"}
         Challenge. You have{" "}
-        <span className="font-bold text-green-600">10 minutes</span> to complete
+        <span className="font-bold text-green-600">{"Duration"}</span> to complete
         the quiz. Good luck!
       </p>
       <button
@@ -414,6 +415,24 @@ const handleStartQuiz = () => {
       <p className="text-lg text-gray-700 mb-6">
         Your responses have been recorded. Results and winners will be announced
         soon. Stay tuned!
+      </p>
+      <button
+        className="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow hover:from-green-500 hover:to-green-700 transition-all"
+        onClick={() => navigate("/dashboard")}
+      >
+        Back to Home
+      </button>
+    </div>
+  );
+
+  // Not Started page before quiz starting
+  const Inactive = () => (
+    <div className="bg-white rounded-xl shadow-lg p-10 mb-8 text-center animate-fade-in">
+      <h2 className="text-3xl font-bold text-green-700 mb-4">
+        Thank You for Visiting MeetKats!
+      </h2>
+      <p className="text-lg text-gray-700 mb-6">
+        It Seems that the Quiz has not been started yet. It will be available at {"Time"} You can wait or come again later !
       </p>
       <button
         className="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow hover:from-green-500 hover:to-green-700 transition-all"
