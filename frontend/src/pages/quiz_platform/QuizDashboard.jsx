@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Calendar, Clock, Eye, EyeOff, Edit3, Trash2 } from 'lucide-react';
-import { CreateNewQuiz,DeleteQuiz,ToggleActive } from "../../supabase/quizApi";
+import { CreateNewQuiz,DeleteQuiz,ToggleActive,getQuizDetails } from "../../supabase/quizApi";
 import { useNavigate} from "react-router-dom";
 const QuizDashboard = () => {
     const navigate = useNavigate();
@@ -33,6 +33,18 @@ const QuizDashboard = () => {
       created_at: '2025-07-27T08:45:00Z'
     }
   ]);
+  const fetchData = async ()=>{
+    try {
+      const data = await getQuizDetails();
+      setQuizzes(data);
+    }catch(error) {
+      alert("Error Occured");
+      navigate("./dashboard");
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  },[])
 
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [newQuiz, setNewQuiz] = useState({
@@ -82,7 +94,7 @@ const QuizDashboard = () => {
         alert("Error Occured");
         navigate("./dashboard");
     }
-    setQuizzes(prev => [quiz, ...prev]);
+    setQuizzes(prev => [data, ...prev]);
     setNewQuiz({
       Name: '',
       Start_time: '',

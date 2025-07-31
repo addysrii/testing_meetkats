@@ -32,21 +32,21 @@ const { data, error } = await supabase
 
 //Function to Delete Quizes
 export async function DeleteQuiz(id){
-  const { data2, error } = await supabase
+  const { data2, error2 } = await supabase
     .from("questions")
     .delete()
     .eq('quiz', id)
-  if (error) throw error;
-  const { data3, error } = await supabase
+  if (error2) throw error2;
+  const { data3, error3 } = await supabase
     .from("questions")
     .delete()
     .eq('quiz', id)
-  if (error) throw error;
-  const { data1, error } = await supabase
+  if (error3) throw error3;
+  const { data1, error1 } = await supabase
     .from("quizes")
     .delete()
     .eq('id', id)
-  if (error) throw error;
+  if (error1) throw error1;
   return data3;
 }
 
