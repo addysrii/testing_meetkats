@@ -1,18 +1,25 @@
-import React, { useState } from 'react';
-import { ChevronUp, Heart, Facebook, Twitter, Instagram, Linkedin, Youtube } from 'lucide-react';
+import { useState } from "react";
+import { ChevronUp, Heart } from "lucide-react";
+import {
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
-  const [showBackToTop, setShowBackToTop] = useState(true);
+  const [email, setEmail] = useState("");
+  const [showBackToTop] = useState(true);
 
   const handleSubscribe = () => {
     // Handle newsletter subscription
-    console.log('Subscribed with email:', email);
-    setEmail('');
+    console.log("Subscribed with email:", email);
+    setEmail("");
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -30,40 +37,44 @@ const Footer = () => {
           <div className="mt-6 sm:mt-0">
             <h3 className="text-lg font-semibold mb-4">FOLLOW US ON</h3>
             <div className="flex space-x-4">
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                 aria-label="Follow us on Facebook"
               >
-                <Facebook className="w-5 h-5 text-white" />
+                <FaFacebook className="w-5 h-5 invert" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="https://x.com/MeetKatsOrg"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                 aria-label="Follow us on Twitter"
               >
-                <Twitter className="w-5 h-5 text-white" />
+                <FaTwitter className="w-5 h-5 invert" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                 aria-label="Follow us on Instagram"
               >
-                <Instagram className="w-5 h-5 text-white" />
+                <FaInstagram className="w-5 h-5 invert" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="https://www.linkedin.com/company/meetkats/posts/?feedView=all"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                 aria-label="Follow us on LinkedIn"
               >
-                <Linkedin className="w-5 h-5 text-white" />
+                <FaLinkedin className="w-5 h-5 invert" />
               </a>
-              <a 
-                href="#" 
+              <a
+                href="#"
                 className="w-10 h-10 bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full flex items-center justify-center transition-all duration-300 transform hover:scale-110"
                 aria-label="Follow us on YouTube"
               >
-                <Youtube className="w-5 h-5 text-white" />
+                <FaYoutube className="w-5 h-5 invert" />
               </a>
             </div>
           </div>
@@ -73,52 +84,179 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 lg:gap-12">
           {/* For Users Column */}
           <div>
-            <h4 className="text-base font-semibold mb-6 text-white">FOR USERS</h4>
+            <h4 className="text-base font-semibold mb-6 text-white">
+              FOR USERS
+            </h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Book Tickets</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Explore Events</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Discover Shows</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Grab Discounts</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">MeetKats Lounge</a></li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Book Tickets
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Explore Events
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Discover Shows
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Grab Discounts
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  MeetKats Lounge
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* For Organisers Column */}
           <div>
-            <h4 className="text-base font-semibold mb-6 text-white">FOR ORGANISERS</h4>
+            <h4 className="text-base font-semibold mb-6 text-white">
+              FOR ORGANISERS
+            </h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">List Your Event</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Register as Organiser</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Promote Event</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Boost Visibility</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Organiser Care</a></li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  List Your Event
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Register as Organiser
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Promote Event
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Boost Visibility
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Organiser Care
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Quick Links Column */}
           <div>
-            <h4 className="text-base font-semibold mb-6 text-white">QUICK LINKS</h4>
+            <h4 className="text-base font-semibold mb-6 text-white">
+              QUICK LINKS
+            </h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Home</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Cancellation & Refund Policy</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Help & FAQs</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Term & Conditions</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Announcement / Blogs</a></li>
-              <li><a href="#" className="hover:text-cyan-200 transition-colors duration-200">Partner With Us</a></li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Cancellation & Refund Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Help & FAQs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Term & Conditions
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Announcement / Blogs
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="hover:text-cyan-200 transition-colors duration-200"
+                >
+                  Partner With Us
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Newsletter Subscribe Column */}
           <div>
-            <h4 className="text-base font-semibold mb-6 text-white">Newsletter Subscribe</h4>
+            <h4 className="text-base font-semibold mb-6 text-white">
+              Newsletter Subscribe
+            </h4>
             <div className="space-y-4">
               <input
                 type="email"
                 placeholder="Enter your e-mail address*"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 transition-all duration-200"
+                className="w-full px-4 py-3 rounded-md  bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50 focus:bg-opacity-30 transition-all duration-200"
               />
               <button
                 onClick={handleSubscribe}

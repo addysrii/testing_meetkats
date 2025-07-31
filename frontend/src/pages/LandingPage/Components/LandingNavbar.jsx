@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
-import { Search, ChevronDown, Menu } from 'lucide-react';
+import React, { useState } from "react";
+import { Search, ChevronDown, Menu } from "lucide-react";
+import img from "../../../assets/MeetKats.jpg";
 
 const LandingNavbar = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isLocationOpen, setIsLocationOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Searching for:', searchQuery);
+    console.log("Searching for:", searchQuery);
     // Add search functionality here
   };
 
   const handleLocationSelect = (location) => {
-    console.log('Selected location:', location);
+    console.log("Selected location:", location);
     setIsLocationOpen(false);
   };
 
   const handleSignIn = () => {
-    console.log('Sign in clicked');
+    console.log("Sign in clicked");
     // Add sign in functionality here
   };
 
@@ -29,15 +30,17 @@ const LandingNavbar = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <div className="flex items-center space-x-2">
-                {/* Logo with four stylized human figures */}
-                <div className="flex space-x-1">
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  <div className="w-3 h-3 bg-orange-500 rounded-full"></div>
+              <div className="flex items-center space-x-3 group">
+                <div className="h-8 w-8 rounded-md justify-center shadow-md group-hover:shadow-lg transition-all duration-200">
+                  <img
+                    src={img || "/placeholder.svg"}
+                    alt="MeetKats"
+                    className="h-8 w-8"
+                  />
                 </div>
-                <span className="text-xl font-bold text-gray-900">Meraki</span>
+                <span className="text-lg font-semibold text-gray-900 hidden sm:block">
+                  MeetKats
+                </span>
               </div>
             </div>
           </div>
@@ -69,42 +72,42 @@ const LandingNavbar = () => {
                 <span>Select Location</span>
                 <ChevronDown className="w-4 h-4" />
               </button>
-              
+
               {isLocationOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
                   <div className="py-1">
                     <button
-                      onClick={() => handleLocationSelect('Mumbai')}
+                      onClick={() => handleLocationSelect("Mumbai")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Mumbai
                     </button>
                     <button
-                      onClick={() => handleLocationSelect('Delhi')}
+                      onClick={() => handleLocationSelect("Delhi")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Delhi
                     </button>
                     <button
-                      onClick={() => handleLocationSelect('Bangalore')}
+                      onClick={() => handleLocationSelect("Bangalore")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Bangalore
                     </button>
                     <button
-                      onClick={() => handleLocationSelect('Chennai')}
+                      onClick={() => handleLocationSelect("Chennai")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Chennai
                     </button>
                     <button
-                      onClick={() => handleLocationSelect('Hyderabad')}
+                      onClick={() => handleLocationSelect("Hyderabad")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Hyderabad
                     </button>
                     <button
-                      onClick={() => handleLocationSelect('Pune')}
+                      onClick={() => handleLocationSelect("Pune")}
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
                       Pune
@@ -136,16 +139,28 @@ const LandingNavbar = () => {
         {isMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
-              <a href="#" className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md"
+              >
                 Home
               </a>
-              <a href="#" className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md"
+              >
                 Events
               </a>
-              <a href="#" className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md"
+              >
                 About
               </a>
-              <a href="#" className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md">
+              <a
+                href="#"
+                className="block px-3 py-2 text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-md"
+              >
                 Contact
               </a>
             </div>
@@ -156,4 +171,4 @@ const LandingNavbar = () => {
   );
 };
 
-export default LandingNavbar; 
+export default LandingNavbar;

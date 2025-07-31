@@ -35,7 +35,6 @@ import PostsFetcher from './pages/PostFetcher';
 import LinkCall from './pages/LinkCall';
 // import LandingPage from './pages/LandingPage';
 import { BhoomiLandingPage } from './pages/BhoomiLandingPage/BhoomiLandingPage';
-import NewLandingPage from './pages/LandingPage/NewLandingPage';
 // Event Management Pages
 import EventListingPage from './pages/EventsListingPage';
 // import EventDetailPage from './pages/EventDetailPage';
@@ -102,7 +101,6 @@ const App = () => {
             {/* Public Routes - Accessible without authentication */}
             {/*<Route path="/landingpage" element={<LandingPage />} />*/}
             <Route path="/landingpage" element={<BhoomiLandingPage />} />
-            <Route path="/new-landingpage" element={<NewLandingPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
