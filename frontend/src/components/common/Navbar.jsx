@@ -6,6 +6,7 @@ import img from "../../assets/MeetKats.jpg";
 import img1 from "../../assets/messenger.png";
 import notificationService from "../../services/notificationService";
 
+
 const Sidebar = ({ user = {}, onLogout }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
