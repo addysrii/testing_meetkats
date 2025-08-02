@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import {useParams,useNavigate} from 'react-router-dom';
-import { getQuizQuestions } from '../../supabase/questionApi';
+import { getQuizQuestions,AddNewQuestion,UpdateQuestion,DeleteQuestion } from '../../supabase/questionApi';
 const CreateQuizes = () => {
     const [questions, setQuestions] = useState([]);
     const [editingId, setEditingId] = useState(null);
@@ -23,62 +23,118 @@ const CreateQuizes = () => {
         }else{
             navigate('/quiz-platform');
         }
-    },[]);
+        console.log(questions)
+    },[quizid, navigate]);
 
     const createNewQuestion = () => ({
+        id: Date.now(), // Temporary ID for new question
         question: '',
         options: ['', '', '', ''],
         correct: '',
         quiz: quizid || null,
     });
-
-    const addQuestion = () => {
-        const newQuestion = createNewQuestion();
-        setQuestions([...questions, newQuestion]);
-        setEditingId(newQuestion.id);
-    };
-
-    const removeQuestion = (id) => {
-        setQuestions(questions.filter(q => q.id !== id));
-        if (editingId === id) setEditingId(null);
-    };
-
-    const updateQuestion = (id, field, value) => {
+    const handleQuesChange = (e) => {
+        // Update the question text state
         setQuestions(questions.map(q =>
-            q.id === id ? { ...q, [field]: value } : q
+            q.id === editingId ? { ...q, question: e.target.value } : q
         ));
+    }
+    const addQuestion = async () => {
+        try {
+            const newQuestion = createNewQuestion();
+            const data = await AddNewQuestion(newQuestion.question, newQuestion.options, newQuestion.correct, quizid);
+            newQuestion.id = data[0].id;
+            setQuestions([...questions, newQuestion]);
+            setEditingId(newQuestion.id);
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
+    };
+
+    const removeQuestion = async (id) => {
+        try {
+            await DeleteQuestion(id);
+            // Update the state to remove the question
+            setQuestions(questions.filter(q => q.id !== id));
+            if (editingId === id) setEditingId(null);
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
+    };
+
+    const updateQuestion = async (id, field, value) => {
+        try {
+            await UpdateQuestion(id, field, value);
+            // Update the state directly to reflect changes immediately
+            setQuestions(questions.map(q =>
+                q.id === id ? { ...q, [field]: value } : q
+            ));
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
     };
 
     const updateOption = (questionId, optionIndex, value) => {
-        setQuestions(questions.map(q =>
-            q.id === questionId
-                ? { ...q, options: q.options.map((opt, idx) => idx === optionIndex ? value : opt) }
-                : q
-        ));
+        try {
+            const options = questions.find(q => q.id === questionId).options;
+            options[optionIndex]=value;
+            // Update the state directly to reflect changes immediately
+            setQuestions(questions.map(q =>
+                q.id === questionId
+                    ? { ...q, options: q.options.map((opt, idx) => idx === optionIndex ? value : opt) }
+                    : q
+            ));
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
     };
 
     const addOption = (questionId) => {
-        setQuestions(questions.map(q =>
+        try {
+            // Update the state directly to reflect changes immediately
+            setQuestions(questions.map(q =>
             q.id === questionId
                 ? { ...q, options: [...q.options, ''] }
                 : q
         ));
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
     };
 
     const removeOption = (questionId, optionIndex) => {
-        setQuestions(questions.map(q =>
+        try {
+            // Ensure there are at least two options before removing
+            if (questions.find(q => q.id === questionId).options.length <= 2) {
+                alert("You must have at least two options.");
+                return;
+            }
+            // Update the state directly to reflect changes immediately
+            setQuestions(questions.map(q =>
             q.id === questionId
                 ? { ...q, options: q.options.filter((_, idx) => idx !== optionIndex) }
                 : q
         ));
+        } catch (error) {
+            alert("Error adding question: " + error.message);
+            console.error("Error adding question:", error);
+        }
+        
     };
 
     const startEditing = (id) => {
+        const q = questions.find(q => q.id === id);
         setEditingId(id);
     };
 
-    const stopEditing = () => {
+    const stopEditing = (id) => {
         setEditingId(null);
+        console.log(questions)
     };
 
     const isQuestionValid = (question) => {
@@ -128,7 +184,12 @@ const CreateQuizes = () => {
                                         <div className="flex gap-2">
                                             {editingId === question.id ? (
                                                 <button
-                                                    onClick={stopEditing}
+                                                    onClick={()=>{
+                                                        updateQuestion(question.id, 'question', question.question);
+                                                        updateQuestion(question.id, 'options', question.options);
+                                                        updateQuestion(question.id, 'correct', question.correct);
+                                                        stopEditing();
+                                                    }}
                                                     className="text-green-600 hover:text-green-700 p-2 hover:bg-green-50 rounded-lg transition-colors"
                                                 >
                                                     <Check size={18} />
@@ -160,7 +221,7 @@ const CreateQuizes = () => {
                                         {editingId === question.id ? (
                                             <textarea
                                                 value={question.question}
-                                                onChange={(e) => updateQuestion(question.id, 'question', e.target.value)}
+                                                onChange={handleQuesChange}
                                                 placeholder="Enter your question here..."
                                                 className="w-full p-3 border border-green-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                                                 rows={3}

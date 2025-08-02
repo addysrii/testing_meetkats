@@ -11,19 +11,22 @@ export async function getQuizQuestions(quizid) {
 }
 
 //Function to Add New Questions
-export async function CreateNewQuestion(ques, opt, correct, quizid) {
+export async function AddNewQuestion(ques, opt, correct, quizid) {
     const { data, error } = await supabase
         .from("questions")
         .insert([{ question: ques, correct: correct, options: opt, quiz: quizid }])
+        .select()
     if (error) throw error;
     return data;
 }
 
 //Function to Update Existing Questions
-export async function UpdateQuestion(ques, opt, correct, quizid) {
+export async function UpdateQuestion(quesid, field, val) {
     const { data, error } = await supabase
         .from("questions")
-        .insert([{ question: ques, correct: correct, options: opt, quiz: quizid }])
+        .update({ [field]: val })
+        .eq('id', quesid)
+        .select()
     if (error) throw error;
     return data;
 }
@@ -34,5 +37,4 @@ export async function DeleteQuestion(quesid) {
         .delete()
         .eq('id', quesid)
     if (error) throw error;
-    return data;
 }

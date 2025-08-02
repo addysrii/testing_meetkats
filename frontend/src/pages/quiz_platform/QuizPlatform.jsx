@@ -1,196 +1,206 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate, Link } from "react-router-dom";
-import { saveQuizResult } from "../../supabase/quizApi";
-import BackgroundMusic from "../../../public/Background_Music.mp3";
-import { fetchQuizResultByEmail } from "../../supabase/quizApi";
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchQuizData, fetchQuizResultByEmail, saveQuizResult } from "../../supabase/quizClient";
 
 
-const hardcodedQuiz = {
-  title: "Marvel Cinematic Universe Challenge",
-  timer: 600, 
-  questions: [
+// const hardcodedQuiz = {
+//   title: "Marvel Cinematic Universe Challenge",
+//   timer: 600, 
+//   questions: [
 
-    {
-      text: "What is the name of Tony Stark’s company in Iron Man (2008)?",
-      options: [
-        "Stark Enterprises",
-        "Stark Industries",
-        "Stark Tech",
-        "Stark Solutions",
-      ],
-      correct: 1,
-    },
-    {
-      text: "What does S.H.I.E.L.D. stand for?",
-      options: [
-        "Super Heroes International Law Division",
-        "Strategic Homeland Intervention, Enforcement, and Logistics Division",
-        "Supreme Headquarters for International Espionage and Law Division",
-        "Security Headquarters In International Law Division",
-      ],
-      correct: 1,
-    },
-    {
-      text: "Who is the villain in Iron Man 2?",
-      options: [
-        "Justin Hammer",
-        "Mandarin",
-        "Ivan Vanko (Whiplash)",
-        "Obadiah Stane",
-      ],
-      correct: 2,
-    },
-    {
-      text: "What is the name of the alien race that attacks New York in The Avengers?",
-      options: ["Skrulls", "Chitauri", "Kree", "Symbiotes"],
-      correct: 1,
-    },
-    {
-      text: "Who creates Ultron in Avengers: Age of Ultron?",
-      options: ["Bruce Banner", "Tony Stark", "Hank Pym", "Nick Fury"],
-      correct: 1,
-    },
-    {
-      text: "How many infinity stones are there?",
-      options: ["5", "6", "7", "8"],
-      correct: 1,
-    },
-    {
-      text: "Who takes up the Captain America mantle at the end of Endgame?",
-      options: ["Bucky Barnes", "Sam Wilson", "Sharon Carter", "Clint Barton"],
-      correct: 1,
-    },
-    {
-      text: "What's the name of AI that replaces J.A.R.V.I.S. after Age of Ultron?",
-      options: ["EDITH", "FRIDAY", "KAREN", "HOMER"],
-      correct: 1,
-    },
-    // Medium (7 Questions)
-    {
-      text: "What realm is Thor originally from?",
-      options: ["Midgard", "Jotunheim", "Asgard", "Nidavellir"],
-      correct: 2,
-    },
-    {
-      text: "What is the name of Scott Lang's daughter?",
-      options: ["Cindy", "Cassie", "Carol", "Katie"],
-      correct: 1,
-    },
-    {
-      text: "Who recruits Spider-Man in Captain America: Civil War?",
-      options: ["Captain America", "Hawkeye", "Black Widow", "Iron Man"],
-      correct: 3,
-    },
-    {
-      text: "What is the name of Black Panther's country?",
-      options: ["Zamunda", "Wakanda", "Genosha", "Sokovia"],
-      correct: 1,
-    },
-    {
-      text: "What's the name of Thanos's home planet?",
-      options: ["Titan", "Xandar", "Vormir", "Hala"],
-      correct: 0,
-    },
-    {
-      text: "How many years pass between the snap and the Avengers' time heist?",
-      options: ["3", "5", "7", "10"],
-      correct: 1,
-    },
-    {
-      text: "Who is revealed to be behind the TVA in Loki?",
-      options: [
-        "Time-Keepers",
-        "Loki himself",
-        "Kang the Conqueror",
-        "Ravonna Renslayer",
-      ],
-      correct: 2,
-    },
-    // Difficult (5 Questions)
-    {
-      text: "Who mentors Kamala in her heroic journey?",
-      options: ["Nick Fury", "Iron Man", "Captain Marvel", "Monica Rambeau"],
-      correct: 2,
-    },
-    {
-      text: "What powerful entity do the Ten Rings connect to in Shang-Chi?",
-      options: ["Mandarin", "Fin Fang Foom", "Dweller-in-Darkness", "K'un-Lun"],
-      correct: 2,
-    },
-    {
-      text: "What causes the multiverse to crack in No Way Home?",
-      options: [
-        "Kang's intervention",
-        "Doctor Strange's spell",
-        "Thanos using the Gauntlet",
-        "Loki's escape",
-      ],
-      correct: 1,
-    },
-    {
-      text: "What was the first MCU project where Ironheart appeared?",
-      options: [
-        "Ironheart (TV series)",
-        "Ms. Marvel",
-        "Black Panther: Wakanda Forever",
-        "Spider-Man: No Way Home",
-      ],
-      correct: 2,
-    },
-    {
-      text: "What character dies twice in Infinity War?",
-      options: ["Loki", "Vision", "Gamora", "Iron Man"],
-      correct: 1,
-    },
-  ],
-};
-
-
+//     {
+//       text: "What is the name of Tony Stark’s company in Iron Man (2008)?",
+//       options: [
+//         "Stark Enterprises",
+//         "Stark Industries",
+//         "Stark Tech",
+//         "Stark Solutions",
+//       ],
+//       correct: 1,
+//     },
+//     {
+//       text: "What does S.H.I.E.L.D. stand for?",
+//       options: [
+//         "Super Heroes International Law Division",
+//         "Strategic Homeland Intervention, Enforcement, and Logistics Division",
+//         "Supreme Headquarters for International Espionage and Law Division",
+//         "Security Headquarters In International Law Division",
+//       ],
+//       correct: 1,
+//     },
+//     {
+//       text: "Who is the villain in Iron Man 2?",
+//       options: [
+//         "Justin Hammer",
+//         "Mandarin",
+//         "Ivan Vanko (Whiplash)",
+//         "Obadiah Stane",
+//       ],
+//       correct: 2,
+//     },
+//     {
+//       text: "What is the name of the alien race that attacks New York in The Avengers?",
+//       options: ["Skrulls", "Chitauri", "Kree", "Symbiotes"],
+//       correct: 1,
+//     },
+//     {
+//       text: "Who creates Ultron in Avengers: Age of Ultron?",
+//       options: ["Bruce Banner", "Tony Stark", "Hank Pym", "Nick Fury"],
+//       correct: 1,
+//     },
+//     {
+//       text: "How many infinity stones are there?",
+//       options: ["5", "6", "7", "8"],
+//       correct: 1,
+//     },
+//     {
+//       text: "Who takes up the Captain America mantle at the end of Endgame?",
+//       options: ["Bucky Barnes", "Sam Wilson", "Sharon Carter", "Clint Barton"],
+//       correct: 1,
+//     },
+//     {
+//       text: "What's the name of AI that replaces J.A.R.V.I.S. after Age of Ultron?",
+//       options: ["EDITH", "FRIDAY", "KAREN", "HOMER"],
+//       correct: 1,
+//     },
+//     // Medium (7 Questions)
+//     {
+//       text: "What realm is Thor originally from?",
+//       options: ["Midgard", "Jotunheim", "Asgard", "Nidavellir"],
+//       correct: 2,
+//     },
+//     {
+//       text: "What is the name of Scott Lang's daughter?",
+//       options: ["Cindy", "Cassie", "Carol", "Katie"],
+//       correct: 1,
+//     },
+//     {
+//       text: "Who recruits Spider-Man in Captain America: Civil War?",
+//       options: ["Captain America", "Hawkeye", "Black Widow", "Iron Man"],
+//       correct: 3,
+//     },
+//     {
+//       text: "What is the name of Black Panther's country?",
+//       options: ["Zamunda", "Wakanda", "Genosha", "Sokovia"],
+//       correct: 1,
+//     },
+//     {
+//       text: "What's the name of Thanos's home planet?",
+//       options: ["Titan", "Xandar", "Vormir", "Hala"],
+//       correct: 0,
+//     },
+//     {
+//       text: "How many years pass between the snap and the Avengers' time heist?",
+//       options: ["3", "5", "7", "10"],
+//       correct: 1,
+//     },
+//     {
+//       text: "Who is revealed to be behind the TVA in Loki?",
+//       options: [
+//         "Time-Keepers",
+//         "Loki himself",
+//         "Kang the Conqueror",
+//         "Ravonna Renslayer",
+//       ],
+//       correct: 2,
+//     },
+//     // Difficult (5 Questions)
+//     {
+//       text: "Who mentors Kamala in her heroic journey?",
+//       options: ["Nick Fury", "Iron Man", "Captain Marvel", "Monica Rambeau"],
+//       correct: 2,
+//     },
+//     {
+//       text: "What powerful entity do the Ten Rings connect to in Shang-Chi?",
+//       options: ["Mandarin", "Fin Fang Foom", "Dweller-in-Darkness", "K'un-Lun"],
+//       correct: 2,
+//     },
+//     {
+//       text: "What causes the multiverse to crack in No Way Home?",
+//       options: [
+//         "Kang's intervention",
+//         "Doctor Strange's spell",
+//         "Thanos using the Gauntlet",
+//         "Loki's escape",
+//       ],
+//       correct: 1,
+//     },
+//     {
+//       text: "What was the first MCU project where Ironheart appeared?",
+//       options: [
+//         "Ironheart (TV series)",
+//         "Ms. Marvel",
+//         "Black Panther: Wakanda Forever",
+//         "Spider-Man: No Way Home",
+//       ],
+//       correct: 2,
+//     },
+//     {
+//       text: "What character dies twice in Infinity War?",
+//       options: ["Loki", "Vision", "Gamora", "Iron Man"],
+//       correct: 1,
+//     },
+//   ],
+// };
+let hardcodedQuiz = {};
 const QuizPlatform = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
-  useEffect(() => {
-    
-    setStep("thankyou");
-  },[]);
+  const { id } = useParams();
+  const fetchQuiz = async () => {
+    try {
+      const quizData = await fetchQuizData(id);
+      if (!quizData) {
+        setStep("inactive");
+      }
+      else {
+        setCurrentQuiz(quizData); // Update currentQuiz state
+        setUserAnswers(Array(quizData.questions.length).fill(null)); // Initialize answers
+      }
+    } catch (error) {
+      console.error("Error fetching quiz data:", error.message);
+      setStep("inactive");
+    }
+  };
   // Redirect to dashboard if user already attempted quiz
-  useEffect(() => {
-    const checkQuizAttempt = async () => {
-      if (!loading && user && user.email) {
-        try {
-          const result = await fetchQuizResultByEmail(user.email);
-          if (result) {
-            setStep("thankyou");
-          }
-        } catch (err) {
-          // If error is not 'no rows found', log it
-          if (!err.code || err.code !== "PGRST116") {
-            console.error("Error checking quiz attempt:", err);
-          }
+  const checkQuizAttempt = async () => {
+    if (!loading && user && user.email) {
+      try {
+        const result = await fetchQuizResultByEmail(user.email);
+        console.log(result)
+        if (result) {
+          setStep("thankyou");
+        }else{
+          setStep("intro"); // User has not attempted the quiz yet
+        }
+      } catch (err) {
+        // If error is not 'no rows found', log it
+        if (!err.code || err.code !== "PGRST116") {
+          console.error("Error checking quiz attempt:", err);
         }
       }
-    };
-    checkQuizAttempt();
-  }, [user, loading, navigate]);
-
+    }
+  };
+  const [currentQuiz, setCurrentQuiz] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const [timeLeft, setTimeLeft] = useState(hardcodedQuiz.timer);
+  const [timerActive, setTimerActive] = useState(false);
+  const [step, setStep] = useState("inactive"); // intro | quiz | thankyou
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+  //Fetch Quiz Data before component mount
+  useEffect(() => {
+    fetchQuiz();
+  }, [id,user, loading]);
+  //Check if user already attempted quiz or not
   useEffect(() => {
     if (!loading && !user) {
       navigate("/login", { replace: true });
     }
-  }, [user, loading, navigate]);
-
-  const [currentQuiz] = useState(hardcodedQuiz);
-  const [userAnswers, setUserAnswers] = useState(
-    Array(hardcodedQuiz.questions.length).fill(null)
-  );
-  const [timeLeft, setTimeLeft] = useState(hardcodedQuiz.timer);
-  const [timerActive, setTimerActive] = useState(false);
-  const [step, setStep] = useState("thankyou"); // intro | quiz | thankyou
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef(null);
-
+    checkQuizAttempt();
+  }, [user, loading,navigate]);
   // Initialize audio when component mounts
   useEffect(() => {
     if (audioRef.current) {
@@ -212,14 +222,13 @@ const QuizPlatform = () => {
   };
 
   // Start quiz
-const handleStartQuiz = () => {
-  setUserAnswers(Array(currentQuiz.questions.length).fill(null));
-  setQuizResult(null);
-  setTimeLeft(currentQuiz.timer);
-  setTimerActive(true);
-  setStep("quiz");
-  setCurrentQuestion(0);
-};
+  const handleStartQuiz = () => {
+    setUserAnswers(Array(currentQuiz.questions.length).fill(null));
+    setTimeLeft(currentQuiz.timer);
+    setTimerActive(true);
+    setStep("quiz");
+    setCurrentQuestion(0);
+  };
 
   // Handle answer selection (no auto-advance)
   const handleAnswer = (qIdx, oIdx) => {
@@ -241,11 +250,16 @@ const handleStartQuiz = () => {
 
   // Submit quiz
   const handleSubmitQuiz = async () => {
-    let score = 0;
+    let correct = 0;
+    let incorrect = 0;
     currentQuiz.questions.forEach((q, idx) => {
-      if (userAnswers[idx] === q.correct) score++;
+      if (userAnswers[idx] === q.correct) {
+        correct++;
+      } else {
+        incorrect++
+      }
     });
-    setQuizResult({ score, total: currentQuiz.questions.length });
+    // setQuizResult({ score, total: currentQuiz.questions.length });
     setTimerActive(false);
 
     // Save to Supabase
@@ -258,7 +272,9 @@ const handleStartQuiz = () => {
           "Anonymous",
         email: user?.email || "unknown@example.com",
         time: formatTime(timeLeft),
-        score,
+        correct: correct,
+        incorrect: incorrect,
+        quizid: id
       });
     } catch (error) {
       console.error("Failed to save quiz result:", error.message);
@@ -352,10 +368,9 @@ const handleStartQuiz = () => {
               <button
                 key={oidx}
                 className={`flex items-center border rounded-lg px-4 py-2 w-full text-left font-medium transition-all duration-150 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-green-400
-                  ${
-                    userAnswers[currentQuestion] === oidx
-                      ? "bg-green-100 border-green-500 scale-105"
-                      : "bg-gray-50 border-gray-200"
+                  ${userAnswers[currentQuestion] === oidx
+                    ? "bg-green-100 border-green-500 scale-105"
+                    : "bg-gray-50 border-gray-200"
                   }`}
                 onClick={() => handleAnswer(currentQuestion, oidx)}
               >
@@ -383,7 +398,7 @@ const handleStartQuiz = () => {
     );
   };
 
-  
+
 
   // Intro/landing
   const Intro = () => (
@@ -432,7 +447,7 @@ const handleStartQuiz = () => {
         Thank You for Visiting MeetKats!
       </h2>
       <p className="text-lg text-gray-700 mb-6">
-        It Seems that the Quiz has not been started yet. It will be available at {"Time"} You can wait or come again later !
+        It Seems that the Quiz has not been started yet. You can wait or come again later !
       </p>
       <button
         className="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow hover:from-green-500 hover:to-green-700 transition-all"
@@ -446,12 +461,16 @@ const handleStartQuiz = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 via-60% to-white flex flex-col items-center justify-start py-10 px-2 relative overflow-hidden">
       <AnimatedBackground />
-     
- <audio
-  ref={audioRef}
-  src="https://res.cloudinary.com/dnnl72vrp/video/upload/v1753268097/WhatsApp_Audio_2025-07-23_at_16.21.25_e2047be9_l45aou.mp3"  
-  loop
-/>
+      {loading ? (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+        </div>
+      ) : ""}
+      <audio
+        ref={audioRef}
+        src="https://res.cloudinary.com/dnnl72vrp/video/upload/v1753268097/WhatsApp_Audio_2025-07-23_at_16.21.25_e2047be9_l45aou.mp3"
+        loop
+      />
       <button
         className="absolute top-6 right-6 z-10 bg-white/80 hover:bg-green-100 text-green-700 px-4 py-2 rounded-full shadow transition-all flex items-center"
         onClick={handleMusicToggle}
@@ -477,6 +496,7 @@ const handleStartQuiz = () => {
         {step === "intro" && <Intro />}
         {step === "quiz" && <QuizAttempt />}
         {step === "thankyou" && <ThankYou />}
+        {step === "inactive" && <Inactive />}
       </div>
     </div>
   );

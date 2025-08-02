@@ -6,4 +6,9 @@
    const supabaseUrl = 'https://wwvzyexzxbsdldljubxm.supabase.co';
    const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind3dnp5ZXh6eGJzZGxkbGp1YnhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxOTgwMDQsImV4cCI6MjA2ODc3NDAwNH0.rrSeWyd-ATMtFV1YeUTKIO7kwCGXNh3NepmUA1ZTKAo';
 
-   export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+   export const supabase = createClient(supabaseUrl, supabaseAnonKey,{
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
+});
