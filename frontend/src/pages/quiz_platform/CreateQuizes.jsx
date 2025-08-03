@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react';
-import { Plus, Trash2, Edit3, Check, X } from 'lucide-react';
+import {Navigation , Plus, Trash2, Edit3, Check, X } from 'lucide-react';
 import {useParams,useNavigate} from 'react-router-dom';
 import { getQuizQuestions,AddNewQuestion,UpdateQuestion,DeleteQuestion } from '../../supabase/questionApi';
 const CreateQuizes = () => {
@@ -16,12 +16,12 @@ const CreateQuizes = () => {
                     setQuestions(response);
                 } catch (error) {
                     console.error("Error fetching questions:", error);
-                    navigate('/quiz-platform');
+                    navigate('/noquizexist');
                 }
             };
             fetchQuestions();
         }else{
-            navigate('/quiz-platform');
+            navigate('/noquizexist');
         }
         console.log(questions)
     },[quizid, navigate]);
@@ -151,6 +151,16 @@ const CreateQuizes = () => {
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-green-800 mb-2">Quiz Builder</h1>
                     <p className="text-green-600">Create and manage your quiz questions</p>
+                </div>
+                {/* View Leaderboard Button */}
+                <div className="mb-6 flex justify-center">
+                    <button
+                        onClick={()=>{navigate(`/quiz-leaderboard/${quizid}`)}}
+                        className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                    >
+                        <Navigation size={20} />
+                        Leaderboard
+                    </button>
                 </div>
                 {/* Questions List */}
                 <div className="space-y-6">

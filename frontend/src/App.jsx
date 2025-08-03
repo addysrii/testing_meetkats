@@ -117,7 +117,7 @@ const App = () => {
             <Route path="/quiz-platform" element={<QuizDashboard />} />
             <Route path="/quiz/:id" element={<QuizPlatform />} />
             <Route path="/quiz/edit/:quizid" element={<CreateQuizes />} />
-            <Route path="/quiz-leaderboard" element={<QuizLeaderboard />} />
+            <Route path="/quiz-leaderboard/:quizid" element={<QuizLeaderboard />} />
             {/* Protected Routes - Require authentication */}
             <Route path="/profile-setup" element={
               <ProtectedRoute>

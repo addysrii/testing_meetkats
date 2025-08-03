@@ -21,16 +21,24 @@ export async function fetchQuizData(quizid){
       .eq('quiz', quiz.id);
 
     if (questionsError) throw questionsError;
+    //Check if quiz is ended or not
+    function hasTimePassed(timestamp) {
+  // Get the current timestamp in milliseconds
+  const currentTime = Date.now();
+  // Compare the given timestamp with the current time
+  return Date.parse(timestamp) < currentTime;
+}
 
     // 3. Format into desired object
     const formattedQuiz = {
       title: quiz.Name,
-      timer: parseInt(quiz.Duration.split(" minutes")[0])*3600, // assuming duration is in seconds
+      timer: parseInt(quiz.Duration.split(" minutes")[0])*60, // assuming duration is in seconds
       questions: questions.map((q) => ({
         text: q.question,
         options: q.options,
         correct: q.options.findIndex(opt => opt === q.correct),
       })),
+      ended:hasTimePassed(quiz.End_time),
     };
 
     return formattedQuiz;
@@ -40,10 +48,11 @@ export async function fetchQuizData(quizid){
   }
 };
 
-export async function fetchQuizResultByEmail(email) {
+export async function fetchQuizResultByEmail(email,quizid) {
   const { data, error } = await supabase
     .from("score")
     .select("*")
+    .eq("quiz",quizid)
     .eq("email", email)
     .maybeSingle();
   if (error && error.code !== "PGRST116") throw error; // PGRST116: No rows found

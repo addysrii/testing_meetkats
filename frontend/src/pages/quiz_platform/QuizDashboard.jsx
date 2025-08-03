@@ -4,35 +4,7 @@ import { CreateNewQuiz,DeleteQuiz,ToggleActive,getQuizDetails } from "../../supa
 import { useNavigate} from "react-router-dom";
 const QuizDashboard = () => {
     const navigate = useNavigate();
-  const [quizzes, setQuizzes] = useState([
-    {
-      id: '1',
-      Name: 'JavaScript Fundamentals',
-      Active: true,
-      Start_time: '2025-08-01T09:00:00',
-      End_time: '2025-08-01T10:30:00',
-      Duration: '90 minutes',
-      created_at: '2025-07-25T10:00:00Z'
-    },
-    {
-      id: '2',
-      Name: 'React Advanced Concepts',
-      Active: false,
-      Start_time: '2025-08-05T14:00:00',
-      End_time: '2025-08-05T16:00:00',
-      Duration: '120 minutes',
-      created_at: '2025-07-26T15:30:00Z'
-    },
-    {
-      id: '3',
-      Name: 'Database Design Principles',
-      Active: true,
-      Start_time: '2025-08-10T11:00:00',
-      End_time: '2025-08-10T12:00:00',
-      Duration: '60 minutes',
-      created_at: '2025-07-27T08:45:00Z'
-    }
-  ]);
+  const [quizzes, setQuizzes] = useState([]);
   const fetchData = async ()=>{
     try {
       const data = await getQuizDetails();
@@ -90,11 +62,11 @@ const QuizDashboard = () => {
     }
     try {
         const data = await CreateNewQuiz(newQuiz.Name,newQuiz.Active,newQuiz.Start_time,newQuiz.End_time,newQuiz.Duration);
+        setQuizzes(prev => [data, ...prev]);
     } catch (error) {
         alert("Error Occured");
         navigate("./dashboard");
     }
-    setQuizzes(prev => [data, ...prev]);
     setNewQuiz({
       Name: '',
       Start_time: '',
@@ -107,7 +79,7 @@ const QuizDashboard = () => {
 
   const deleteQuiz = async(id) => {
     try {
-        const data = await DeleteQuiz(id);
+        await DeleteQuiz(id);
         setQuizzes(prev => prev.filter(quiz => quiz.id !== id));
         alert("Quiz Deleted")
     } catch (error) {
@@ -191,7 +163,7 @@ const QuizDashboard = () => {
             >
               {/* Quiz Header */}
               <div className="flex items-start justify-between mb-4">
-                <h3 className="text-lg font-semibold text-green-800 group-hover:text-green-900 transition-colors duration-200 line-clamp-2">
+                <h3 className="text-lg font-semibold text-green-800 group-hover:text-green-900 transition-colors duration-200 line-clamp-2 cursor-pointer" onClick={() => navigate(`/quiz/edit/${quiz.id}`)}>
                   {quiz.Name}
                 </h3>
                 <button

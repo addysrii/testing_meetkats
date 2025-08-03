@@ -15,6 +15,8 @@ export async function CreateNewQuiz(title,active,starttime,endtime,duration){
   const { data, error } = await supabase
     .from("quizes")
     .insert([{Name:title,Active:active,Start_time:starttime,End_time:endtime,Duration:duration}])
+    .select()
+    .single()
   if (error) throw error;
   return data;
 }
@@ -32,49 +34,19 @@ const { data, error } = await supabase
 
 //Function to Delete Quizes
 export async function DeleteQuiz(id){
-  const { data2, error2 } = await supabase
+  const {  error2 } = await supabase
     .from("questions")
     .delete()
     .eq('quiz', id)
   if (error2) throw error2;
-  const { data3, error3 } = await supabase
-    .from("questions")
+  const {  error3 } = await supabase
+    .from("score")
     .delete()
     .eq('quiz', id)
   if (error3) throw error3;
-  const { data1, error1 } = await supabase
+  const { error1 } = await supabase
     .from("quizes")
     .delete()
     .eq('id', id)
   if (error1) throw error1;
-  return data3;
-}
-
-//Save Each user's Attempt
-export async function saveQuizResult({ name, email, score,time }) {
-  const { data, error } = await supabase
-    .from("meetkats_quiz")
-    .insert([{ name, email, score ,time}]);
-  if (error) throw error;
-  return data;
-}
-
-
-export async function fetchQuizResults() {
-  const { data, error } = await supabase
-    .from("meetkats_quiz")
-    .select("*")
-    .order("score", { ascending: false });
-  if (error) throw error;
-  return data;
-}
-
-export async function fetchQuizResultByEmail(email) {
-  const { data, error } = await supabase
-    .from("meetkats_quiz")
-    .select("*")
-    .eq("email", email)
-    .single();
-  if (error && error.code !== "PGRST116") throw error; // PGRST116: No rows found
-  return data;
 }

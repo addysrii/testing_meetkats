@@ -147,6 +147,8 @@ let hardcodedQuiz = {};
 const QuizPlatform = () => {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
+  const [checking,setchecking] = useState(false)
+  const [ended,Setended] = useState(false)
   const { id } = useParams();
   const fetchQuiz = async () => {
     try {
@@ -155,6 +157,11 @@ const QuizPlatform = () => {
         setStep("inactive");
       }
       else {
+        console.log(quizData.ended)
+        if(quizData.ended){
+          setStep("ended")
+          return;
+        }
         setCurrentQuiz(quizData); // Update currentQuiz state
         setUserAnswers(Array(quizData.questions.length).fill(null)); // Initialize answers
       }
@@ -167,12 +174,15 @@ const QuizPlatform = () => {
   const checkQuizAttempt = async () => {
     if (!loading && user && user.email) {
       try {
-        const result = await fetchQuizResultByEmail(user.email);
+        const result = await fetchQuizResultByEmail(user.email,id);
         console.log(result)
         if (result) {
           setStep("thankyou");
         }else{
-          setStep("intro"); // User has not attempted the quiz yet
+          console.log(ended)
+          if(step!=="ended"){
+            setStep("intro"); // User has not attempted the quiz yet
+          }
         }
       } catch (err) {
         // If error is not 'no rows found', log it
@@ -206,6 +216,7 @@ const QuizPlatform = () => {
     if (audioRef.current) {
       audioRef.current.volume = 0.2; // Set initial volume
     }
+    setchecking(true)
   }, []);
 
   const handleMusicToggle = () => {
@@ -259,7 +270,6 @@ const QuizPlatform = () => {
         incorrect++
       }
     });
-    // setQuizResult({ score, total: currentQuiz.questions.length });
     setTimerActive(false);
 
     // Save to Supabase
@@ -407,9 +417,9 @@ const QuizPlatform = () => {
         Welcome to the MeetKats Quiz Platform!
       </h1>
       <p className="text-lg text-gray-700 mb-8">
-        Test your knowledge with our {"Quiz Name"}
-        Challenge. You have{" "}
-        <span className="font-bold text-green-600">{"Duration"}</span> to complete
+        Test your knowledge with our <span className="font-bold text-green-600"> {currentQuiz?.title} </span>
+        Challenge. You have
+        <span className="font-bold text-green-600">{` ${(currentQuiz?.timer)/60} minutes `}</span> to complete
         the quiz. Good luck!
       </p>
       <button
@@ -457,6 +467,22 @@ const QuizPlatform = () => {
       </button>
     </div>
   );
+  const Ended = () => (
+    <div className="bg-white rounded-xl shadow-lg p-10 mb-8 text-center animate-fade-in">
+      <h2 className="text-3xl font-bold text-green-700 mb-4">
+        Thank You for Visiting MeetKats!
+      </h2>
+      <p className="text-lg text-gray-700 mb-6">
+        It Seems that the Quiz has been ended. Stay Connected with MeetKats for more quizes !
+      </p>
+      <button
+        className="bg-gradient-to-r from-green-400 to-green-600 text-white px-8 py-3 rounded-lg font-bold text-lg shadow hover:from-green-500 hover:to-green-700 transition-all"
+        onClick={() => navigate("/dashboard")}
+      >
+        Back to Home
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-200 via-green-100 via-60% to-white flex flex-col items-center justify-start py-10 px-2 relative overflow-hidden">
@@ -493,10 +519,11 @@ const QuizPlatform = () => {
         )}
       </button>
       <div className="w-full max-w-3xl">
-        {step === "intro" && <Intro />}
-        {step === "quiz" && <QuizAttempt />}
-        {step === "thankyou" && <ThankYou />}
-        {step === "inactive" && <Inactive />}
+        {step === "intro" && checking && <Intro />}
+        {step === "quiz" && checking && <QuizAttempt />}
+        {step === "thankyou" && checking && <ThankYou />}
+        {step === "inactive" && checking && <Inactive />}
+        {step === "ended" && checking && <Ended />}
       </div>
     </div>
   );
