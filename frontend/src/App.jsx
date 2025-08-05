@@ -69,6 +69,8 @@ import QuizPlatform from "./pages/quiz_platform/QuizPlatform";
 import QuizDashboard from "./pages/quiz_platform/QuizDashboard";
 import CreateQuizes from "./pages/quiz_platform/CreateQuizes";
 import QuizLeaderboard from "./pages/quiz_platform/QuizLeaderboard";
+
+import LandPage from "./pages/Landing"
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { user, isLoading } = useAuth();
@@ -101,6 +103,7 @@ const App = () => {
             {/* Public Routes - Accessible without authentication */}
             {/*<Route path="/landingpage" element={<LandingPage />} />*/}
             <Route path="/landingpage" element={<BhoomiLandingPage />} />
+            <Route path="/meetkat" element={<LandPage />} />
             <Route path="/login" element={<AuthPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
