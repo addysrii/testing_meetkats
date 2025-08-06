@@ -102,8 +102,9 @@ const App = () => {
           <Routes>
             {/* Public Routes - Accessible without authentication */}
             {/*<Route path="/landingpage" element={<LandingPage />} />*/}
-            <Route path="/landingpage" element={<BhoomiLandingPage />} />
-            <Route path="/meetkat" element={<LandPage />} />
+            {/* <Route path="/landingpage" element={<BhoomiLandingPage />} /> */}
+            <Route path="/landingpage" element={<LandPage />} />
+            {/* <Route path="/meetkat" element={<LandPage />} /> */}
             <Route path="/login" element={<AuthPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

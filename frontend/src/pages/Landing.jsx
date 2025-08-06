@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { 
   Calendar, 
-  Users, 
+  Users,
+  Instagram ,
+  Linkedin , 
   Ticket, 
   TrendingUp, 
   Search, 
@@ -15,6 +17,7 @@ import {
   Shield,
   Zap,
   Heart,
+  Twitter,
   ChevronRight,
   Play,
   Menu,
@@ -37,12 +40,12 @@ function LandPage() {
   const featuredEvents = [
     {
       id: 1,
-      title: "Tech Innovation Summit 2025",
-      date: "March 15, 2025",
+      title: "ByteBattle",
+      date: "June 1, 2025",
       time: "9:00 AM",
-      location: "San Francisco, CA",
+      location: "Kanpur, Uttar Pradesh",
       image: "https://images.pexels.com/photos/2608517/pexels-photo-2608517.jpeg?auto=compress&cs=tinysrgb&w=800",
-      price: "$89",
+      price: "Free",
       attendees: 250,
       category: "Technology"
     },
@@ -51,7 +54,7 @@ function LandPage() {
       title: "Creative Design Workshop",
       date: "March 22, 2025",
       time: "2:00 PM",
-      location: "New York, NY",
+      location: "Kanpur, Uttar Pradesh",
       image: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=800",
       price: "$45",
       attendees: 120,
@@ -62,7 +65,7 @@ function LandPage() {
       title: "Startup Networking Mixer",
       date: "March 28, 2025",
       time: "6:30 PM",
-      location: "Austin, TX",
+      location: "Kanpur, Uttar Pradesh",
       image: "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=800",
       price: "Free",
       attendees: 180,
@@ -136,9 +139,9 @@ function LandPage() {
             <div className="hidden md:flex items-center space-x-8">
               <a href="#events" className="text-gray-700 hover:text-emerald-600 transition-colors">Events</a>
               <a href="#community" className="text-gray-700 hover:text-emerald-600 transition-colors">Community</a>
-              <a href="#organizers" className="text-gray-700 hover:text-emerald-600 transition-colors">For Organizers</a>
-              <button className="text-gray-700 hover:text-emerald-600 transition-colors" onClick={()=>{window.location.href="/login"}}>Login</button>
-              <button className="bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors" onClick={()=>{window.location.href="/signup"}}>
+              <a href="#features" className="text-gray-700 hover:text-emerald-600 transition-colors">For Organizers</a>
+              <button className="cursor-pointer text-gray-700 hover:text-emerald-600 transition-colors" onClick={()=>{window.location.href="/login"}}>Login</button>
+              <button className="cursor-pointer bg-emerald-600 text-white px-6 py-2 rounded-lg hover:bg-emerald-700 transition-colors" onClick={()=>{window.location.href="/signup"}}>
                 Get Started
               </button>
             </div>
@@ -185,12 +188,12 @@ function LandPage() {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <button onClick={()=>{window.location.href="/events"}} className="group bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+              <button onClick={()=>{window.location.href="/events"}} className="cursor-pointer group bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
                 <Search className="w-5 h-5 mr-2" />
                 Find Events
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </button>
-              <button onClick={()=>{window.location.href="/events/new"}} className="group bg-white text-emerald-600 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-emerald-600 hover:bg-emerald-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+              <button onClick={()=>{window.location.href="/events/new"}} className="cursor-pointer group bg-white text-emerald-600 px-8 py-4 rounded-xl text-lg font-semibold border-2 border-emerald-600 hover:bg-emerald-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
                 <Calendar className="w-5 h-5 mr-2" />
                 Create Event
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -200,11 +203,11 @@ function LandPage() {
             <div className="flex flex-wrap justify-center items-center gap-8 text-gray-600">
               <div className="flex items-center">
                 <Users className="w-5 h-5 text-emerald-600 mr-2" />
-                <span>50K+ Members</span>
+                <span>500+ Members</span>
               </div>
               <div className="flex items-center">
                 <Calendar className="w-5 h-5 text-emerald-600 mr-2" />
-                <span>10K+ Events</span>
+                <span>10+ Events</span>
               </div>
               <div className="flex items-center">
                 <Star className="w-5 h-5 text-emerald-600 mr-2" />
@@ -466,7 +469,7 @@ function LandPage() {
           </div>
 
           <div className="text-center mt-12">
-            <button onClick={()=>{window.location.href="/events"}} className="bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
+            <button onClick={()=>{window.location.href="/events"}} className="cursor-pointer bg-emerald-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-700 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl">
               View All Events
             </button>
           </div>
@@ -510,7 +513,7 @@ function LandPage() {
                 </div>
               </div>
 
-              <button onClick={()=>{window.location.href="https://chat.whatsapp.com/LRnaE2vKJnwHcaRXH1pQWr?mode=ac_t"}} className="group bg-green-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
+              <button onClick={()=>{window.location.href="https://chat.whatsapp.com/LRnaE2vKJnwHcaRXH1pQWr?mode=ac_t"}} className="group cursor-pointer bg-green-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-green-600 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center">
                 <Smartphone className="w-5 h-5 mr-2" />
                 Join WhatsApp Community
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -649,12 +652,12 @@ function LandPage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={()=>{window.location.href="/events"}} className="group bg-white text-emerald-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
+            <button onClick={()=>{window.location.href="/events"}} className="group cursor-pointer bg-white text-emerald-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-50 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
               <Search className="w-5 h-5 mr-2" />
               Browse Events
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button onClick={()=>{window.location.href="/events"}} className="group bg-emerald-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-400 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
+            <button onClick={()=>{window.location.href="/events/new"}} className="group cursor-pointer bg-emerald-500 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-emerald-400 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
               <Calendar className="w-5 h-5 mr-2" />
               Create Your Event
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -678,11 +681,14 @@ function LandPage() {
                 Connecting people through amazing events and building communities that last.
               </p>
               <div className="flex space-x-4">
-                <button className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-emerald-600 transition-colors">
-                  <MessageCircle className="w-5 h-5" />
+                <button onClick={()=>{window.location.href="https://www.linkedin.com/company/meetkats/"}} className="cursor-pointer w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <Linkedin  className="w-5 h-5" />
                 </button>
-                <button className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-emerald-600 transition-colors">
-                  <Users className="w-5 h-5" />
+                <button onClick={()=>{window.location.href="https://www.instagram.com/meetkats?igsh=MmlvdXh0Zmp0cGJ6"}} className="cursor-pointer w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <Instagram  className="w-5 h-5" />
+                </button>
+                <button onClick={()=>{window.location.href="https://x.com/MeetKatsOrg"}} className="cursor-pointer w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-emerald-600 transition-colors">
+                  <Twitter className="w-5 h-5" />
                 </button>
               </div>
             </div>
@@ -700,7 +706,7 @@ function LandPage() {
             <div>
               <h3 className="text-lg font-semibold mb-6">For Organizers</h3>
               <ul className="space-y-3">
-                <li><a href="/event/new" className="text-gray-400 hover:text-white transition-colors">Create Event</a></li>
+                <li><a href="/events/new" className="text-gray-400 hover:text-white transition-colors">Create Event</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Organizer Dashboard</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Analytics</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
