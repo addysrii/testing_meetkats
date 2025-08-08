@@ -37,8 +37,7 @@ import LinkCall from './pages/LinkCall';
 import { BhoomiLandingPage } from './pages/BhoomiLandingPage/BhoomiLandingPage';
 // Event Management Pages
 import EventListingPage from './pages/EventsListingPage';
-// import EventDetailPage from './pages/EventDetailPage';
-import { EventDetailPage } from './pages/EventDetailPage/EventDetailPage';
+import EventDetailPage from './pages/EventDetailPage';
 import EventCreationPage from './pages/EventCreationPage';
 import TicketPurchasePage from './pages/TicketPurchasePage';
 import PaymentSuccessPage from './pages/PaymentSuccessPage';
@@ -339,11 +338,6 @@ const App = () => {
               </ProtectedRoute>
             } />
 
-            <Route path="/events/:eventId/edit" element={
-              <ProtectedRoute>
-                <EventCreationPage />
-              </ProtectedRoute>
-            } />
 
             <Route path="/events/:eventId/tickets" element={
               <ProtectedRoute>
